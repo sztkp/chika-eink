@@ -27,21 +27,37 @@ Run `python3 tools/generate_fork_icons.py` from the repository root to regenerat
 
 ## Fork screenshots
 
-The current `docs/screens/{library,reader,panel,menu,sorting,actions,progress}.png`
-are unedited captures of the revised UI (source commit `613233b`), refreshed on
-2026-10-03. They run on an Android API 37 emulator configured at 824 × 1648,
-300dpi, and font scale 0.85, matching the connected Palma 2's reported UI settings.
-The emulator's Android version differs from that device's Android 13. They show Libron
-typography and the original “Quiet Library Demo” comic, made from simple geometric
-drawings for this fork. These replace the removed upstream screenshots; they are
-not photographs of a BOOX device and do not demonstrate physical e-ink refresh.
+The README's `docs/screens/{library,reader,panel}.png` are unedited captures of
+source commit `613233b`, refreshed on 2026-10-03. They run on an Android API 37
+emulator configured at 824 × 1648, 300dpi, and font scale 0.85, matching the
+connected Palma 2's reported UI settings. The emulator's Android version differs
+from that device's Android 13. These are not photographs of a BOOX device and do
+not demonstrate physical e-ink refresh.
 
-The demo artwork, screenshot captures, and generator are distributed under
-[MPL-2.0](../LICENSE); Libron retains its OFL and copyright notices. No external
-comic artwork was used. Generate the three-page CBZ with
-`python3 tools/generate_screenshot_comic.py /tmp/chika-demo` (requires Pillow),
-import it using the app's file picker, and capture the screen using
-`adb exec-out screencap -p > screenshot.png`.
+They show the original one-page demo manga **六本木深夜決戦** (Roppongi Midnight
+Showdown): a tongue-in-cheek encounter over the last onigiri at a Roppongi
+7-Eleven. Its title and dialogue use kanji and katakana, without English or
+hiragana. The reader is set to RTL for the manga screenshots. The app's existing
+Libron typography uses Android's fallback for Japanese characters.
+
+The page at `docs/demo/roppongi.png` was generated using Codex's built-in image
+generation tool, without reference images or external comic artwork. The generation
+prompt is recorded in [docs/demo/PROMPT.md](demo/PROMPT.md). The fork contributes
+its artwork and captures under [MPL-2.0](../LICENSE) to the extent it holds rights;
+AI-generated material may not itself qualify for copyright in every jurisdiction.
+7-Eleven's name and identifying store references remain third-party trademarks;
+this fictional demo does not imply endorsement or affiliation.
+
+Package the demo CBZ with
+`python3 tools/generate_screenshot_comic.py /tmp/chika-demo` (Python standard
+library only), import it using the app's file picker, and capture the screen using
+`adb exec-out screencap -p > screenshot.png`. The script packages the committed
+page unchanged; it does not regenerate AI artwork.
+
+The additional `docs/screens/{menu,sorting,actions,progress}.png` captures are
+retained from the earlier UI documentation and are not embedded in the README.
+They show the geometric “Quiet Library Demo”, originally drawn for this fork
+under MPL-2.0, using Libron under its OFL and copyright notices.
 
 User-imported comic pages/covers are not distributed as repository artwork. Future
 screenshots should use original synthetic art or artwork with documented redistribution

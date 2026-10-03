@@ -41,8 +41,10 @@ swipe to turn whole pages and flip reading direction (LTR/RTL).
 
 ## Screenshots
 
-Captured from the revised UI on an Android emulator with original demo artwork,
-using the connected Palma 2's reported resolution, density, and font scale.
+Captured from the revised UI on an Android emulator using the connected Palma 2's
+reported resolution, density, and font scale. The original demo manga,
+**六本木深夜決戦**, stages a midnight showdown over the last onigiri at a Roppongi
+7-Eleven, with kanji/katakana lettering and right-to-left reading.
 
 | Library | Full page view | Panel view |
 | --- | --- | --- |
