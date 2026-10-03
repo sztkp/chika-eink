@@ -34,6 +34,7 @@ import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -71,6 +72,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalAccessibilityManager
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.heading
@@ -308,6 +311,7 @@ private fun ComicCard(
     onResetProgress: () -> Unit,
 ) {
     var showMenu by rememberSaveable(comic.id) { mutableStateOf(false) }
+    val haptics = LocalHapticFeedback.current
     val pct = if (comic.pageCount > 0) ((comic.lastPage + 1f) / comic.pageCount).coerceIn(0f, 1f) else 0f
     val started = comic.lastPage > 0
     Box {
@@ -316,7 +320,10 @@ private fun ComicCard(
         onClickLabel = "Read ${comic.title}",
         onLongClickLabel = "Show actions for ${comic.title}",
         onClick = onClick,
-        onLongClick = { showMenu = true },
+        onLongClick = {
+            haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+            showMenu = true
+        },
     )) {
         Box(
             Modifier
@@ -352,28 +359,21 @@ private fun ComicCard(
             modifier = Modifier.padding(top = 2.dp),
         )
     }
-    if (showMenu) {
-        Popup(
-            alignment = Alignment.TopEnd,
-            onDismissRequest = { showMenu = false },
-            properties = PopupProperties(focusable = true),
-        ) {
-            Surface(
-                shape = MaterialTheme.shapes.extraSmall,
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-            ) {
-                Column(Modifier.width(IntrinsicSize.Max).padding(vertical = 8.dp)) {
-                    DropdownMenuItem(
-                        text = { Text("Remove comic") },
-                        onClick = { showMenu = false; onRemove() },
-                    )
-                    DropdownMenuItem(
-                        text = { Text("Reset progress") },
-                        onClick = { showMenu = false; onResetProgress() },
-                    )
-                }
-            }
-        }
+    DropdownMenu(
+        expanded = showMenu,
+        onDismissRequest = { showMenu = false },
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+    ) {
+        DropdownMenuItem(
+            text = { Text("Remove comic") },
+            onClick = { showMenu = false; onRemove() },
+        )
+        DropdownMenuItem(
+            text = { Text("Reset progress") },
+            onClick = { showMenu = false; onResetProgress() },
+        )
     }
     }
 }

@@ -95,6 +95,12 @@ slot, above the system navigation inset. Grid padding and snackbar placement kee
 content reachable around it. Elevation remains zero for e-ink, and importing uses
 static status text while preventing duplicate picker launches.
 
+Comic long-press actions use Material 3 `DropdownMenu` with `DropdownMenuItem`,
+standard anchor positioning/dismissal and long-press haptic feedback. Remove and
+reset still require separate confirmation dialogs. Unlike the static toolbar
+sort popup, this standard component retains its built-in short menu transition;
+monochrome colors, zero elevation and disabled ripples remain e-ink adaptations.
+
 References: [app bars](https://developer.android.com/develop/ui/compose/components/app-bars),
 [Scaffold](https://developer.android.com/develop/ui/compose/components/scaffold),
 and [accessibility defaults](https://developer.android.com/develop/ui/compose/accessibility/api-defaults).
