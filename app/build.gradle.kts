@@ -134,7 +134,15 @@ dependencies {
     ksp(libs.androidx.room.compiler)
 
     implementation(libs.commons.compress)
-    implementation(libs.sevenzip)
+    // Allow rebuilding the app with a modified archive library (LGPL replacement route).
+    val replacementSevenZip = providers.gradleProperty("sevenZipAar").orNull
+    if (replacementSevenZip != null) {
+        val replacement = rootProject.file(replacementSevenZip)
+        require(replacement.isFile) { "sevenZipAar must point to an existing AAR file" }
+        implementation(files(replacement))
+    } else {
+        implementation(libs.sevenzip)
+    }
 
     implementation(libs.tensorflow.lite)
 }

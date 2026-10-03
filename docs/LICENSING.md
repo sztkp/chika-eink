@@ -37,11 +37,38 @@ says that grant was mistaken. Merely adding the AGPL text does not resolve the i
 
 ## Native-library release review
 
-The bundled archive library version is `Release-16.02-2.03`. Record and provide the
-applicable corresponding library source and build materials, and verify a usable
-replacement/relinking route for the distributed build under LGPL §6. A source link and
-a dynamically loaded `.so` are evidence about packaging, not a completed compliance check.
-Retain any additional native-component notices found during that source review.
+The bundled archive library version is `Release-16.02-2.03`, from commit
+[`875f38aac441f41e6eb693177e020e97971dca97`](https://github.com/omicronapps/7-Zip-JBinding-4Android/tree/875f38aac441f41e6eb693177e020e97971dca97).
+Its source tree includes the Java binding, native sources and build scripts. The
+app accepts `-PsevenZipAar=/absolute/path/to/replacement.aar` to rebuild with a
+compatible modified library; the default dependency remains unchanged. See
+[release instructions](../RELEASING.md#rebuilding-with-a-modified-archive-library).
+
+### Copyleft compatibility blocker
+
+The archive library includes RAR decompression code under LGPL **plus the unRAR
+restriction**, which prohibits recreating the RAR compression algorithm. This
+additional restriction needs resolution before relying on an AGPL/GPL combined-work
+distribution route for the app and bundled detector. Providing source and license
+texts does not remove it. The [7-Zip notice](../THIRD_PARTY_LICENSES/SevenZip-NOTICE.txt)
+records the restriction; the [GNU compatibility guidance](https://www.gnu.org/licenses/gpl-faq.html#GPLIncompatibleLibs)
+explains that exceptions require permission from the relevant copyright holders.
+
+The release candidate stays private pending sufficient permission or another
+validated licensing route. RAR support and the detector have not been removed or
+replaced to work around this issue.
+
+## Release source materials
+
+The private v0.3.0 candidate includes the detector's editable FP32 checkpoint from
+the pinned model revision above, SHA-256
+`73e0fb587ea3afe0d17aa9f0c3b1f5a8001b3ecbc3c77091e0730654b0da9146`.
+Checkpoint metadata identifies Ultralytics 8.4.31, source commit
+[`65b736045f7e8d54bbf3fd27709f4b1321b3b532`](https://github.com/ultralytics/ultralytics/tree/65b736045f7e8d54bbf3fd27709f4b1321b3b532).
+These source archives, the model card and retained licenses are collected with the
+candidate. The Manga109-s training/calibration dataset is not redistributed.
+Exact INT8 export reproducibility and complete corresponding-source obligations
+remain review items; collecting these materials is not a clearance claim.
 
 The root MPL text is preserved, including its secondary-license provisions. No
 combined-work license choice is made by this documentation update.

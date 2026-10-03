@@ -28,3 +28,9 @@ training/*.npy
 
 # Experimental local training logs
 training/*.log
+
+# Private release signing material
+.signing/
+*.jks
+*.keystore
+keystore.b64
