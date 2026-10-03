@@ -28,7 +28,8 @@ swipe to turn whole pages and flip reading direction (LTR/RTL).
   oversized panels with a bubble-aware cut.
 - **Reader controls** — tap zones to step panels, swipe to turn pages, pinch + drag to pan
   (clamped to the artwork), plain page/panel counts, a "show whole page" button, and an LTR/RTL toggle.
-  A Progress button opens a page slider and previous/next-page controls for whole-page jumps.
+  A Progress button opens a compact bottom panel with a page slider and previous/next-page
+  controls for whole-page jumps; the artwork fits above it without being covered.
   Hardware Volume Down/Page Down advances a panel; Volume Up/Page Up goes back, only in the
   reader. Holding a button does not repeatedly advance.
 - **Library** — import via the system file picker (copied into app storage), cover thumbnails,

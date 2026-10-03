@@ -1,6 +1,7 @@
 package com.chakra.comicreader.ui.reader
 
 import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,6 +23,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.ZoomOutMap
@@ -31,7 +33,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -94,8 +95,10 @@ fun ReaderScreen(
     // System bars remain available by edge swipe and are restored on leaving the reader.
     val view = LocalView.current
     val activity = view.context as? MainActivity
-    DisposableEffect(activity, viewModel) {
-        val handler = ReaderKeyHandler(viewModel::next, viewModel::previous)
+    BackHandler(enabled = showProgress) { showProgress = false }
+    DisposableEffect(activity, viewModel, showProgress) {
+        val handler = if (showProgress) ReaderKeyHandler(viewModel::nextPage, viewModel::previousPage)
+            else ReaderKeyHandler(viewModel::next, viewModel::previous)
         activity?.readerKeyHandler = handler
         onDispose {
             if (activity != null && activity.readerKeyHandler === handler) activity.readerKeyHandler = null
@@ -151,29 +154,30 @@ fun ReaderScreen(
                     onPrev = viewModel::previous,
                     onNextPage = viewModel::nextPage,
                     onPrevPage = viewModel::previousPage,
-                    onToggleChrome = { chromeVisible = !chromeVisible },
+                    onToggleChrome = { chromeVisible = !chromeVisible; showProgress = false },
                     onShowFullPage = viewModel::showFullPage,
                 )
             }
         }
         if (chromeVisible && state.pageCount > 0) {
-            ReaderCounts(
-                pageIndex = state.pageIndex,
-                pageCount = state.pageCount,
-                panelNumber = state.panelLabel,
-                panelCount = state.panels.size,
-                onOpenProgress = { showProgress = true },
-            )
+            if (showProgress) {
+                ReaderProgressPanel(
+                    pageIndex = state.pageIndex,
+                    pageCount = state.pageCount,
+                    enabled = !state.loading && state.error == null,
+                    onJumpToPage = viewModel::jumpToPage,
+                    onDismiss = { showProgress = false },
+                )
+            } else {
+                ReaderCounts(
+                    pageIndex = state.pageIndex,
+                    pageCount = state.pageCount,
+                    panelNumber = state.panelLabel,
+                    panelCount = state.panels.size,
+                    onOpenProgress = { showProgress = true },
+                )
+            }
         }
-    }
-    if (showProgress && state.pageCount > 0) {
-        ReaderProgressDialog(
-            pageIndex = state.pageIndex,
-            pageCount = state.pageCount,
-            enabled = !state.loading && state.error == null,
-            onJumpToPage = viewModel::jumpToPage,
-            onDismiss = { showProgress = false },
-        )
     }
 }
 
@@ -213,7 +217,7 @@ private fun ReaderCounts(
 }
 
 @Composable
-private fun ReaderProgressDialog(
+private fun ReaderProgressPanel(
     pageIndex: Int,
     pageCount: Int,
     enabled: Boolean,
@@ -226,51 +230,54 @@ private fun ReaderProgressDialog(
         if (!scrubbing) selectedPage = pageIndex.toFloat()
     }
     val shownPage = selectedPage.roundToInt().coerceIn(0, pageCount - 1)
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        modifier = Modifier.border(1.dp, Color.Black, MaterialTheme.shapes.extraLarge),
-        title = { Text("Reading progress") },
-        text = {
-            Column {
-                Text("Page ${shownPage + 1} of $pageCount")
-                if (pageCount > 1) {
-                    Slider(
-                        value = selectedPage.coerceIn(0f, (pageCount - 1).toFloat()),
-                        onValueChange = { scrubbing = true; selectedPage = it },
-                        onValueChangeFinished = {
-                            scrubbing = false
-                            val target = selectedPage.roundToInt().coerceIn(0, pageCount - 1)
-                            selectedPage = target.toFloat()
-                            onJumpToPage(target)
-                        },
-                        valueRange = 0f..(pageCount - 1).toFloat(),
-                        steps = pageCount - 2,
-                        enabled = enabled,
-                        // Page snapping stays discrete without drawing hundreds of tick marks.
-                        colors = SliderDefaults.colors(
-                            activeTickColor = Color.Transparent,
-                            inactiveTickColor = Color.Transparent,
-                            disabledActiveTickColor = Color.Transparent,
-                            disabledInactiveTickColor = Color.Transparent,
-                        ),
-                    )
-                }
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    TextButton(
-                        modifier = Modifier.weight(1f),
-                        enabled = enabled && shownPage > 0,
-                        onClick = { selectedPage = (shownPage - 1).toFloat(); onJumpToPage(shownPage - 1) },
-                    ) { Text("Previous page") }
-                    TextButton(
-                        modifier = Modifier.weight(1f),
-                        enabled = enabled && shownPage < pageCount - 1,
-                        onClick = { selectedPage = (shownPage + 1).toFloat(); onJumpToPage(shownPage + 1) },
-                    ) { Text("Next page") }
-                }
+    Column(
+        Modifier.fillMaxWidth().background(Ink).border(1.dp, Color.Black)
+            .padding(horizontal = 8.dp, vertical = 2.dp),
+    ) {
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Text("Page ${shownPage + 1} of $pageCount", modifier = Modifier.weight(1f),
+                style = MaterialTheme.typography.bodyMedium)
+            TextButton(onClick = onDismiss) { Text("Done") }
+        }
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            IconButton(
+                enabled = enabled && shownPage > 0,
+                onClick = { selectedPage = (shownPage - 1).toFloat(); onJumpToPage(shownPage - 1) },
+            ) {
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Previous page")
             }
-        },
-        confirmButton = { TextButton(onClick = onDismiss) { Text("Done") } },
-    )
+            if (pageCount > 1) {
+                Slider(
+                    modifier = Modifier.weight(1f),
+                    value = selectedPage.coerceIn(0f, (pageCount - 1).toFloat()),
+                    onValueChange = { scrubbing = true; selectedPage = it },
+                    onValueChangeFinished = {
+                        scrubbing = false
+                        val target = selectedPage.roundToInt().coerceIn(0, pageCount - 1)
+                        selectedPage = target.toFloat()
+                        onJumpToPage(target)
+                    },
+                    valueRange = 0f..(pageCount - 1).toFloat(),
+                    steps = pageCount - 2,
+                    enabled = enabled,
+                    colors = SliderDefaults.colors(
+                        activeTickColor = Color.Transparent,
+                        inactiveTickColor = Color.Transparent,
+                        disabledActiveTickColor = Color.Transparent,
+                        disabledInactiveTickColor = Color.Transparent,
+                    ),
+                )
+            } else {
+                Spacer(Modifier.weight(1f))
+            }
+            IconButton(
+                enabled = enabled && shownPage < pageCount - 1,
+                onClick = { selectedPage = (shownPage + 1).toFloat(); onJumpToPage(shownPage + 1) },
+            ) {
+                Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "Next page")
+            }
+        }
+    }
 }
 
 @Composable

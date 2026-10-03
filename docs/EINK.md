@@ -19,10 +19,14 @@ a narrow page/panel count row. Artwork is framed in the space between these rows
 so controls do not cover it. Hiding controls expands the artwork viewport immediately.
 System bars stay hidden during reading, remain available by edge swipe, and return
 when leaving the reader.
-A Progress action in the count row opens a Material dialog with a discrete page
-slider and previous/next-page buttons. Slider release loads the selected whole
-page; dragging only updates the preview count, avoiding repeated decoding during
-scrubbing. The permanent reader bar still has no progress track.
+A Progress action in the count row opens a compact outlined bottom panel with a
+discrete Material page slider and previous/next-page buttons. The artwork viewport
+resizes above the panel immediately, without overlays, dimming or animations.
+Slider release loads the selected whole page; dragging only updates the preview
+count, avoiding repeated decoding during scrubbing. Done or system Back closes
+the panel. Hardware navigation steps whole pages while the panel is open and
+returns to panel navigation when it closes. The permanent reader bar still has no
+progress track.
 Panel view has a static dotted black outline around the entire displayed comic image,
 with white backing for contrast over dark artwork. It follows the image through pan/zoom and is
 hidden in full-page view; detection and framing calculations are unchanged.
