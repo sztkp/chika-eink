@@ -33,6 +33,17 @@ swipe to turn whole pages, scrub pages, and flip reading direction (LTR/RTL).
 - **E-ink UI** — monochrome controls, clear borders, immediate panel framing, and static status indicators.
 - **Libron typography** — bundled v0.25 regular, bold, italic, and bold-italic fonts throughout the UI.
 
+## Screenshots
+
+Captured on an Android emulator with original demo artwork.
+
+| Library | Full-page reader | Panel reading | Menu |
+| --- | --- | --- | --- |
+| <img src="docs/screens/library.png" alt="Chika-eInk library" width="220"> | <img src="docs/screens/reader.png" alt="Full-page comic reader" width="220"> | <img src="docs/screens/panel.png" alt="Detected panel reading" width="220"> | <img src="docs/screens/menu.png" alt="Chika-eInk menu and settings" width="220"> |
+
+See [artwork provenance](docs/ARTWORK.md) for licensing and reproduction instructions.
+These captures do not simulate a physical e-ink display.
+
 ## Build & run
 
 Requires **Android Studio** (bundles JDK + SDK). Developed against JDK 21 and Android **API 36**;

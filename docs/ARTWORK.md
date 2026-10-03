@@ -25,6 +25,21 @@ Run `python3 tools/generate_fork_icons.py` from the repository root to regenerat
   [the licensing audit](LICENSING.md).
 - Upstream author attribution and all existing license texts.
 
+## Fork screenshots
+
+The current `docs/screens/{library,reader,panel,menu}.png` are unedited captures of
+this fork running on an Android API 37 emulator at 1080 × 2400. They show Libron
+typography and the original “Quiet Library Demo” comic, made from simple geometric
+drawings for this fork. These replace the removed upstream screenshots; they are
+not photographs of a BOOX device and do not demonstrate physical e-ink refresh.
+
+The demo artwork, screenshot captures, and generator are distributed under
+[MPL-2.0](../LICENSE); Libron retains its OFL and copyright notices. No external
+comic artwork was used. Generate the three-page CBZ with
+`python3 tools/generate_screenshot_comic.py /tmp/chika-demo` (requires Pillow),
+import it using the app's file picker, and capture the screen using
+`adb exec-out screencap -p > screenshot.png`.
+
 User-imported comic pages/covers are not distributed as repository artwork. Future
 screenshots should use original synthetic art or artwork with documented redistribution
 permission and attribution. The cleanup removes images from the current tree; prior
