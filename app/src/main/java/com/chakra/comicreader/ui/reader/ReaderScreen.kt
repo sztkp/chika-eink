@@ -3,6 +3,7 @@ package com.chakra.comicreader.ui.reader
 import android.app.Activity
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -227,6 +228,7 @@ private fun ReaderProgressDialog(
     val shownPage = selectedPage.roundToInt().coerceIn(0, pageCount - 1)
     AlertDialog(
         onDismissRequest = onDismiss,
+        modifier = Modifier.border(1.dp, Color.Black, MaterialTheme.shapes.extraLarge),
         title = { Text("Reading progress") },
         text = {
             Column {
