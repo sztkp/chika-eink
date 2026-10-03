@@ -44,3 +44,20 @@ warnings unchanged.
   unchanged ML input and detection pipeline if device evidence warrants a later change.
 
 No BOOX APIs, forced refresh calls, dithering or grayscale preprocessing are added.
+
+## Android menu conventions
+
+The library and About screens use Material 3 `Scaffold` and `TopAppBar`, with
+content insets consumed below the app bar. About uses standard `ListItem`,
+`Button` and `OutlinedButton` controls. Actions have button semantics and at
+least 48dp layout height; headings and library actions have accessibility labels.
+The library grid adapts to available width and uses Material typography for titles
+and progress text. Monochrome colors, Libron and disabled ripple/navigation
+animations remain intentional e-ink adaptations.
+
+References: [app bars](https://developer.android.com/develop/ui/compose/components/app-bars),
+[Scaffold](https://developer.android.com/develop/ui/compose/components/scaffold),
+and [accessibility defaults](https://developer.android.com/develop/ui/compose/accessibility/api-defaults).
+Build and shared tests passed, and both screens were visually checked on the
+connected Palma 2. TalkBack and enlarged-font testing remain necessary before
+claiming comprehensive accessibility compliance.

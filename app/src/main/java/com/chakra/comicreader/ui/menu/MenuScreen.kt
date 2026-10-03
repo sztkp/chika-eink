@@ -3,175 +3,98 @@ package com.chakra.comicreader.ui.menu
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.chakra.comicreader.ui.brand.ChikaWordmark
-import com.chakra.comicreader.ui.brand.OchreBadge
-import com.chakra.comicreader.ui.theme.Libron
-import com.chakra.comicreader.ui.theme.Cream
-import com.chakra.comicreader.ui.theme.CreamMuted
-import com.chakra.comicreader.ui.theme.Crimson
-import com.chakra.comicreader.ui.theme.Ink
-import com.chakra.comicreader.ui.theme.Ochre
 
 private const val FORK_URL = "https://github.com/sztkp/chika-eink"
-private const val DONATION_URL = "https://github.com/batunii/chika"
-private const val PRIVACY_URL = "https://github.com/sztkp/chika-eink/blob/main/PRIVACY.md"
-private const val LICENSES_URL = "https://github.com/sztkp/chika-eink/blob/main/THIRD_PARTY_NOTICES.md"
+private const val UPSTREAM_URL = "https://github.com/batunii/chika"
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MenuScreen(
-    onBack: () -> Unit,
-) {
+fun MenuScreen(onBack: () -> Unit) {
     val context = LocalContext.current
     val version = remember {
         runCatching {
             context.packageManager.getPackageInfo(context.packageName, 0).versionName
         }.getOrNull() ?: "—"
     }
-    val openDonation = {
-        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(DONATION_URL)))
+    val openUrl: (String) -> Unit = { url ->
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        runCatching { context.startActivity(intent) }.onFailure {
+            Toast.makeText(context, "No app available to open this link", Toast.LENGTH_SHORT).show()
+        }
     }
-
-    Box(Modifier.fillMaxSize().background(Ink)) {
-
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("About") },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                },
+            )
+        },
+    ) { padding ->
         Column(
-            Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .statusBarsPadding()
-                .navigationBarsPadding()
-                .padding(horizontal = 24.dp)
-                .padding(top = 8.dp, bottom = 28.dp),
+            Modifier.fillMaxSize().padding(padding).consumeWindowInsets(padding)
+                .verticalScroll(rememberScrollState()),
         ) {
-            // Header: back + title.
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(
-                    Modifier
-                        .size(38.dp)
-                        .clip(CircleShape)
-                        .background(Ink)
-                        .clickable(onClick = onBack),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Icon(
-                        Icons.AutoMirrored.Filled.KeyboardArrowLeft, "Back",
-                        tint = Cream, modifier = Modifier.size(24.dp),
-                    )
-                }
-                Spacer(Modifier.size(14.dp))
-                OchreBadge("ABOUT")
+            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text("Chika-eInk", style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier.semantics { heading() })
+                Text("Version $version", style = MaterialTheme.typography.bodyMedium)
+                Text("An independent Android fork of Chika by Chakra, optimized for e-ink reading.",
+                    style = MaterialTheme.typography.bodyLarge)
+                Text("Detects comic panels on-device and guides you through each page, panel by panel.",
+                    style = MaterialTheme.typography.bodyLarge)
             }
-
-            Spacer(Modifier.size(28.dp))
-
-            ChikaWordmark()
-            Spacer(Modifier.size(12.dp))
-            OchreBadge("VERSION $version")
-            Spacer(Modifier.size(14.dp))
-            Text(
-                "Independent fork of Chika by Chakra",
-                fontFamily = Libron,
-                fontWeight = FontWeight.Bold,
-                fontSize = 14.sp,
-                color = Cream,
-            )
-            Spacer(Modifier.size(18.dp))
-            Text(
-                "Chika-eInk is a fork of a comic reader that detects panels on-device and guides you through each " +
-                    "page, panel by panel.",
-                fontFamily = Libron,
-                fontWeight = FontWeight.Normal,
-                fontSize = 13.sp,
-                lineHeight = 19.sp,
-                color = Cream,
-            )
-
-            Spacer(Modifier.size(18.dp))
-            LinkRow("Privacy policy — Chika collects no data.") {
-                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PRIVACY_URL)))
+            HorizontalDivider()
+            AboutLink("Fork repository", "github.com/sztkp/chika-eink") { openUrl(FORK_URL) }
+            AboutLink("Upstream repository", "github.com/batunii/chika") { openUrl(UPSTREAM_URL) }
+            HorizontalDivider()
+            AboutLink("Privacy policy", "Chika-eInk collects no data") { openUrl("$FORK_URL/blob/main/PRIVACY.md") }
+            AboutLink("Licenses and notices", "Open-source dependencies and artwork") {
+                openUrl("$FORK_URL/blob/main/THIRD_PARTY_NOTICES.md")
             }
-            Spacer(Modifier.size(8.dp))
-            LinkRow("Open-source licenses & notices.") {
-                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(LICENSES_URL)))
+            HorizontalDivider()
+            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text("Support", style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.semantics { heading() })
+                Button(
+                    onClick = { Toast.makeText(context, "Coming soon", Toast.LENGTH_SHORT).show() },
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
+                ) { Text("Support fork") }
+                OutlinedButton(
+                    onClick = { openUrl(UPSTREAM_URL) },
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
+                ) { Text("Support upstream") }
             }
-
-            Spacer(Modifier.size(28.dp))
-
-            LinkRow("Fork repository: github.com/sztkp/chika-eink") {
-                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(FORK_URL)))
-            }
-            Spacer(Modifier.size(8.dp))
-            LinkRow("Upstream repository: github.com/batunii/chika", openDonation)
-            Spacer(Modifier.size(24.dp))
-            SupportButton("SUPPORT FORK") {
-                Toast.makeText(context, "Coming soon", Toast.LENGTH_SHORT).show()
-            }
-            Spacer(Modifier.size(14.dp))
-            SupportButton("SUPPORT UPSTREAM", openDonation)
         }
     }
 }
 
 @Composable
-private fun LinkRow(text: String, onClick: () -> Unit) {
-    Text(
-        text,
-        fontFamily = Libron,
-        fontWeight = FontWeight.Bold,
-        fontSize = 12.sp,
-        color = Ochre,
-        modifier = Modifier.clickable(onClick = onClick).padding(vertical = 2.dp),
+private fun AboutLink(title: String, subtitle: String, onClick: () -> Unit) {
+    ListItem(
+        headlineContent = { Text(title) },
+        supportingContent = { Text(subtitle) },
+        trailingContent = { Icon(Icons.AutoMirrored.Filled.OpenInNew, contentDescription = null) },
+        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
+            .clickable(role = Role.Button, onClickLabel = "Open $title in browser", onClick = onClick),
     )
-}
-
-@Composable
-private fun SupportButton(label: String, onClick: () -> Unit) {
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(4.dp))
-            .background(Crimson)
-            .clickable(onClick = onClick)
-            .padding(vertical = 14.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Icon(Icons.Default.Favorite, contentDescription = null, tint = Ink, modifier = Modifier.size(18.dp))
-        Spacer(Modifier.size(10.dp))
-        Text(
-            label,
-            fontFamily = Libron, fontWeight = FontWeight.Bold,
-            fontSize = 15.sp, letterSpacing = 0.5.sp, color = Ink,
-        )
-    }
 }
