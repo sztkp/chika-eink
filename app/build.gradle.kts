@@ -29,7 +29,7 @@ android {
         // versionCode is derived deterministically from MAJOR*10000 + MINOR*100 + PATCH so it is
         // reproducible for release tags and sideloaded APKs. A prerelease suffix is ignored per
         // component (e.g. "0.2.1-beta" → 0.2.1 → 201).
-        val appVersionName = System.getenv("VERSION_NAME") ?: "0.3.0"
+        val appVersionName = System.getenv("VERSION_NAME") ?: "0.3.1"
         versionName = appVersionName
         versionCode = appVersionName.split('.').map { part ->
             part.takeWhile { it.isDigit() }.toIntOrNull() ?: 0

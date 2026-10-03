@@ -14,8 +14,27 @@ import androidx.compose.ui.Modifier
 import com.chakra.comicreader.ui.nav.AppNavHost
 import com.chakra.comicreader.ui.theme.ComicReaderTheme
 import com.chakra.comicreader.ui.reader.ReaderKeyHandler
+import com.chakra.comicreader.eink.createEinkController
 
 class MainActivity : ComponentActivity() {
+    private val einkDelegate = lazy { createEinkController() }
+    internal val einkController get() = einkDelegate.value
+
+    override fun onResume() {
+        super.onResume()
+        if (einkDelegate.isInitialized()) einkController.resume()
+    }
+
+    override fun onPause() {
+        if (einkDelegate.isInitialized()) einkController.pause()
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        if (einkDelegate.isInitialized()) einkController.dispose()
+        super.onDestroy()
+    }
+
     internal var readerKeyHandler: ReaderKeyHandler? = null
 
     // Public Activity/Window.Callback override inherited through androidx.activity.ComponentActivity.

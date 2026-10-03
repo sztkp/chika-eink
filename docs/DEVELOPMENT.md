@@ -44,6 +44,9 @@ and Kotlin/Java packages are `com.chakra.comicreader`.
 - Reader state owns navigation and persisted progress; Compose renders that state.
   Each page is a full-page view, its planned regions, then a full-page view before
   the next page. Page jumps land on the full-page view.
+- Android e-ink controllers own firmware calls, the Compose-host View bridge, and
+  lifecycle restoration. The reader signals settled images and interaction boundaries;
+  refresh policy is independent of vendor APIs and persistent reading state.
 - Bitmap loading and panel detection are cached and prefetched. Archive decoding
   and inference are serialized to protect shared resources.
 

@@ -95,6 +95,12 @@ fun ReaderScreen(
     // System bars remain available by edge swipe and are restored on leaving the reader.
     val view = LocalView.current
     val activity = view.context as? MainActivity
+    val eink = activity?.einkController
+    DisposableEffect(eink, view) {
+        // LocalView is the AndroidComposeView drawing the Canvas, not the window decor.
+        eink?.enterReader(view)
+        onDispose { eink?.leaveReader() }
+    }
     BackHandler(enabled = showProgress) { showProgress = false }
     DisposableEffect(activity, viewModel, showProgress) {
         val handler = if (showProgress) ReaderKeyHandler(viewModel::nextPage, viewModel::previousPage)
@@ -156,6 +162,9 @@ fun ReaderScreen(
                     onPrevPage = viewModel::previousPage,
                     onToggleChrome = { chromeVisible = !chromeVisible; showProgress = false },
                     onShowFullPage = viewModel::showFullPage,
+                    onImageDrawn = { page, image -> eink?.imageDrawn(page, image) },
+                    onInteractionStarted = { eink?.interactionStarted() },
+                    onInteractionEnded = { eink?.interactionEnded() },
                 )
             }
         }
@@ -289,10 +298,14 @@ private fun PageViewer(
     onPrevPage: () -> Unit,
     onToggleChrome: () -> Unit,
     onShowFullPage: () -> Unit,
+    onImageDrawn: (Int, Any) -> Unit,
+    onInteractionStarted: () -> Unit,
+    onInteractionEnded: () -> Unit,
 ) {
     val bitmap = state.page ?: return
     val image = remember(bitmap) { bitmap.asImageBitmap() }
     val rtl = state.rightToLeft
+    val imageToken = remember(state.pageIndex, state.slot, state.currentCamera, bitmap, rtl) { Any() }
     val scope = rememberCoroutineScope()
     // The framed view counts as "full page" at the intro/outro slots; a flick only turns pages there.
     val isFullPage by rememberUpdatedState(state.isFullPageView)
@@ -323,79 +336,85 @@ private fun PageViewer(
             .fillMaxSize()
             .pointerInput(rtl, state.pageIndex, state.slot, state.currentCamera) {
                 awaitEachGesture {
-                    val down = awaitFirstDown()
-                    var pan = Offset.Zero
-                    var zoom = 1f
-                    var maxPointers = 1
                     var pastSlop = false
-                    val slop = viewConfiguration.touchSlop
-                    val velocity = VelocityTracker()
+                    try {
+                        val down = awaitFirstDown()
+                        var pan = Offset.Zero
+                        var zoom = 1f
+                        var maxPointers = 1
+                        val slop = viewConfiguration.touchSlop
+                        val velocity = VelocityTracker()
 
-                    do {
-                        val event = awaitPointerEvent()
-                        maxPointers = maxOf(maxPointers, event.changes.count { it.pressed })
-                        val zoomChange = event.calculateZoom()
-                        val panChange = event.calculatePan()
-                        pan += panChange
-                        zoom *= zoomChange
-                        event.changes.firstOrNull { it.id == down.id }?.let {
-                            velocity.addPosition(it.uptimeMillis, it.position)
-                        }
-                        if (!pastSlop && (abs(zoom - 1f) > 0.02f || pan.getDistance() > slop)) {
-                            pastSlop = true
-                        }
-                        if (pastSlop) {
-                            val newScale = (userScale * zoomChange).coerceIn(1f, 5f)
-                            userScale = newScale
-                            // Horizontal stays covered (no background at the sides); vertical floats
-                            // over the background, bounded so a sliver always stays grabbable.
-                            val draw = computePageDraw(
-                                camera, image.width, image.height,
-                                size.width.toFloat(), size.height.toFloat(),
-                            )
-                            val cw = size.width.toFloat()
-                            val ch = size.height.toFloat()
-                            val baseLeft = cw / 2f + (draw.left - cw / 2f) * newScale
-                            val baseTop = ch / 2f + (draw.top - ch / 2f) * newScale
-                            userPanX = clampPanHorizontal(userPanX + panChange.x, baseLeft, draw.scaledWidth * newScale, cw)
-                            userPanY = clampPanVertical(userPanY + panChange.y, baseTop, draw.scaledHeight * newScale, ch)
-                            event.changes.forEach { if (it.positionChanged()) it.consume() }
-                        }
-                    } while (event.changes.any { it.pressed })
+                        do {
+                            val event = awaitPointerEvent()
+                            maxPointers = maxOf(maxPointers, event.changes.count { it.pressed })
+                            val zoomChange = event.calculateZoom()
+                            val panChange = event.calculatePan()
+                            pan += panChange
+                            zoom *= zoomChange
+                            event.changes.firstOrNull { it.id == down.id }?.let {
+                                velocity.addPosition(it.uptimeMillis, it.position)
+                            }
+                            if (!pastSlop && (abs(zoom - 1f) > 0.02f || pan.getDistance() > slop)) {
+                                pastSlop = true
+                                onInteractionStarted()
+                            }
+                            if (pastSlop) {
+                                val newScale = (userScale * zoomChange).coerceIn(1f, 5f)
+                                userScale = newScale
+                                // Horizontal stays covered (no background at the sides); vertical floats
+                                // over the background, bounded so a sliver always stays grabbable.
+                                val draw = computePageDraw(
+                                    camera, image.width, image.height,
+                                    size.width.toFloat(), size.height.toFloat(),
+                                )
+                                val cw = size.width.toFloat()
+                                val ch = size.height.toFloat()
+                                val baseLeft = cw / 2f + (draw.left - cw / 2f) * newScale
+                                val baseTop = ch / 2f + (draw.top - ch / 2f) * newScale
+                                userPanX = clampPanHorizontal(userPanX + panChange.x, baseLeft, draw.scaledWidth * newScale, cw)
+                                userPanY = clampPanVertical(userPanY + panChange.y, baseTop, draw.scaledHeight * newScale, ch)
+                                event.changes.forEach { if (it.positionChanged()) it.consume() }
+                            }
+                        } while (event.changes.any { it.pressed })
 
-                    if (!pastSlop) { // a tap (not a drag/pinch)
-                        val w = size.width
-                        val tapX = down.position.x
-                        val inFlight = pendingTap
-                        if (inFlight != null && inFlight.isActive) {
-                            // Second quick tap → double-tap: back to the whole-page view from any
-                            // panel (mirrors the ZoomOutMap button); resetView immediately resets pinch
-                            // zoom, and covers the already-on-full-page case where the slot
-                            // doesn't change.
-                            inFlight.cancel()
-                            pendingTap = null
-                            onShowFullPage()
-                            resetView()
-                        } else {
-                            pendingTap = scope.launch {
-                                delay(DOUBLE_TAP_WINDOW_MS)
-                                when {
-                                    tapX < w / 3f -> onPrev()
-                                    tapX > w * 2f / 3f -> onNext()
-                                    else -> onToggleChrome()
-                                }
+                        if (!pastSlop) { // a tap (not a drag/pinch)
+                            val w = size.width
+                            val tapX = down.position.x
+                            val inFlight = pendingTap
+                            if (inFlight != null && inFlight.isActive) {
+                                // Second quick tap → double-tap: back to the whole-page view from any
+                                // panel (mirrors the ZoomOutMap button); resetView immediately resets pinch
+                                // zoom, and covers the already-on-full-page case where the slot
+                                // doesn't change.
+                                inFlight.cancel()
                                 pendingTap = null
+                                onShowFullPage()
+                                resetView()
+                            } else {
+                                pendingTap = scope.launch {
+                                    delay(DOUBLE_TAP_WINDOW_MS)
+                                    when {
+                                        tapX < w / 3f -> onPrev()
+                                        tapX > w * 2f / 3f -> onNext()
+                                        else -> onToggleChrome()
+                                    }
+                                    pendingTap = null
+                                }
+                            }
+                        } else if (maxPointers == 1 && userScale <= 1.01f && isFullPage) {
+                            // A quick, mostly-horizontal one-finger flick turns the page (a slow drag just
+                            // floats the comic over the background and stays put). Velocity, not distance,
+                            // is what separates a deliberate swipe from a reposition.
+                            val v = velocity.calculateVelocity()
+                            if (abs(v.x) > FLICK_VELOCITY_PX_S && abs(v.x) > abs(v.y) * SWIPE_HORIZONTAL_BIAS) {
+                                if (v.x < 0f) { if (rtl) onPrevPage() else onNextPage() }
+                                else { if (rtl) onNextPage() else onPrevPage() }
                             }
                         }
-                    } else if (maxPointers == 1 && userScale <= 1.01f && isFullPage) {
-                        // A quick, mostly-horizontal one-finger flick turns the page (a slow drag just
-                        // floats the comic over the background and stays put). Velocity, not distance,
-                        // is what separates a deliberate swipe from a reposition.
-                        val v = velocity.calculateVelocity()
-                        if (abs(v.x) > FLICK_VELOCITY_PX_S && abs(v.x) > abs(v.y) * SWIPE_HORIZONTAL_BIAS) {
-                            if (v.x < 0f) { if (rtl) onPrevPage() else onNextPage() }
-                            else { if (rtl) onNextPage() else onPrevPage() }
-                        }
+                    } finally {
+                        // Includes pointer-input cancellation on navigation or reader disposal.
+                        if (pastSlop) onInteractionEnded()
                     }
                 }
             },
@@ -445,6 +464,9 @@ private fun PageViewer(
                         pathEffect = PathEffect.dashPathEffect(floatArrayOf(0.1f, 6.dp.toPx())),
                     ),
                 )
+            }
+            if (!state.loading && !state.detecting && state.error == null) {
+                onImageDrawn(state.pageIndex, imageToken)
             }
         }
     }

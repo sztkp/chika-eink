@@ -13,6 +13,7 @@ static indicators, and immediate panel transitions.
 - **CBZ/ZIP reading** with offline, on-device panel detection.
 - LTR/RTL reading, tap and hardware-button navigation, pinch zoom, pan,
   whole-page view, and page jumping.
+- BOOX reader refresh integration, with safe fallback on other Android devices.
 - Library sorting, saved page/panel progress, and confirmed remove/reset actions.
 - No accounts, ads, analytics, or app network access. [Privacy policy](PRIVACY.md).
 

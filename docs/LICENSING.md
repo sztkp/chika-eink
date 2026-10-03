@@ -86,6 +86,24 @@ is not an exhaustive native-code SBOM. Check resolved transitive dependencies an
 native subcomponent terms when preparing a release; top-level dependency metadata
 and included license texts alone do not establish all source/notice obligations.
 
+## BOOX integration
+
+**Finding.** No Onyx SDK artifact or vendor binary is bundled. The Android controller
+uses original reflection code against optional APIs already installed on BOOX firmware,
+adding no APK dependency or bundled third-party code. The exact-build Palma 2
+compatibility profile contains numeric API identifiers verified on the device,
+not copied SDK implementation code.
+
+**Evidence and unresolved issue.** The official
+[Onyx demo](https://github.com/onyx-intl/OnyxAndroidDemo) references
+`com.onyx.android.sdk:onyxsdk-device:1.1.11`. Its Apache-2.0 repository license does
+not by itself establish the SDK artifact's license or redistribution terms; those
+remain unverified. The firmware View methods are undocumented and not a stable SDK.
+
+**Distribution consequence.** This bridge adds no SDK redistribution obligation.
+Any future SDK-backed replacement requires artifact-level provenance, license,
+and compatibility review before bundling.
+
 ## Recheck when components change
 
 1. Resolve `debugRuntimeClasspath` and `releaseRuntimeClasspath` with

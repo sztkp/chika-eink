@@ -18,25 +18,47 @@ release. Done or Back closes the panel.
 ## Hardware buttons
 
 Volume/Page Down advances; Volume/Page Up goes back in either reading direction.
-Each press acts once; holding a key does not repeat navigation or adjust volume.
+Standard key presses act once; Android repeat events are consumed without navigation
+or volume changes. Physical button holds can still repeat navigation on Palma 2;
+BOOX firmware remapping and the delivered events need further diagnosis.
 While Progress is open, the buttons navigate whole pages. Outside the reader,
 Android handles them normally. Back, power, and mute are not intercepted.
 
-The app uses standard Android key events, without a BOOX SDK or firmware changes.
-Physical Page Up/Down mapping depends on the device and remains unverified on Palma 2.
+The app uses standard Android key events; no vendor key API is used.
+Physical button mapping depends on the device and BOOX button configuration.
+
+## BOOX refresh integration
+
+Palma 2 is the primary hardware target. Onyx/BOOX manufacturer or brand markers
+select an Android-only controller using a small reflection bridge to firmware
+View APIs. No Onyx SDK is bundled. These undocumented APIs may be absent or blocked;
+unsupported firmware and ordinary Android devices use normal Android rendering.
+Palma 2 firmware `4.2-rel_05132_72a2c1b9e` blocks constant lookup but exposes View
+hooks. An exact model/Android/build profile supplies verified waveform identifiers
+for that firmware only; a firmware update may therefore require revalidation.
+
+While the reader is active, its Compose host View uses REGAL through firmware
+discovery or the verified profile, otherwise GU. Distinct settled page/panel images
+request one partial
+refresh after drawing; unrelated recompositions do not request refreshes.
+GC clears ghosting after five displayed page changes, counting forward/backward
+navigation and jumps, but not panels. The counter is session-only. Firmware without
+GC support retains partial refreshes. A manual full-refresh operation is available
+to reader code; no new menu control is exposed.
+
+Pinch/pan keeps the reading mode and requests a quality refresh when interaction
+ends. No A2/fast mode is forced: its benefit and reliable switching need device
+testing. Reader exit, Activity pause, and disposal cancel pending requests and
+restore the previous View mode where firmware permits. Library/settings screens
+keep system defaults; application-wide modes are never changed.
 
 ## Limitations and device checks
 
-No vendor refresh APIs, forced refresh calls, dithering, or grayscale conversion
-are implemented. Display quality and ghosting depend on the device's refresh mode.
-Imported archive images are preserved; any future display processing should remain
-separate from detector input.
+On Palma 2, firmware calls, partial requests, GC after five page changes, and
+injected Android key handling have been exercised without API errors. Comparative
+waveform quality remains unverified. Check ghosting and latency with line art,
+screentones, and grayscale scans, rapid panel taps, pinch/pan, and physical
+side-button mapping. Other BOOX firmware and devices remain untested.
 
-Before changing refresh or rendering behaviour, validate on hardware:
-
-- Panel/page boundaries, LTR/RTL order, gestures, saved progress, and key mapping.
-- Ghosting and latency across refresh modes, using line art, screentones, grayscale,
-  and colour scans.
-- TalkBack, enlarged fonts, control targets, borders, and image detail.
-
-Comprehensive refresh/ghosting and accessibility testing remain outstanding.
+No dithering or grayscale conversion is applied; imported images are preserved.
+Accessibility testing, including TalkBack and enlarged fonts, remains outstanding.
