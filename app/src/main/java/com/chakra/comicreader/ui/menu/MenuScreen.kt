@@ -1,7 +1,6 @@
 package com.chakra.comicreader.ui.menu
 
 import android.content.Intent
-import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,6 +18,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 
 private const val FORK_URL = "https://github.com/sztkp/chika-eink"
 private const val UPSTREAM_URL = "https://github.com/batunii/chika"
@@ -33,7 +33,7 @@ fun MenuScreen(onBack: () -> Unit) {
         }.getOrNull() ?: "—"
     }
     val openUrl: (String) -> Unit = { url ->
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        val intent = Intent(Intent.ACTION_VIEW, url.toUri())
         runCatching { context.startActivity(intent) }.onFailure {
             Toast.makeText(context, "No app available to open this link", Toast.LENGTH_SHORT).show()
         }

@@ -3,6 +3,7 @@ package com.chakra.comicreader.detection
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
+import androidx.core.graphics.scale
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.Interpreter
 import java.io.FileInputStream
@@ -67,7 +68,7 @@ class MlPanelDetector private constructor(
         val bh = page.height
         val lb = Letterbox.fit(bw, bh, inputSize)
 
-        val resized = Bitmap.createScaledBitmap(page, lb.newW, lb.newH, true)
+        val resized = page.scale(lb.newW, lb.newH, filter = true)
         val input = buildInput(resized, lb.newW, lb.newH, lb.padX, lb.padY)
         if (resized != page) resized.recycle()
 

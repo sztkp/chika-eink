@@ -1,5 +1,6 @@
 package com.chakra.comicreader
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.KeyEvent
 import androidx.activity.ComponentActivity
@@ -17,6 +18,9 @@ import com.chakra.comicreader.ui.reader.ReaderKeyHandler
 class MainActivity : ComponentActivity() {
     internal var readerKeyHandler: ReaderKeyHandler? = null
 
+    // Public Activity/Window.Callback override inherited through androidx.activity.ComponentActivity.
+    // Lint incorrectly propagates the restriction on its internal androidx.core base class.
+    @SuppressLint("RestrictedApi")
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (readerKeyHandler?.handle(event.keyCode, event.action, event.repeatCount) == true) return true
         return super.dispatchKeyEvent(event)

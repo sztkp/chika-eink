@@ -9,13 +9,13 @@ screenshots or their depicted comic artwork is documented in this repository.
 
 - Removed `docs/logo-lockup.png`, `docs/screens/library.png`, `docs/screens/reader.png`,
   and both inherited fastlane phone screenshots.
-- Replaced Android launcher artwork (vector and PNGs) and the fastlane icon with
+- Replaced Android launcher artwork (adaptive vectors) and the fastlane icon with
   original monochrome open-book geometry.
 - Replaced the Android graphical wordmark with plain “Chika-eInk” text.
 
 The icon uses two simple polygonal pages, created for this fork without upstream image
-inputs. Its vector, generated PNGs, and generator are distributed under [MPL-2.0](../LICENSE).
-Run `python3 tools/generate_fork_icons.py` from the repository root to regenerate the PNGs
+inputs. Its vector, generated store PNG, and generator are distributed under [MPL-2.0](../LICENSE).
+Run `python3 tools/generate_fork_icons.py` from the repository root to regenerate the store PNG
 (requires Pillow). Existing asset names are retained to avoid changing resource references.
 
 ## Retained

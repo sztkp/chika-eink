@@ -19,11 +19,8 @@ def book_icon(size):
     return image
 
 
-for name, size in {
-    "app/src/main/res/mipmap-xxxhdpi/ic_launcher.png": 192,
-    "app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png": 192,
-    "fastlane/metadata/android/en-US/images/icon.png": 512,
-}.items():
-    target = Path(name)
-    target.parent.mkdir(parents=True, exist_ok=True)
-    book_icon(size).save(target)
+# All supported Android versions (API 26+) use the vector adaptive icons.
+# Only the store listing needs a raster icon.
+target = Path("fastlane/metadata/android/en-US/images/icon.png")
+target.parent.mkdir(parents=True, exist_ok=True)
+book_icon(512).save(target)
