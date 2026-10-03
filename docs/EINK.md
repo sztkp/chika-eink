@@ -55,6 +55,11 @@ The library grid adapts to available width and uses Material typography for titl
 and progress text. Monochrome colors, Libron and disabled ripple/navigation
 animations remain intentional e-ink adaptations.
 
+Library sorting is an app-bar action with an anchored menu of Material
+`DropdownMenuItem` controls. The chosen order has a checkmark and selected semantics.
+A focusable Android `Popup` preserves dismissal by Back/outside tap without the
+scale/fade animation built into this version of `DropdownMenu`.
+
 References: [app bars](https://developer.android.com/develop/ui/compose/components/app-bars),
 [Scaffold](https://developer.android.com/develop/ui/compose/components/scaffold),
 and [accessibility defaults](https://developer.android.com/develop/ui/compose/accessibility/api-defaults).

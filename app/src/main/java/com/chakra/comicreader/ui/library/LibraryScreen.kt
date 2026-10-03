@@ -3,14 +3,14 @@ package com.chakra.comicreader.ui.library
 import android.graphics.BitmapFactory
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.material3.RadioButton
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,8 +31,11 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Sort
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
@@ -41,6 +44,8 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -54,6 +59,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
+import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -116,6 +127,55 @@ fun LibraryScreen(
             TopAppBar(
                 title = { Text("Chika-eInk", maxLines = 1, overflow = TextOverflow.Ellipsis) },
                 actions = {
+                    Box {
+                        var anchorSize by remember { mutableStateOf(IntSize.Zero) }
+                        IconButton(
+                            onClick = { showSort = true },
+                            modifier = Modifier.onSizeChanged { anchorSize = it }.semantics {
+                                stateDescription = sort.label
+                            },
+                        ) {
+                            Icon(Icons.AutoMirrored.Filled.Sort, contentDescription = "Sort library")
+                        }
+                        // Keep the standard anchored Material menu presentation static for e-ink.
+                        // DropdownMenu itself adds a scale/fade transition in Material 3 1.3.1.
+                        if (showSort) {
+                            Popup(
+                                alignment = Alignment.TopEnd,
+                                offset = IntOffset(0, anchorSize.height),
+                                onDismissRequest = { showSort = false },
+                                properties = PopupProperties(focusable = true),
+                            ) {
+                                Surface(
+                                    shape = MaterialTheme.shapes.extraSmall,
+                                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                                ) {
+                                    Column(
+                                        Modifier.width(IntrinsicSize.Max)
+                                            .verticalScroll(rememberScrollState()).padding(vertical = 8.dp),
+                                    ) {
+                                        LibrarySort.entries.forEach { option ->
+                                            DropdownMenuItem(
+                                                text = { Text(option.label) },
+                                                onClick = { viewModel.setSort(option); showSort = false },
+                                                leadingIcon = {
+                                                    Box(Modifier.size(24.dp)) {
+                                                        if (sort == option) Icon(
+                                                            Icons.Default.Check, contentDescription = null,
+                                                        )
+                                                    }
+                                                },
+                                                modifier = Modifier.semantics {
+                                                    selected = sort == option
+                                                    stateDescription = if (sort == option) "Selected" else "Not selected"
+                                                },
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                     IconButton(onClick = onOpenMenu) {
                         Icon(Icons.Outlined.Info, contentDescription = "About")
                     }
@@ -135,12 +195,6 @@ fun LibraryScreen(
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text("Your library", style = MaterialTheme.typography.titleLarge,
                         modifier = Modifier.semantics { heading() })
-                    OutlinedButton(
-                        onClick = { showSort = true },
-                        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).semantics {
-                            stateDescription = sort.label
-                        },
-                    ) { Text("Sort: ${sort.label}") }
                     OutlinedButton(
                         enabled = !importing,
                         onClick = { picker.launch(arrayOf("*/*")) },
@@ -200,32 +254,6 @@ fun LibraryScreen(
         }
     }
 
-    }
-
-    if (showSort) {
-        AlertDialog(
-            onDismissRequest = { showSort = false },
-            title = { Text("Sort library") },
-            text = {
-                Column(Modifier.selectableGroup()) {
-                    LibrarySort.entries.forEach { option ->
-                        Row(
-                            Modifier.fillMaxWidth().heightIn(min = 48.dp)
-                                .selectable(
-                                    selected = sort == option,
-                                    role = Role.RadioButton,
-                                    onClick = { viewModel.setSort(option); showSort = false },
-                                ).padding(horizontal = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            RadioButton(selected = sort == option, onClick = null)
-                            Text(option.label, Modifier.padding(start = 12.dp))
-                        }
-                    }
-                }
-            },
-            confirmButton = { TextButton(onClick = { showSort = false }) { Text("Close") } },
-        )
     }
 
     pendingDelete?.let { comic ->
