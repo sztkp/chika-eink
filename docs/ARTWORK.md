@@ -54,11 +54,6 @@ library only), import it using the app's file picker, and capture the screen usi
 `adb exec-out screencap -p > screenshot.png`. The script packages the committed
 page unchanged; it does not regenerate AI artwork.
 
-The additional `docs/screens/{menu,sorting,actions,progress}.png` captures are
-retained from the earlier UI documentation and are not embedded in the README.
-They show the geometric “Quiet Library Demo”, originally drawn for this fork
-under MPL-2.0, using Libron under its OFL and copyright notices.
-
 User-imported comic pages/covers are not distributed as repository artwork. Future
 screenshots should use original synthetic art or artwork with documented redistribution
 permission and attribution. The cleanup removes images from the current tree; prior
