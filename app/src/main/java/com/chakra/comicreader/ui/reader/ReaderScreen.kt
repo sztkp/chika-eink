@@ -29,6 +29,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.Composable
@@ -82,6 +87,7 @@ fun ReaderScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     var chromeVisible by remember { mutableStateOf(true) }
+    var showProgress by rememberSaveable { mutableStateOf(false) }
 
     // Keep the reader immersive, including when its compact controls are visible.
     // System bars remain available by edge swipe and are restored on leaving the reader.
@@ -155,8 +161,18 @@ fun ReaderScreen(
                 pageCount = state.pageCount,
                 panelNumber = state.panelLabel,
                 panelCount = state.panels.size,
+                onOpenProgress = { showProgress = true },
             )
         }
+    }
+    if (showProgress && state.pageCount > 0) {
+        ReaderProgressDialog(
+            pageIndex = state.pageIndex,
+            pageCount = state.pageCount,
+            enabled = !state.loading && state.error == null,
+            onJumpToPage = viewModel::jumpToPage,
+            onDismiss = { showProgress = false },
+        )
     }
 }
 
@@ -166,6 +182,7 @@ private fun ReaderCounts(
     pageCount: Int,
     panelNumber: Int?,
     panelCount: Int,
+    onOpenProgress: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -184,6 +201,7 @@ private fun ReaderCounts(
                 fontSize = 12.sp,
                 color = CreamMuted,
             )
+            TextButton(onClick = onOpenProgress) { Text("Progress") }
             Text(
                 "${pageIndex + 1}/$pageCount",
                 fontFamily = Libron, fontWeight = FontWeight.Bold,
@@ -191,6 +209,66 @@ private fun ReaderCounts(
             )
         }
     }
+}
+
+@Composable
+private fun ReaderProgressDialog(
+    pageIndex: Int,
+    pageCount: Int,
+    enabled: Boolean,
+    onJumpToPage: (Int) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    var scrubbing by remember { mutableStateOf(false) }
+    var selectedPage by remember { mutableFloatStateOf(pageIndex.toFloat()) }
+    LaunchedEffect(pageIndex) {
+        if (!scrubbing) selectedPage = pageIndex.toFloat()
+    }
+    val shownPage = selectedPage.roundToInt().coerceIn(0, pageCount - 1)
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Reading progress") },
+        text = {
+            Column {
+                Text("Page ${shownPage + 1} of $pageCount")
+                if (pageCount > 1) {
+                    Slider(
+                        value = selectedPage.coerceIn(0f, (pageCount - 1).toFloat()),
+                        onValueChange = { scrubbing = true; selectedPage = it },
+                        onValueChangeFinished = {
+                            scrubbing = false
+                            val target = selectedPage.roundToInt().coerceIn(0, pageCount - 1)
+                            selectedPage = target.toFloat()
+                            onJumpToPage(target)
+                        },
+                        valueRange = 0f..(pageCount - 1).toFloat(),
+                        steps = pageCount - 2,
+                        enabled = enabled,
+                        // Page snapping stays discrete without drawing hundreds of tick marks.
+                        colors = SliderDefaults.colors(
+                            activeTickColor = Color.Transparent,
+                            inactiveTickColor = Color.Transparent,
+                            disabledActiveTickColor = Color.Transparent,
+                            disabledInactiveTickColor = Color.Transparent,
+                        ),
+                    )
+                }
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    TextButton(
+                        modifier = Modifier.weight(1f),
+                        enabled = enabled && shownPage > 0,
+                        onClick = { selectedPage = (shownPage - 1).toFloat(); onJumpToPage(shownPage - 1) },
+                    ) { Text("Previous page") }
+                    TextButton(
+                        modifier = Modifier.weight(1f),
+                        enabled = enabled && shownPage < pageCount - 1,
+                        onClick = { selectedPage = (shownPage + 1).toFloat(); onJumpToPage(shownPage + 1) },
+                    ) { Text("Next page") }
+                }
+            }
+        },
+        confirmButton = { TextButton(onClick = onDismiss) { Text("Done") } },
+    )
 }
 
 @Composable
