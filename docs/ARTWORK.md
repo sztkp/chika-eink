@@ -21,7 +21,8 @@ Run `python3 tools/generate_fork_icons.py` from the repository root to regenerat
 ## Retained
 
 - Libron v0.25 desktop fonts, with their SIL Open Font License and upstream copyright notices.
-- The model and its inherited licensing/training-data disclosures, unchanged.
+- The model bytes remain unchanged; corrected AGPL-3.0 and training-data notices are recorded in
+  [the licensing audit](LICENSING.md).
 - Upstream author attribution and all existing license texts.
 
 User-imported comic pages/covers are not distributed as repository artwork. Future

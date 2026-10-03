@@ -5,6 +5,17 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
+// Keep distributed notices in sync with the repository's authoritative texts.
+val legalAssets = layout.buildDirectory.dir("generated/legalAssets")
+val syncLegalAssets by tasks.registering(Sync::class) {
+    from(rootProject.projectDir) {
+        include("LICENSE", "THIRD_PARTY_NOTICES.md", "THIRD_PARTY_LICENSES/**")
+        include("docs/LICENSING.md", "docs/ARTWORK.md")
+        into("legal")
+    }
+    into(legalAssets)
+}
+
 android {
     namespace = "com.chakra.comicreader"
     compileSdk = 36
@@ -73,6 +84,8 @@ android {
         compose = true
     }
 
+    sourceSets.getByName("main").assets.srcDir(legalAssets.get().asFile)
+
     // Keep the TFLite model uncompressed so it can be memory-mapped by the interpreter.
     androidResources {
         noCompress += "tflite"
@@ -88,6 +101,10 @@ android {
             useLegacyPackaging = true
         }
     }
+}
+
+tasks.named("preBuild") {
+    dependsOn(syncLegalAssets)
 }
 
 dependencies {

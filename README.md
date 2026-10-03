@@ -31,6 +31,7 @@ swipe to turn whole pages, scrub pages, and flip reading direction (LTR/RTL).
 - **Library** — import via the system file picker (copied into app storage), cover thumbnails,
   per-comic resume (page **and** panel), long-press to remove.
 - **E-ink UI** — monochrome controls, clear borders, immediate panel framing, and static status indicators.
+- **Libron typography** — bundled v0.25 regular, bold, italic, and bold-italic fonts throughout the UI.
 
 ## Build & run
 
@@ -92,25 +93,29 @@ persistence remain unchanged.
   ui/theme       palette + Libron typography
 ```
 
-**Stack:** Kotlin · Jetpack Compose (Material 3) · Coroutines · Room · TensorFlow Lite ·
+**Stack:** Kotlin · Jetpack Compose (Material 3) · Coroutines · Room · LiteRT ·
 Apache Commons Compress · 7-Zip-JBinding.
 
 ## License
 
 Chika-eInk's source, including the inherited Chika source, is licensed under the **Mozilla Public License 2.0** — see [`LICENSE`](LICENSE).
 
-Third-party libraries, the bundled model, and fonts keep their own licenses; the inherited
-audit and obligations (including the **LGPL** 7-Zip component and **Manga109-s** model-data
-disclosure) are in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md). The **Chika / Chitra Katha**
-name, logo, and brand assets are owned by Chakra (Chalchitra Krida) and are not covered by the code
-license. This fork uses the name to identify its upstream origin; it replaces the original
-logo/wordmark and removes the inherited promotional screenshots. Its new book icon is original
-geometry distributed under MPL-2.0; see [artwork provenance](docs/ARTWORK.md).
+Bundled dependencies, fonts, and weights have separate terms; see
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and the [licensing audit](docs/LICENSING.md).
+**Distribution review is still open:** the model author corrected its license to AGPL-3.0
+in September 2026, and the bundled file matches that model. Native-library source and
+replacement obligations also need verification. The source's MPL license does not mean
+that every component of the APK is MPL-licensed. This update does not relicense the project.
+
+Libron is OFL-1.1; the original fork book icon is MPL-2.0. The upstream graphical
+logo/wordmark and promotional screenshots were removed or replaced; upstream brand rights
+and attribution remain respected. See [artwork provenance](docs/ARTWORK.md).
+License texts, attribution, and the source URL are included in APKs under `assets/legal/`.
 
 ## Acknowledgements
 
 - Original application: [Chika](https://github.com/batunii/chika), by Chakra (Chalchitra Krida).
 - **OpenAI Codex** — Chika-eInk is an AI-assisted project, with Codex used to help implement changes, update documentation, and validate builds.
-- Panel-detection model: [`leoxs22/manga-panel-detector-yolo26n`](https://huggingface.co/leoxs22/manga-panel-detector-yolo26n) (Apache-2.0), trained on Manga109-s.
+- Panel-detection model: [`leoxs22/manga-panel-detector-yolo26n`](https://huggingface.co/leoxs22/manga-panel-detector-yolo26n) (upstream AGPL-3.0 declaration), trained on Manga109-s.
 - UI font: [**Libron**](https://github.com/nicoverbruggen/libron) by Nico Verbruggen, derived from Readerly and Newsreader (SIL Open Font License 1.1).
-- **TensorFlow Lite**, **Apache Commons Compress**, **7-Zip-JBinding-4Android**.
+- **LiteRT**, **Apache Commons Compress**, **7-Zip-JBinding-4Android**, and the AndroidX/Kotlin contributors.

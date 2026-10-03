@@ -1,3 +1,5 @@
+# NOT READY FOR SUBMISSION: model AGPL and native-library compliance review pending.
+# License below describes application source, not cleared combined APK licensing.
 # Fork F-Droid recipe TEMPLATE; inherited versions/tags require review before submission.
 # This file is NOT used by Chika's build. To submit Chika to the F-Droid main repo, copy this to
 # metadata/com.chakra.comicreader.yml in a fork of https://gitlab.com/fdroid/fdroiddata and open a

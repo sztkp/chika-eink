@@ -1,5 +1,9 @@
 # Releasing Chika-eInk
 
+**Release review pending:** the bundled detector is AGPL-3.0 and native-library
+source/replacement obligations need verification. Read [docs/LICENSING.md](docs/LICENSING.md)
+before distributing a build. These instructions are build mechanics, not licensing clearance.
+
 Pushing a version tag (`v*`) triggers [`.github/workflows/release.yml`](.github/workflows/release.yml),
 which builds a **signed release AAB + APK** and publishes them on a GitHub Release. The AAB is what
 you upload to the Google Play Console; the APK is for direct/sideload distribution.

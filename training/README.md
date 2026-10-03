@@ -15,8 +15,10 @@ float32, output `[1,N,6]` (`x1,y1,x2,y2,score,cls`), classes **panel=0, text=1**
 > the panel-annotation zip already bundles its images. Manga109 (~20 GB) may need you to free space
 > or extract it to an external drive and point `--root` at it.
 
-> ⚠️ **License:** Manga109 is academic/research-licensed; a model trained on it carries the same
-> distribution ambiguity already noted in `THIRD_PARTY_NOTICES.md`. COMICS images are public domain.
+> **Licensing:** the bundled model is now declared AGPL-3.0 by its author, who corrected
+> an earlier Apache label. Experimental Ultralytics training tools, pretrained weights,
+> and datasets each have separate terms. Retraining does not automatically make an
+> export permissively licensed. See [the audit](../docs/LICENSING.md).
 
 ## What's already done
 - **Western data ready:** `data/panels_annotations.zip` (COMICS, UMIACS) downloaded + converted to

@@ -1,5 +1,9 @@
 # Distributing Chika-eInk
 
+**Release review pending:** the bundled detector is AGPL-3.0 and native-library
+source/replacement obligations need verification. Read [docs/LICENSING.md](docs/LICENSING.md)
+before distributing a build. These instructions are build mechanics, not licensing clearance.
+
 Chika-eInk is an independent fork of [Chika](https://github.com/batunii/chika) by
 Chakra (Chalchitra Krida). Use this fork's identity, source repository, and notices
 when distributing its builds. This document does not claim an existing store or
