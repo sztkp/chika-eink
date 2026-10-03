@@ -12,7 +12,8 @@ Original comic images and covers remain unprocessed.
 
 Panel selection draws the existing `currentCamera` directly with the unchanged
 `computePageDraw` math. The existing 220 ms double-tap recognition window remains.
-Pinch, pan, double-tap, tap zones, page flicks and the scrubber remain available.
+Pinch, pan, double-tap, tap zones and page flicks remain available. The reader shows
+plain page/panel counts; its progress slider and redundant title subtitle were removed.
 No dependencies, detection/ML, panel planning/order, archives, persistence,
 page decoding or caches are changed. The fork targets Android only; the core module
 retains its existing source layout with a JVM target.
@@ -32,7 +33,7 @@ warnings unchanged.
 
 - Import CBZ/CBR, reopen at saved progress, and verify library deletion.
 - Read in LTR/RTL through full-page intro/outro slots and page boundaries.
-- Check tap response, double-tap reset, pinch/pan, flicks and page scrubber.
+- Check tap response, double-tap reset, pinch/pan, flicks and page/panel counts.
 - Check text, borders, image detail, system bars and the optional black canvas.
 - Observe ghosting after repeated panel changes and chrome toggles; measure refresh
   latency using the device's existing modes before deciding whether vendor APIs help.

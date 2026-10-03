@@ -17,7 +17,7 @@ Physical-device refresh and ghosting testing is still needed; see [the e-ink not
 Tapping the right side of a page steps you **into each panel** in reading order — page → panel 1 →
 panel 2 → … → zoom back out → next page — so a comic reads comfortably on a phone instead of
 pinch-zooming around a full page. Panels are detected automatically; you can pan a zoomed panel,
-swipe to turn whole pages, scrub pages, and flip reading direction (LTR/RTL).
+swipe to turn whole pages and flip reading direction (LTR/RTL).
 
 ## Features
 
@@ -27,7 +27,7 @@ swipe to turn whole pages, scrub pages, and flip reading direction (LTR/RTL).
 - **Merge / divide planner** — groups tiny adjacent panels into one comfortable zoom and splits
   oversized panels with a bubble-aware cut.
 - **Reader controls** — tap zones to step panels, swipe to turn pages, pinch + drag to pan
-  (clamped to the artwork), a page scrubber, a "show whole page" button, and an LTR/RTL toggle.
+  (clamped to the artwork), plain page/panel counts, a "show whole page" button, and an LTR/RTL toggle.
 - **Library** — import via the system file picker (copied into app storage), cover thumbnails,
   per-comic resume (page **and** panel), long-press to remove.
 - **E-ink UI** — monochrome controls, clear borders, immediate panel framing, and static status indicators.

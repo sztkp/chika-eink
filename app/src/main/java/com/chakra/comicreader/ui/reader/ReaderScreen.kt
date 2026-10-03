@@ -29,7 +29,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -53,7 +52,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.material3.SliderDefaults
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
@@ -65,7 +63,6 @@ import com.chakra.comicreader.ui.theme.Libron
 import com.chakra.comicreader.ui.theme.Cream
 import com.chakra.comicreader.ui.theme.CreamMuted
 import com.chakra.comicreader.ui.theme.Ink
-import com.chakra.comicreader.ui.theme.Ochre
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -139,17 +136,11 @@ fun ReaderScreen(
                         )
                     }
                     Spacer(Modifier.size(12.dp))
-                    Column(Modifier.weight(1f)) {
-                        Text(
-                            state.title, fontFamily = Libron, fontWeight = FontWeight.Bold,
-                            fontSize = 14.sp, color = Cream, maxLines = 1, overflow = TextOverflow.Ellipsis,
-                        )
-                        Text(
-                            pageStatus(state), fontFamily = Libron, fontWeight = FontWeight.Bold,
-                            fontSize = 9.sp, letterSpacing = 1.4.sp, color = CreamMuted,
-                            modifier = Modifier.padding(top = 2.dp),
-                        )
-                    }
+                    Text(
+                        state.title, fontFamily = Libron, fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp, color = Cream, maxLines = 1, overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f),
+                    )
                     IconButton(onClick = viewModel::showFullPage) {
                         Icon(Icons.Default.ZoomOutMap, contentDescription = "Show whole page", tint = Cream)
                     }
@@ -159,12 +150,11 @@ fun ReaderScreen(
         }
         if (chromeVisible && state.pageCount > 0) {
             Box(Modifier.align(Alignment.BottomCenter)) {
-                PageScrubber(
+                ReaderCounts(
                     pageIndex = state.pageIndex,
                     pageCount = state.pageCount,
                     panelNumber = state.panelLabel,
                     panelCount = state.panels.size,
-                    onJumpToPage = viewModel::jumpToPage,
                 )
             }
         }
@@ -172,18 +162,12 @@ fun ReaderScreen(
 }
 
 @Composable
-private fun PageScrubber(
+private fun ReaderCounts(
     pageIndex: Int,
     pageCount: Int,
     panelNumber: Int?,
     panelCount: Int,
-    onJumpToPage: (Int) -> Unit,
 ) {
-    var scrubbing by remember { mutableStateOf(false) }
-    var scrub by remember { mutableFloatStateOf(pageIndex.toFloat()) }
-    LaunchedEffect(pageIndex) { if (!scrubbing) scrub = pageIndex.toFloat() }
-    val shownPage = (if (scrubbing) scrub.roundToInt() else pageIndex) + 1
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -203,25 +187,11 @@ private fun PageScrubber(
                 color = CreamMuted,
             )
             Text(
-                "$shownPage/$pageCount",
+                "${pageIndex + 1}/$pageCount",
                 fontFamily = Libron, fontWeight = FontWeight.Bold,
                 fontSize = 12.sp, color = Cream,
             )
         }
-        if (pageCount > 1) Slider(
-            value = scrub.coerceIn(0f, (pageCount - 1).toFloat()),
-            onValueChange = { scrubbing = true; scrub = it },
-            onValueChangeFinished = {
-                scrubbing = false
-                onJumpToPage(scrub.roundToInt())
-            },
-            valueRange = 0f..(pageCount - 1).toFloat(),
-            colors = SliderDefaults.colors(
-                thumbColor = Ochre,
-                activeTrackColor = Ochre,
-                inactiveTrackColor = Cream,
-            ),
-        )
     }
 }
 
@@ -444,15 +414,4 @@ private fun DirectionChip(rightToLeft: Boolean, onClick: () -> Unit) {
             color = Cream,
         )
     }
-}
-
-private fun pageStatus(state: ReaderUiState): String {
-    val page = "Page ${state.pageIndex + 1}/${state.pageCount}"
-    val panel = state.panelLabel
-    val panelText = when {
-        state.detecting -> " · detecting…"
-        panel != null -> " · panel $panel/${state.panels.size}"
-        else -> " · full page"
-    }
-    return page + panelText
 }
