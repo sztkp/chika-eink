@@ -334,17 +334,17 @@ private fun PageViewer(
                 dstSize = IntSize(w.roundToInt(), h.roundToInt()),
             )
             if (!isFullPage) {
-                // Project the existing selected panel through the same image transform.
+                // Outline the entire transformed comic image in panel view.
                 // This is only an overlay; detection, camera framing and gestures stay intact.
                 val outlineWidth = 2.dp.toPx()
                 val inset = outlineWidth
                 val outlineSize = Size(
-                    (camera.width * w - inset * 2f).coerceAtLeast(0f),
-                    (camera.height * h - inset * 2f).coerceAtLeast(0f),
+                    (w - inset * 2f).coerceAtLeast(0f),
+                    (h - inset * 2f).coerceAtLeast(0f),
                 )
                 val outlineOrigin = Offset(
-                    left + camera.left * w + inset,
-                    top + camera.top * h + inset,
+                    left + inset,
+                    top + inset,
                 )
                 drawRect(
                     Color.White, topLeft = outlineOrigin, size = outlineSize,

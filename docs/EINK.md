@@ -19,8 +19,8 @@ a narrow page/panel count row. Artwork is framed in the space between these rows
 so controls do not cover it. Hiding controls expands the artwork viewport immediately.
 System bars stay hidden during reading, remain available by edge swipe, and return
 when leaving the reader.
-Selected panels have a static dotted black outline with white backing for contrast
-over dark artwork. It follows the existing panel bounds through pan/zoom and is
+Panel view has a static dotted black outline around the entire displayed comic image,
+with white backing for contrast over dark artwork. It follows the image through pan/zoom and is
 hidden in full-page view; detection and framing calculations are unchanged.
 No dependencies, detection/ML, panel planning/order, archives, persistence,
 page decoding or caches are changed. The fork targets Android only; the core module
