@@ -16,7 +16,13 @@ class AppSettings(context: Context) {
         get() = prefs.getBoolean(KEY_DEFAULT_RTL, false)
         set(value) { prefs.edit().putBoolean(KEY_DEFAULT_RTL, value).apply() }
 
+    /** Stored by name so adding sort options never changes an existing selection. */
+    var librarySort: String
+        get() = prefs.getString(KEY_LIBRARY_SORT, "LAST_READ") ?: "LAST_READ"
+        set(value) { prefs.edit().putString(KEY_LIBRARY_SORT, value).apply() }
+
     private companion object {
+        const val KEY_LIBRARY_SORT = "library_sort"
         const val KEY_DEFAULT_RTL = "default_rtl"
     }
 }

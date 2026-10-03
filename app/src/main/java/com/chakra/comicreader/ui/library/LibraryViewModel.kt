@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -20,12 +21,19 @@ class LibraryViewModel(
     private val settings: AppSettings,
 ) : ViewModel() {
 
-    val comics: StateFlow<List<ComicEntity>> = repository.comics
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+    private val _sort = MutableStateFlow(
+        LibrarySort.entries.firstOrNull { it.name == settings.librarySort } ?: LibrarySort.LAST_READ,
+    )
+    val sort: StateFlow<LibrarySort> = _sort.asStateFlow()
 
-    /** Global default reading direction applied to newly imported comics. */
-    private val _defaultRightToLeft = MutableStateFlow(settings.defaultRightToLeft)
-    val defaultRightToLeft: StateFlow<Boolean> = _defaultRightToLeft.asStateFlow()
+    val comics: StateFlow<List<ComicEntity>> = combine(repository.comics, sort) { comics, order ->
+        order.apply(comics)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+
+    fun setSort(order: LibrarySort) {
+        settings.librarySort = order.name
+        _sort.value = order
+    }
 
     private val _importing = MutableStateFlow(false)
     val importing: StateFlow<Boolean> = _importing.asStateFlow()
@@ -46,12 +54,6 @@ class LibraryViewModel(
 
     fun deleteComic(id: Long) {
         viewModelScope.launch { repository.deleteComic(id) }
-    }
-
-    /** Flips the global default reading direction for comics imported from now on. */
-    fun toggleDefaultDirection() {
-        settings.defaultRightToLeft = !settings.defaultRightToLeft
-        _defaultRightToLeft.value = settings.defaultRightToLeft
     }
 
     fun consumeMessage() {

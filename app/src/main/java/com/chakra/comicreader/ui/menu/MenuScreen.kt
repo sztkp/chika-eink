@@ -79,10 +79,7 @@ fun MenuScreen(onBack: () -> Unit) {
                     onClick = { Toast.makeText(context, "Coming soon", Toast.LENGTH_SHORT).show() },
                     modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
                 ) { Text("Support fork") }
-                OutlinedButton(
-                    onClick = { openUrl(UPSTREAM_URL) },
-                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
-                ) { Text("Support upstream") }
+
             }
         }
     }

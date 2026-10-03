@@ -8,6 +8,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.material3.RadioButton
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -91,7 +95,8 @@ fun LibraryScreen(
     val comics by viewModel.comics.collectAsStateWithLifecycle()
     val importing by viewModel.importing.collectAsStateWithLifecycle()
     val message by viewModel.message.collectAsStateWithLifecycle()
-    val defaultRtl by viewModel.defaultRightToLeft.collectAsStateWithLifecycle()
+    val sort by viewModel.sort.collectAsStateWithLifecycle()
+    var showSort by rememberSaveable { mutableStateOf(false) }
     val snackbarHostState = remember { SnackbarHostState() }
     var pendingDelete by remember { mutableStateOf<ComicEntity?>(null) }
 
@@ -131,13 +136,11 @@ fun LibraryScreen(
                     Text("Your library", style = MaterialTheme.typography.titleLarge,
                         modifier = Modifier.semantics { heading() })
                     OutlinedButton(
-                        onClick = viewModel::toggleDefaultDirection,
+                        onClick = { showSort = true },
                         modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).semantics {
-                            stateDescription = if (defaultRtl) "Right to left" else "Left to right"
+                            stateDescription = sort.label
                         },
-                    ) {
-                        Text("New comics: " + if (defaultRtl) "right to left (RTL)" else "left to right (LTR)")
-                    }
+                    ) { Text("Sort: ${sort.label}") }
                     OutlinedButton(
                         enabled = !importing,
                         onClick = { picker.launch(arrayOf("*/*")) },
@@ -197,6 +200,32 @@ fun LibraryScreen(
         }
     }
 
+    }
+
+    if (showSort) {
+        AlertDialog(
+            onDismissRequest = { showSort = false },
+            title = { Text("Sort library") },
+            text = {
+                Column(Modifier.selectableGroup()) {
+                    LibrarySort.entries.forEach { option ->
+                        Row(
+                            Modifier.fillMaxWidth().heightIn(min = 48.dp)
+                                .selectable(
+                                    selected = sort == option,
+                                    role = Role.RadioButton,
+                                    onClick = { viewModel.setSort(option); showSort = false },
+                                ).padding(horizontal = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            RadioButton(selected = sort == option, onClick = null)
+                            Text(option.label, Modifier.padding(start = 12.dp))
+                        }
+                    }
+                }
+            },
+            confirmButton = { TextButton(onClick = { showSort = false }) { Text("Close") } },
+        )
     }
 
     pendingDelete?.let { comic ->

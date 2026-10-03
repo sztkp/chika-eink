@@ -29,7 +29,8 @@ swipe to turn whole pages and flip reading direction (LTR/RTL).
 - **Reader controls** — tap zones to step panels, swipe to turn pages, pinch + drag to pan
   (clamped to the artwork), plain page/panel counts, a "show whole page" button, and an LTR/RTL toggle.
 - **Library** — import via the system file picker (copied into app storage), cover thumbnails,
-  per-comic resume (page **and** panel), long-press to remove.
+  per-comic resume (page **and** panel), long-press to remove, and saved sorting by title
+  A–Z/Z–A, last added, or last read (newest first).
 - **E-ink UI** — monochrome controls, clear borders, immediate panel framing, and static status indicators.
 - **Libron typography** — bundled v0.25 regular, bold, italic, and bold-italic fonts throughout the UI.
 
