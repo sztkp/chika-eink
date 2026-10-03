@@ -22,4 +22,4 @@ MPL-2.0. Bundled components have separate terms. Model source compliance remains
 under review; see the repository's DISTRIBUTION_LICENSE.md and docs/LICENSING.md.
 
 Upstream: https://github.com/batunii/chika
-Fork: https://github.com/sztkp/chika-eink
+Fork: https://github.com/sztkp/kuro

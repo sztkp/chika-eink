@@ -22,7 +22,7 @@ import androidx.core.net.toUri
 import androidx.compose.ui.res.stringResource
 import com.chakra.comicreader.R
 
-private const val FORK_URL = "https://github.com/sztkp/chika-eink"
+private const val FORK_URL = "https://github.com/sztkp/kuro"
 private const val UPSTREAM_URL = "https://github.com/batunii/chika"
 
 @OptIn(ExperimentalMaterial3Api::class)
