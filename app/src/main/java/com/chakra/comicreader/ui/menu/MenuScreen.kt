@@ -19,6 +19,8 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import androidx.compose.ui.res.stringResource
+import com.chakra.comicreader.R
 
 private const val FORK_URL = "https://github.com/sztkp/chika-eink"
 private const val UPSTREAM_URL = "https://github.com/batunii/chika"
@@ -55,7 +57,7 @@ fun MenuScreen(onBack: () -> Unit) {
                 .verticalScroll(rememberScrollState()),
         ) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("Chika-eInk", style = MaterialTheme.typography.headlineSmall,
+                Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineSmall,
                     modifier = Modifier.semantics { heading() })
                 Text("Version $version", style = MaterialTheme.typography.bodyMedium)
                 Text("An independent Android fork of Chika by Chakra, optimized for e-ink reading.",
@@ -64,10 +66,10 @@ fun MenuScreen(onBack: () -> Unit) {
                     style = MaterialTheme.typography.bodyLarge)
             }
             HorizontalDivider()
-            AboutLink("Fork repository", "github.com/sztkp/chika-eink") { openUrl(FORK_URL) }
+            AboutLink("Fork repository", "Kuro source code") { openUrl(FORK_URL) }
             AboutLink("Upstream repository", "github.com/batunii/chika") { openUrl(UPSTREAM_URL) }
             HorizontalDivider()
-            AboutLink("Privacy policy", "Chika-eInk collects no data") { openUrl("$FORK_URL/blob/main/PRIVACY.md") }
+            AboutLink("Privacy policy", "Kuro collects no data") { openUrl("$FORK_URL/blob/main/PRIVACY.md") }
             AboutLink("Licenses and notices", "Open-source dependencies and artwork") {
                 openUrl("$FORK_URL/blob/main/THIRD_PARTY_NOTICES.md")
             }

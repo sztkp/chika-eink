@@ -23,6 +23,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ComicBookReader"
+rootProject.name = "kuro"
 include(":app")
 include(":shared")

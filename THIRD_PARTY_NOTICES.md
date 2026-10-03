@@ -1,6 +1,6 @@
-# Third-Party Notices — Chika-eInk
+# Third-Party Notices — Kuro
 
-Chika-eInk is an independent fork of [Chika](https://github.com/batunii/chika)
+Kuro is an independent fork of [Chika](https://github.com/batunii/chika)
 by Chakra (Chalchitra Krida). Source: <https://github.com/sztkp/chika-eink>.
 [Combined-work distribution terms](DISTRIBUTION_LICENSE.md) and
 [licensing review](docs/LICENSING.md) apply alongside the component notices below.
@@ -9,7 +9,7 @@ by Chakra (Chalchitra Krida). Source: <https://github.com/sztkp/chika-eink>.
 
 | Component | Version / scope | License / notice |
 |---|---|---|
-| Chika-eInk application source | including inherited Chika code | [MPL-2.0](LICENSE); additionally AGPL-3.0 for the [Larger Work](DISTRIBUTION_LICENSE.md) |
+| Kuro application source | including inherited Chika code | [MPL-2.0](LICENSE); additionally AGPL-3.0 for the [Larger Work](DISTRIBUTION_LICENSE.md) |
 | Kotlin standard library | 2.2.10 | Apache-2.0 |
 | Kotlin coroutines | 1.9.0 | Apache-2.0 |
 | Kotlin serialization | resolved 1.6.3 | Apache-2.0 |

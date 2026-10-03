@@ -70,7 +70,7 @@ class ComicArchiveFactoryTest {
     }
 
     private fun withArchive(extension: String, block: (java.io.File) -> Unit) {
-        val file = Files.createTempFile("chika-archive-test-", ".$extension").toFile()
+        val file = Files.createTempFile("kuro-archive-test-", ".$extension").toFile()
         try {
             block(file)
         } finally {

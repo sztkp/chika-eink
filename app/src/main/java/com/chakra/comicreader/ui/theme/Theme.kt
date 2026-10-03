@@ -25,7 +25,7 @@ private object StaticIndication : IndicationNodeFactory {
     override fun hashCode() = javaClass.hashCode()
 }
 
-private val ChikaColorScheme = lightColorScheme(
+private val KuroColorScheme = lightColorScheme(
     primary = Color.Black, onPrimary = Color.White,
     primaryContainer = Color.White, onPrimaryContainer = Color.Black,
     secondary = Color.Black, onSecondary = Color.White,
@@ -51,8 +51,8 @@ private val ChikaColorScheme = lightColorScheme(
 @Composable
 fun ComicReaderTheme(content: @Composable () -> Unit) {
     MaterialTheme(
-        colorScheme = ChikaColorScheme,
-        typography = ChikaTypography,
+        colorScheme = KuroColorScheme,
+        typography = KuroTypography,
     ) {
         CompositionLocalProvider(
             LocalRippleConfiguration provides null,

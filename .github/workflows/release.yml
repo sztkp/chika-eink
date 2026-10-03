@@ -78,7 +78,7 @@ jobs:
       - name: Upload release candidate
         uses: actions/upload-artifact@v4
         with:
-          name: chika-eink-${{ steps.ver.outputs.name }}-candidate
+          name: kuro-${{ steps.ver.outputs.name }}-candidate
           if-no-files-found: error
           path: |
             app/build/outputs/bundle/release/*.aab

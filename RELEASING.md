@@ -1,4 +1,4 @@
-# Releasing Chika-eInk
+# Releasing Kuro
 
 ## Signing
 
@@ -12,9 +12,9 @@ Release certificate SHA-256:
 For initial setup only:
 
 ```bash
-keytool -genkeypair -v -keystore chika-eink-release.jks -alias chika-eink \
+keytool -genkeypair -v -keystore kuro-release.jks -alias kuro \
   -keyalg RSA -keysize 4096 -validity 10000
-base64 < chika-eink-release.jks > keystore.b64
+base64 < kuro-release.jks > keystore.b64
 ```
 
 | Credential | GitHub Actions secret | Local build variable |
@@ -36,7 +36,7 @@ base64 < chika-eink-release.jks > keystore.b64
    [Release candidate workflow](.github/workflows/release.yml) with the tag.
    It checks out tagged source, runs both test suites and lint, and builds signed
    APK/AAB files. Tags do not trigger it automatically.
-4. Download the `chika-eink-<version>-candidate` Actions artifact. Verify the version,
+4. Download the `kuro-<version>-candidate` Actions artifact. Verify the version,
    signing certificate, packaged notices, and native-library alignment for the
    intended channel. Test the minified APK on a device, including import and reading.
 5. Prepare matching application/dependency source, notices, release notes, and

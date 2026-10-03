@@ -87,6 +87,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.ui.res.stringResource
+import com.chakra.comicreader.R
 import com.chakra.comicreader.data.db.ComicEntity
 import com.chakra.comicreader.ui.theme.Libron
 import com.chakra.comicreader.ui.theme.Cream
@@ -145,7 +147,7 @@ fun LibraryScreen(
         },
         topBar = {
             TopAppBar(
-                title = { Text("Chika-eInk", maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                title = { Text(stringResource(R.string.app_name), maxLines = 1, overflow = TextOverflow.Ellipsis) },
                 actions = {
                     Box {
                         var anchorSize by remember { mutableStateOf(IntSize.Zero) }

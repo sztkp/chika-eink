@@ -1,8 +1,8 @@
-# Chika-eInk Privacy Policy
+# Kuro Privacy Policy
 
 _Last updated: 3 October 2026_
 
-Chika-eInk is an independent Android fork of [Chika](https://github.com/batunii/chika),
+Kuro is an independent Android fork of [Chika](https://github.com/batunii/chika),
 a comic reader that runs entirely on your device.
 
 ## Data we collect
@@ -10,13 +10,13 @@ a comic reader that runs entirely on your device.
 **No data is collected by the project or transmitted by the app.** Imported comics,
 reading progress, library metadata, and settings are stored locally on your device.
 
-- Chika-eInk has **no network access**. The Android app declares no `INTERNET` permission. The app itself does not transmit reading data.
+- Kuro has **no network access**. The Android app declares no `INTERNET` permission. The app itself does not transmit reading data.
 - Comics you import are copied into the app's private storage on your device and are readable by the app.
 - Reading progress, library metadata, and settings are stored locally. The database
   may be backed up by Android; imported files, covers, and preferences are excluded
   by the current backup rules.
 - Panel detection runs entirely on-device using a bundled machine-learning model. The app does not transmit page images or detector output.
-- Chika-eInk contains no analytics, no crash reporting, no advertising, and no third-party tracking SDKs.
+- Kuro contains no analytics, no crash reporting, no advertising, and no third-party tracking SDKs.
 
 ## Data sharing
 
@@ -41,7 +41,7 @@ Opening a link hands off to your browser; the destination site's privacy terms a
 
 ## Children
 
-Chika-eInk does not collect data from anyone, including children.
+Kuro does not collect data from anyone, including children.
 
 ## Changes
 

@@ -16,7 +16,7 @@ val Libron = FontFamily(
 )
 
 /** Use Libron throughout, with the family's actual regular and bold weights. */
-val ChikaTypography = Typography().run {
+val KuroTypography = Typography().run {
     copy(
         displayLarge = displayLarge.copy(fontFamily = Libron, fontWeight = FontWeight.Bold),
         displayMedium = displayMedium.copy(fontFamily = Libron, fontWeight = FontWeight.Bold),

@@ -28,6 +28,8 @@ import com.chakra.comicreader.ui.theme.CreamMuted
 import com.chakra.comicreader.ui.theme.Ink
 import com.chakra.comicreader.ui.theme.Ochre
 import androidx.compose.material3.Text
+import androidx.compose.ui.res.stringResource
+import com.chakra.comicreader.R
 
 /* ---- Signature texture & motifs ------------------------------------------------ */
 
@@ -110,9 +112,9 @@ fun Reticle(
 
 /** Plain fork title; the upstream graphical wordmark is not redistributed. */
 @Composable
-fun ChikaWordmark(modifier: Modifier = Modifier) {
+fun KuroWordmark(modifier: Modifier = Modifier) {
     Text(
-        text = "Chika-eInk",
+        text = stringResource(R.string.app_name),
         fontFamily = Libron,
         fontWeight = FontWeight.Bold,
         fontSize = 28.sp,

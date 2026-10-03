@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export a trained .pt model to the .tflite the Chika app loads.
+"""Export a trained .pt model to the .tflite the Kuro app loads.
 
 Target: input [1,640,640,3] float32, output [1,N,6] end-to-end (x1,y1,x2,y2,score,cls) — produced
 by exporting with embedded NMS. The Android asset location is app/src/main/assets; no
@@ -10,7 +10,7 @@ Primary path: Ultralytics `export(format='tflite', nms=True)`. If the onnx2tf→
 own converter — the workaround that succeeded during the mosesb experiment.
 
 Usage:
-  python export_tflite.py --weights runs/detect/chika_panels/weights/best.pt [--out model.tflite]
+  python export_tflite.py --weights runs/detect/kuro/weights/best.pt [--out model.tflite]
 """
 import argparse, os, glob, sys
 

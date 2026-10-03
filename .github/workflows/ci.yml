@@ -63,7 +63,7 @@ jobs:
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: chika-eink-debug-apk
+          name: kuro-debug-apk
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
 
