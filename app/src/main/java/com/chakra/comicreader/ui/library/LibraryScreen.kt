@@ -116,7 +116,7 @@ fun LibraryScreen(
     var pendingDelete by remember { mutableStateOf<ComicEntity?>(null) }
     var pendingReset by remember { mutableStateOf<ComicEntity?>(null) }
 
-    val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+    val picker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) viewModel.importComic(uri)
     }
 
@@ -131,7 +131,7 @@ fun LibraryScreen(
         floatingActionButtonPosition = FabPosition.End,
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { if (!importing) picker.launch(arrayOf("*/*")) },
+                onClick = { if (!importing) picker.launch("*/*") },
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
                 elevation = FloatingActionButtonDefaults.elevation(
