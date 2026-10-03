@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,30 +33,30 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.Surface
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalAccessibilityManager
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -67,9 +66,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chakra.comicreader.data.db.ComicEntity
 import com.chakra.comicreader.ui.brand.ChikaWordmark
 import com.chakra.comicreader.ui.brand.OchreBadge
-import com.chakra.comicreader.ui.brand.StarburstShape
-import com.chakra.comicreader.ui.brand.comicShadow
-import com.chakra.comicreader.ui.brand.halftone
 import com.chakra.comicreader.ui.theme.Anton
 import com.chakra.comicreader.ui.theme.Archivo
 import com.chakra.comicreader.ui.theme.Cream
@@ -78,6 +74,7 @@ import com.chakra.comicreader.ui.theme.Crimson
 import com.chakra.comicreader.ui.theme.Ink
 import com.chakra.comicreader.ui.theme.InkSoft
 import com.chakra.comicreader.ui.theme.Ochre
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -107,18 +104,7 @@ fun LibraryScreen(
         }
     }
 
-    Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-        // Subtle full-bleed halftone wash + an action-burst behind the header.
-        Box(Modifier.matchParentSize().halftone(Crimson, alpha = 0.05f))
-        Box(
-            Modifier
-                .align(Alignment.TopEnd)
-                .padding(top = 10.dp)
-                .size(180.dp)
-                .clip(StarburstShape)
-                .background(Crimson.copy(alpha = 0.14f)),
-        )
-
+    Box(Modifier.fillMaxSize().background(Ink)) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             modifier = Modifier.fillMaxSize().statusBarsPadding(),
@@ -137,7 +123,7 @@ fun LibraryScreen(
                         Modifier
                             .size(36.dp)
                             .clip(CircleShape)
-                            .background(Cream.copy(alpha = 0.10f))
+                            .background(Ink)
                             .clickable(onClick = onOpenMenu),
                         contentAlignment = Alignment.Center,
                     ) {
@@ -203,10 +189,33 @@ fun LibraryScreen(
             item { AddTile(importing = importing, onClick = { picker.launch(arrayOf("*/*")) }) }
         }
 
-        SnackbarHost(
-            snackbarHostState,
-            modifier = Modifier.align(Alignment.BottomCenter).navigationBarsPadding(),
-        )
+        // Preserve snackbar timing and accessibility without the host's fade/scale transition.
+        val snackbar = snackbarHostState.currentSnackbarData
+        val accessibility = LocalAccessibilityManager.current
+        LaunchedEffect(snackbar, accessibility) {
+            if (snackbar != null) {
+                val timeout = accessibility?.calculateRecommendedTimeoutMillis(
+                    originalTimeoutMillis = 4_000L,
+                    containsIcons = true,
+                    containsText = true,
+                    containsControls = false,
+                ) ?: 4_000L
+                delay(timeout)
+                snackbar.dismiss()
+            }
+        }
+        if (snackbar != null) {
+            Surface(
+                color = Ink,
+                contentColor = Cream,
+                modifier = Modifier.align(Alignment.BottomCenter)
+                    .navigationBarsPadding().padding(12.dp)
+                    .border(1.dp, Cream)
+                    .semantics { liveRegion = LiveRegionMode.Polite },
+            ) {
+                Text(snackbar.visuals.message, modifier = Modifier.padding(16.dp))
+            }
+        }
     }
 
     pendingDelete?.let { comic ->
@@ -235,10 +244,9 @@ private fun ComicCard(comic: ComicEntity, onClick: () -> Unit, onLongClick: () -
             Modifier
                 .fillMaxWidth()
                 .aspectRatio(0.7f)
-                .comicShadow(offset = 5.dp, color = Color(0xB3000000))
                 .clip(RoundedCornerShape(4.dp))
                 .background(InkSoft)
-                .border(3.dp, Ink, RoundedCornerShape(4.dp)),
+                .border(3.dp, Cream, RoundedCornerShape(4.dp)),
         ) {
             val cover = rememberCover(comic.coverPath)
             if (cover != null) {
@@ -246,7 +254,7 @@ private fun ComicCard(comic: ComicEntity, onClick: () -> Unit, onLongClick: () -
             } else {
                 GeneratedCover(comic.title)
             }
-            Box(Modifier.align(Alignment.BottomStart).fillMaxWidth().height(7.dp).background(Ink)) {
+            Box(Modifier.align(Alignment.BottomStart).fillMaxWidth().height(7.dp).background(Ink).border(1.dp, Cream)) {
                 Box(Modifier.fillMaxWidth(pct).fillMaxHeight().background(Ochre))
             }
         }
@@ -274,7 +282,7 @@ private fun ComicCard(comic: ComicEntity, onClick: () -> Unit, onLongClick: () -
 
 @Composable
 private fun GeneratedCover(title: String) {
-    Box(Modifier.fillMaxSize().background(InkSoft).halftone(Crimson, alpha = 0.18f)) {
+    Box(Modifier.fillMaxSize().background(InkSoft)) {
         Text(
             title.uppercase(),
             fontFamily = Anton,
@@ -299,23 +307,22 @@ private fun AddTile(importing: Boolean, onClick: () -> Unit) {
                     color = CreamMuted,
                     style = Stroke(
                         width = 3.dp.toPx(),
-                        pathEffect = PathEffect.dashPathEffect(floatArrayOf(14f, 10f)),
+                        pathEffect = null,
                     ),
                     cornerRadius = CornerRadius(4.dp.toPx(), 4.dp.toPx()),
                 )
-            }
-            .halftone(Ochre, alpha = 0.10f),
+            },
         contentAlignment = Alignment.Center,
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Box(
-                Modifier.size(64.dp).clip(StarburstShape).background(Crimson),
+                Modifier.size(64.dp).clip(RoundedCornerShape(4.dp)).background(Crimson),
                 contentAlignment = Alignment.Center,
             ) {
-                if (importing) CircularProgressIndicator(color = Cream, modifier = Modifier.size(26.dp))
-                else Icon(Icons.Default.Add, contentDescription = "Load comic", tint = Cream)
+                if (importing) Text("…", color = Ink)
+                else Icon(Icons.Default.Add, contentDescription = "Load comic", tint = Ink)
             }
-            Text("LOAD COMIC", fontFamily = Anton, fontSize = 14.sp, color = Cream)
+            Text(if (importing) "IMPORTING…" else "LOAD COMIC", fontFamily = Anton, fontSize = 14.sp, color = Cream)
         }
     }
 }

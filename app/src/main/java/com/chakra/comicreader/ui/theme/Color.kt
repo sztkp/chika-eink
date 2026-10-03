@@ -2,14 +2,12 @@ package com.chakra.comicreader.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-/** Chika · Chitra Katha brand palette. */
-val Ink = Color(0xFF17100E)
-val InkSoft = Color(0xFF2A201C)
-val Crimson = Color(0xFFD11F2D)
-val CrimsonBright = Color(0xFFE62534)
-val Maroon = Color(0xFF7C1620)
-val Cream = Color(0xFFF3E9D6)
-val Ochre = Color(0xFFE0A22B)
-
-/** Muted cream for secondary metadata text on dark grounds. */
-val CreamMuted = Color(0x8CF3E9D6)
+// Keep existing component palette names; use only opaque monochrome UI colors.
+val Ink = Color.White
+val InkSoft = Color.White
+val Cream = Color.Black
+val CreamMuted = Color.Black
+val Crimson = Color.Black
+val CrimsonBright = Color.Black
+val Maroon = Color.Black
+val Ochre = Color.Black

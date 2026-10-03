@@ -2,7 +2,10 @@ package com.chakra.comicreader.ui.menu
 
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.foundation.border
 import androidx.compose.foundation.background
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,9 +26,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -38,8 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chakra.comicreader.ui.brand.ChikaWordmark
 import com.chakra.comicreader.ui.brand.OchreBadge
-import com.chakra.comicreader.ui.brand.comicShadow
-import com.chakra.comicreader.ui.brand.halftone
 import com.chakra.comicreader.ui.theme.Anton
 import com.chakra.comicreader.ui.theme.Archivo
 import com.chakra.comicreader.ui.theme.Cream
@@ -69,8 +67,7 @@ fun MenuScreen(
         context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(DONATION_URL)))
     }
 
-    Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-        Box(Modifier.matchParentSize().halftone(Crimson, alpha = 0.05f))
+    Box(Modifier.fillMaxSize().background(Ink)) {
 
         Column(
             Modifier
@@ -87,7 +84,7 @@ fun MenuScreen(
                     Modifier
                         .size(38.dp)
                         .clip(CircleShape)
-                        .background(Cream.copy(alpha = 0.12f))
+                        .background(Ink)
                         .clickable(onClick = onBack),
                     contentAlignment = Alignment.Center,
                 ) {
@@ -106,8 +103,8 @@ fun MenuScreen(
             SectionLabel("THEME")
             Spacer(Modifier.size(10.dp))
             ToggleRow(
-                title = "AMOLED Black",
-                subtitle = "True-black background — easy on OLED screens and battery.",
+                title = "Black reader background",
+                subtitle = "Use a black canvas around comic pages.",
                 checked = amoledTheme,
                 onCheckedChange = onSetAmoledTheme,
             )
@@ -163,7 +160,6 @@ fun MenuScreen(
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .comicShadow(offset = 4.dp)
                     .clip(RoundedCornerShape(4.dp))
                     .background(Crimson)
                     .clickable(onClick = openDonation)
@@ -171,14 +167,14 @@ fun MenuScreen(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Icon(Icons.Default.Favorite, contentDescription = null, tint = Cream, modifier = Modifier.size(18.dp))
+                Icon(Icons.Default.Favorite, contentDescription = null, tint = Ink, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.size(10.dp))
                 Text(
                     "SUPPORT / DONATE",
                     fontFamily = Anton,
                     fontSize = 15.sp,
                     letterSpacing = 0.5.sp,
-                    color = Cream,
+                    color = Ink,
                 )
             }
             Spacer(Modifier.size(6.dp))
@@ -230,7 +226,8 @@ private fun ToggleRow(
             .fillMaxWidth()
             .clip(RoundedCornerShape(6.dp))
             .background(InkSoft)
-            .clickable { onCheckedChange(!checked) }
+            .border(1.dp, Cream, RoundedCornerShape(6.dp))
+            .toggleable(value = checked, role = Role.Switch, onValueChange = onCheckedChange)
             .padding(start = 16.dp, end = 10.dp, top = 12.dp, bottom = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -252,17 +249,12 @@ private fun ToggleRow(
                 modifier = Modifier.padding(top = 2.dp),
             )
         }
-        Switch(
-            checked = checked,
-            onCheckedChange = onCheckedChange,
-            colors = SwitchDefaults.colors(
-                checkedThumbColor = Ink,
-                checkedTrackColor = Ochre,
-                checkedBorderColor = Ochre,
-                uncheckedThumbColor = CreamMuted,
-                uncheckedTrackColor = Ink,
-                uncheckedBorderColor = CreamMuted,
-            ),
+        Text(
+            if (checked) "ON" else "OFF",
+            fontFamily = Archivo,
+            fontWeight = FontWeight.Bold,
+            color = Cream,
+            modifier = Modifier.border(1.dp, Cream).padding(8.dp),
         )
     }
 }

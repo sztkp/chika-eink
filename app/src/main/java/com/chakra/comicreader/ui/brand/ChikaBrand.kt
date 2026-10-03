@@ -14,12 +14,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -31,7 +29,6 @@ import com.chakra.comicreader.ui.theme.Anton
 import com.chakra.comicreader.ui.theme.Archivo
 import com.chakra.comicreader.ui.theme.Cream
 import com.chakra.comicreader.ui.theme.CreamMuted
-import com.chakra.comicreader.ui.theme.Crimson
 import com.chakra.comicreader.ui.theme.Ink
 import com.chakra.comicreader.ui.theme.Ochre
 import androidx.compose.material3.Text
@@ -122,7 +119,7 @@ fun ChikaWordmark(modifier: Modifier = Modifier) {
         Text(
             text = buildAnnotatedString {
                 withStyle(SpanStyle(color = Cream)) { append("CHI") }
-                withStyle(SpanStyle(color = Crimson)) { append("KA") }
+                withStyle(SpanStyle(color = Cream)) { append("KA") }
             },
             fontFamily = Anton,
             fontSize = 28.sp,
@@ -149,8 +146,6 @@ fun OchreBadge(text: String, modifier: Modifier = Modifier) {
         letterSpacing = 0.6.sp,
         color = Ink,
         modifier = modifier
-            .graphicsLayer { rotationZ = -1.5f }
-            .comicShadow(offset = 3.dp, color = Color(0x99000000))
             .background(Ochre, RoundedCornerShape(3.dp))
             .border(2.5.dp, Ink, RoundedCornerShape(3.dp))
             .padding(horizontal = 16.dp, vertical = 6.dp),
@@ -164,14 +159,14 @@ fun PageCoin(page: Int, total: Int, modifier: Modifier = Modifier, size: Dp = 58
         Box(
             Modifier
                 .size(size)
-                .clip(StarburstShape)
+                .clip(RoundedCornerShape(3.dp))
                 .background(Ink),
         )
         Box(
             Modifier
                 .size(size)
                 .padding(3.dp)
-                .clip(StarburstShape)
+                .clip(RoundedCornerShape(3.dp))
                 .background(Ochre),
         )
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -187,7 +182,7 @@ fun PageCoin(page: Int, total: Int, modifier: Modifier = Modifier, size: Dp = 58
                 fontFamily = Anton,
                 fontSize = 9.sp,
                 lineHeight = 9.sp,
-                color = Ink.copy(alpha = 0.75f),
+                color = Ink,
                 modifier = Modifier.offset(y = (-7).dp),
             )
         }

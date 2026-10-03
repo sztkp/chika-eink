@@ -1,52 +1,66 @@
 package com.chakra.comicreader.ui.theme
 
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.IndicationNodeFactory
+import androidx.compose.foundation.interaction.InteractionSource
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.drawscope.ContentDrawScope
+import androidx.compose.ui.node.DelegatableNode
+import androidx.compose.ui.node.DrawModifierNode
+import androidx.compose.material3.LocalRippleConfiguration
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 
-/**
- * Chika is a dark, ink-grounded comic reader, so the theme is always the brand dark scheme
- * (no system light/dark switch). Material colors map onto the brand palette so stock components
- * pick up the identity; bespoke comic styling lives in the brand component kit.
- */
-private val ChikaColorScheme = darkColorScheme(
-    primary = Crimson,
-    onPrimary = Cream,
-    primaryContainer = Maroon,
-    onPrimaryContainer = Cream,
-    secondary = Ochre,
-    onSecondary = Ink,
-    secondaryContainer = Ochre,
-    onSecondaryContainer = Ink,
-    tertiary = CrimsonBright,
-    onTertiary = Cream,
-    background = Ink,
-    onBackground = Cream,
-    surface = Ink,
-    onSurface = Cream,
-    surfaceVariant = InkSoft,
-    onSurfaceVariant = CreamMuted,
-    outline = CreamMuted,
-    error = CrimsonBright,
-    onError = Cream,
+// Clicks keep their behavior without scheduling ripple frames.
+private object StaticIndication : IndicationNodeFactory {
+    override fun create(interactionSource: InteractionSource): DelegatableNode =
+        object : Modifier.Node(), DrawModifierNode {
+            override fun ContentDrawScope.draw() = drawContent()
+        }
+    override fun equals(other: Any?) = other === this
+    override fun hashCode() = javaClass.hashCode()
+}
+
+private val ChikaColorScheme = lightColorScheme(
+    primary = Color.Black, onPrimary = Color.White,
+    primaryContainer = Color.White, onPrimaryContainer = Color.Black,
+    secondary = Color.Black, onSecondary = Color.White,
+    secondaryContainer = Color.White, onSecondaryContainer = Color.Black,
+    tertiary = Color.Black, onTertiary = Color.White,
+    tertiaryContainer = Color.White, onTertiaryContainer = Color.Black,
+    background = Color.White, onBackground = Color.Black,
+    surface = Color.White, onSurface = Color.Black,
+    surfaceVariant = Color.White, onSurfaceVariant = Color.Black,
+    surfaceTint = Color.White,
+    surfaceDim = Color.White, surfaceBright = Color.White,
+    surfaceContainerLowest = Color.White, surfaceContainerLow = Color.White,
+    surfaceContainer = Color.White, surfaceContainerHigh = Color.White,
+    surfaceContainerHighest = Color.White,
+    outline = Color.Black, outlineVariant = Color.Black,
+    inverseSurface = Color.Black, inverseOnSurface = Color.White, inversePrimary = Color.White,
+    error = Color.Black, onError = Color.White,
+    errorContainer = Color.White, onErrorContainer = Color.Black,
+    scrim = Color.Black,
 )
 
-/**
- * AMOLED variant: the ink grounds collapse to true black so OLED pixels switch fully off, while the
- * brand accents (crimson/ochre/cream) carry through unchanged.
- */
-private val ChikaAmoledColorScheme = ChikaColorScheme.copy(
-    background = Color.Black,
-    surface = Color.Black,
-    surfaceVariant = Color(0xFF101010),
-)
-
+// Preserve the saved AMOLED preference as an optional black reader canvas.
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ComicReaderTheme(amoled: Boolean = false, content: @Composable () -> Unit) {
     MaterialTheme(
-        colorScheme = if (amoled) ChikaAmoledColorScheme else ChikaColorScheme,
+        colorScheme = if (amoled) ChikaColorScheme.copy(
+            background = Color.Black, onBackground = Color.White,
+        ) else ChikaColorScheme,
         typography = ChikaTypography,
-        content = content,
-    )
+    ) {
+        CompositionLocalProvider(
+            LocalRippleConfiguration provides null,
+            LocalIndication provides StaticIndication,
+            content = content,
+        )
+    }
 }

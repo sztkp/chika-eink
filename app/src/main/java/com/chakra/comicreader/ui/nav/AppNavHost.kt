@@ -1,5 +1,7 @@
 package com.chakra.comicreader.ui.nav
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,7 +31,14 @@ fun AppNavHost() {
     val navController = rememberNavController()
     val app = LocalContext.current.applicationContext as ComicReaderApp
 
-    NavHost(navController = navController, startDestination = Routes.LIBRARY) {
+    NavHost(
+        navController = navController,
+        startDestination = Routes.LIBRARY,
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None },
+        popEnterTransition = { EnterTransition.None },
+        popExitTransition = { ExitTransition.None },
+    ) {
         composable(Routes.LIBRARY) {
             val vm: LibraryViewModel = viewModel(factory = LibraryViewModel.factory(app))
             LibraryScreen(
