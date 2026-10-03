@@ -22,7 +22,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.ZoomOutMap
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -61,7 +61,6 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.chakra.comicreader.ui.brand.PageCoin
 import com.chakra.comicreader.ui.theme.Libron
 import com.chakra.comicreader.ui.theme.Cream
 import com.chakra.comicreader.ui.theme.CreamMuted
@@ -135,8 +134,8 @@ fun ReaderScreen(
                         contentAlignment = Alignment.Center,
                     ) {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack, "Back",
-                            tint = Cream, modifier = Modifier.size(18.dp),
+                            Icons.AutoMirrored.Filled.KeyboardArrowLeft, "Back",
+                            tint = Cream, modifier = Modifier.size(24.dp),
                         )
                     }
                     Spacer(Modifier.size(12.dp))
@@ -158,11 +157,13 @@ fun ReaderScreen(
                 }
             }
         }
-        if (chromeVisible && state.pageCount > 1) {
+        if (chromeVisible && state.pageCount > 0) {
             Box(Modifier.align(Alignment.BottomCenter)) {
                 PageScrubber(
                     pageIndex = state.pageIndex,
                     pageCount = state.pageCount,
+                    panelNumber = state.panelLabel,
+                    panelCount = state.panels.size,
                     onJumpToPage = viewModel::jumpToPage,
                 )
             }
@@ -174,6 +175,8 @@ fun ReaderScreen(
 private fun PageScrubber(
     pageIndex: Int,
     pageCount: Int,
+    panelNumber: Int?,
+    panelCount: Int,
     onJumpToPage: (Int) -> Unit,
 ) {
     var scrubbing by remember { mutableStateOf(false) }
@@ -194,15 +197,18 @@ private fun PageScrubber(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                "TAP TO ADVANCE",
+                "Panel ${panelNumber ?: 0}/$panelCount",
                 fontFamily = Libron, fontWeight = FontWeight.Bold,
                 fontSize = 12.sp,
-                letterSpacing = 2.sp,
                 color = CreamMuted,
             )
-            PageCoin(page = shownPage, total = pageCount)
+            Text(
+                "$shownPage/$pageCount",
+                fontFamily = Libron, fontWeight = FontWeight.Bold,
+                fontSize = 12.sp, color = Cream,
+            )
         }
-        Slider(
+        if (pageCount > 1) Slider(
             value = scrub.coerceIn(0f, (pageCount - 1).toFloat()),
             onValueChange = { scrubbing = true; scrub = it },
             onValueChangeFinished = {
