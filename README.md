@@ -28,6 +28,8 @@ swipe to turn whole pages and flip reading direction (LTR/RTL).
   oversized panels with a bubble-aware cut.
 - **Reader controls** — tap zones to step panels, swipe to turn pages, pinch + drag to pan
   (clamped to the artwork), plain page/panel counts, a "show whole page" button, and an LTR/RTL toggle.
+  Hardware Volume Down/Page Down advances a panel; Volume Up/Page Up goes back, only in the
+  reader. Holding a button does not repeatedly advance.
 - **Library** — import via the system file picker (copied into app storage), cover thumbnails,
   per-comic resume (page **and** panel), long-press to remove, and saved sorting by title
   A–Z/Z–A, last added, or last read (newest first).

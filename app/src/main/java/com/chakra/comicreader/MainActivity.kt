@@ -1,6 +1,7 @@
 package com.chakra.comicreader
 
 import android.os.Bundle
+import android.view.KeyEvent
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -11,8 +12,16 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.chakra.comicreader.ui.nav.AppNavHost
 import com.chakra.comicreader.ui.theme.ComicReaderTheme
+import com.chakra.comicreader.ui.reader.ReaderKeyHandler
 
 class MainActivity : ComponentActivity() {
+    internal var readerKeyHandler: ReaderKeyHandler? = null
+
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (readerKeyHandler?.handle(event.keyCode, event.action, event.repeatCount) == true) return true
+        return super.dispatchKeyEvent(event)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.light(android.graphics.Color.WHITE, android.graphics.Color.WHITE),

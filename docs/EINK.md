@@ -50,6 +50,26 @@ warnings unchanged.
 
 No BOOX APIs, forced refresh calls, dithering or grayscale preprocessing are added.
 
+## Palma 2 hardware buttons
+
+The reader handles standard Android Volume Down/Page Down as next panel and
+Volume Up/Page Up as previous panel, through the existing reader state machine.
+Buttons follow reading sequence in both LTR and RTL; they do not simulate swipes
+or skip panels. Each press advances once; release and repeat events are consumed.
+Outside the reader, Android handles these keys normally. Back, power and mute
+are not intercepted. No BOOX SDK is needed.
+
+If BOOX remaps a button to a simulated scroll gesture, configure that app's side
+buttons to send volume/page key events instead. Actual availability depends on
+firmware. No firmware settings are changed by this app.
+
+The connected Palma 2 reports Android 13 and firmware 4.2, with Volume Up/Down
+input capabilities. Automated regression tests cover both key families, held-key
+behavior and unrelated keys. Physical-button mapping and ghosting still need
+device testing; refresh/dithering behavior is unchanged.
+ADB-injected Volume Down/Up and Page Down/Up events were verified on the device:
+each next event changed panel 0 to 1, and each previous event restored panel 0.
+
 ## Android menu conventions
 
 The library and About screens use Material 3 `Scaffold` and `TopAppBar`, with

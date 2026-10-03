@@ -62,6 +62,7 @@ import com.chakra.comicreader.ui.theme.Libron
 import com.chakra.comicreader.ui.theme.Cream
 import com.chakra.comicreader.ui.theme.CreamMuted
 import com.chakra.comicreader.ui.theme.Ink
+import com.chakra.comicreader.MainActivity
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -80,6 +81,14 @@ fun ReaderScreen(
     // Keep the reader immersive, including when its compact controls are visible.
     // System bars remain available by edge swipe and are restored on leaving the reader.
     val view = LocalView.current
+    val activity = view.context as? MainActivity
+    DisposableEffect(activity, viewModel) {
+        val handler = ReaderKeyHandler(viewModel::next, viewModel::previous)
+        activity?.readerKeyHandler = handler
+        onDispose {
+            if (activity != null && activity.readerKeyHandler === handler) activity.readerKeyHandler = null
+        }
+    }
     val window = (view.context as? Activity)?.window
     LaunchedEffect(window) {
         window ?: return@LaunchedEffect

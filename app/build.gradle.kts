@@ -108,6 +108,7 @@ tasks.named("preBuild") {
 }
 
 dependencies {
+    testImplementation(kotlin("test-junit"))
     implementation(project(":shared"))
 
     implementation(libs.androidx.core.ktx)
