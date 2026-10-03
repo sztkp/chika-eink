@@ -3,8 +3,6 @@ package com.chakra.comicreader.ui.nav
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
@@ -48,10 +46,7 @@ fun AppNavHost() {
             )
         }
         composable(Routes.MENU) {
-            val amoled by app.amoledTheme.collectAsState()
             MenuScreen(
-                amoledTheme = amoled,
-                onSetAmoledTheme = app::setAmoledTheme,
                 onBack = { navController.popBackStack() },
             )
         }

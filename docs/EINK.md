@@ -1,13 +1,13 @@
 # Chika-eInk first pass
 
 The Android presentation uses opaque monochrome UI colors and the bundled Libron font family. The existing library,
-menu and reader layouts remain. Navigation, panel framing, page changes, chrome
+reader layouts remain; the library info button opens an About section. Navigation, panel framing, page changes, chrome
 visibility and double-tap zoom reset no longer animate. Loading/import status is
 static; click ripples, snackbar transitions, halftone washes, decorative shadows
 and reader gradients/reticles are removed from the displayed UI.
 
-The saved AMOLED setting remains under “Black reader background”. It controls only
-the reader canvas; library, menu and reader controls stay white with black text.
+The theme toggle and its runtime setting have been removed. The reader canvas,
+library and About section stay white with black controls and text.
 Original comic images and covers remain unprocessed.
 
 Panel selection draws the existing `currentCamera` directly with the unchanged
@@ -34,7 +34,7 @@ warnings unchanged.
 - Import CBZ/CBR, reopen at saved progress, and verify library deletion.
 - Read in LTR/RTL through full-page intro/outro slots and page boundaries.
 - Check tap response, double-tap reset, pinch/pan, flicks and page/panel counts.
-- Check text, borders, image detail, system bars and the optional black canvas.
+- Check text, borders, image detail and system bars.
 - Observe ghosting after repeated panel changes and chrome toggles; measure refresh
   latency using the device's existing modes before deciding whether vendor APIs help.
 - Compare full versus partial refresh and refresh-after-navigation strategies on

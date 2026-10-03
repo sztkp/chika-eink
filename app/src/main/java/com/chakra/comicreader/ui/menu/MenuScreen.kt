@@ -2,10 +2,8 @@ package com.chakra.comicreader.ui.menu
 
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.foundation.border
+import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.selection.toggleable
-import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,7 +21,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -43,17 +41,15 @@ import com.chakra.comicreader.ui.theme.Cream
 import com.chakra.comicreader.ui.theme.CreamMuted
 import com.chakra.comicreader.ui.theme.Crimson
 import com.chakra.comicreader.ui.theme.Ink
-import com.chakra.comicreader.ui.theme.InkSoft
 import com.chakra.comicreader.ui.theme.Ochre
 
+private const val FORK_URL = "https://github.com/sztkp/chika-eink"
 private const val DONATION_URL = "https://github.com/batunii/chika"
 private const val PRIVACY_URL = "https://github.com/sztkp/chika-eink/blob/main/PRIVACY.md"
 private const val LICENSES_URL = "https://github.com/sztkp/chika-eink/blob/main/THIRD_PARTY_NOTICES.md"
 
 @Composable
 fun MenuScreen(
-    amoledTheme: Boolean,
-    onSetAmoledTheme: (Boolean) -> Unit,
     onBack: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -88,31 +84,16 @@ fun MenuScreen(
                     contentAlignment = Alignment.Center,
                 ) {
                     Icon(
-                        Icons.AutoMirrored.Filled.ArrowBack, "Back",
-                        tint = Cream, modifier = Modifier.size(18.dp),
+                        Icons.AutoMirrored.Filled.KeyboardArrowLeft, "Back",
+                        tint = Cream, modifier = Modifier.size(24.dp),
                     )
                 }
                 Spacer(Modifier.size(14.dp))
-                OchreBadge("MENU")
+                OchreBadge("ABOUT")
             }
 
             Spacer(Modifier.size(28.dp))
 
-            // ---- Theme ---------------------------------------------------------------
-            SectionLabel("THEME")
-            Spacer(Modifier.size(10.dp))
-            ToggleRow(
-                title = "Black reader background",
-                subtitle = "Use a black canvas around comic pages.",
-                checked = amoledTheme,
-                onCheckedChange = onSetAmoledTheme,
-            )
-
-            Spacer(Modifier.size(32.dp))
-
-            // ---- About ---------------------------------------------------------------
-            SectionLabel("ABOUT")
-            Spacer(Modifier.size(16.dp))
             ChikaWordmark()
             Spacer(Modifier.size(12.dp))
             OchreBadge("VERSION $version")
@@ -146,45 +127,17 @@ fun MenuScreen(
 
             Spacer(Modifier.size(28.dp))
 
-            // ---- Support -------------------------------------------------------------
-            Text(
-                "Chika is free and made with care. If it brings you joy, you can support its making.",
-                fontFamily = Libron,
-                fontWeight = FontWeight.Normal,
-                fontSize = 12.sp,
-                lineHeight = 17.sp,
-                color = CreamMuted,
-            )
-            Spacer(Modifier.size(14.dp))
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(4.dp))
-                    .background(Crimson)
-                    .clickable(onClick = openDonation)
-                    .padding(vertical = 14.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(Icons.Default.Favorite, contentDescription = null, tint = Ink, modifier = Modifier.size(18.dp))
-                Spacer(Modifier.size(10.dp))
-                Text(
-                    "SUPPORT UPSTREAM",
-                    fontFamily = Libron, fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp,
-                    letterSpacing = 0.5.sp,
-                    color = Ink,
-                )
+            LinkRow("Fork repository: github.com/sztkp/chika-eink") {
+                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(FORK_URL)))
             }
-            Spacer(Modifier.size(6.dp))
-            Text(
-                "github.com/batunii/chika",
-                fontFamily = Libron,
-                fontWeight = FontWeight.Bold,
-                fontSize = 11.sp,
-                color = Ochre,
-                modifier = Modifier.clickable(onClick = openDonation).padding(top = 2.dp),
-            )
+            Spacer(Modifier.size(8.dp))
+            LinkRow("Upstream repository: github.com/batunii/chika", openDonation)
+            Spacer(Modifier.size(24.dp))
+            SupportButton("SUPPORT FORK") {
+                Toast.makeText(context, "Coming soon", Toast.LENGTH_SHORT).show()
+            }
+            Spacer(Modifier.size(14.dp))
+            SupportButton("SUPPORT UPSTREAM", openDonation)
         }
     }
 }
@@ -202,58 +155,23 @@ private fun LinkRow(text: String, onClick: () -> Unit) {
 }
 
 @Composable
-private fun SectionLabel(text: String) {
-    Text(
-        text,
-        fontFamily = Libron,
-        fontWeight = FontWeight.Bold,
-        fontSize = 9.sp,
-        letterSpacing = 2.5.sp,
-        color = Ochre,
-    )
-}
-
-@Composable
-private fun ToggleRow(
-    title: String,
-    subtitle: String,
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
-) {
+private fun SupportButton(label: String, onClick: () -> Unit) {
     Row(
         Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(6.dp))
-            .background(InkSoft)
-            .border(1.dp, Cream, RoundedCornerShape(6.dp))
-            .toggleable(value = checked, role = Role.Switch, onValueChange = onCheckedChange)
-            .padding(start = 16.dp, end = 10.dp, top = 12.dp, bottom = 12.dp),
+            .clip(RoundedCornerShape(4.dp))
+            .background(Crimson)
+            .clickable(onClick = onClick)
+            .padding(vertical = 14.dp),
+        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Column(Modifier.weight(1f).padding(end = 12.dp)) {
-            Text(
-                title,
-                fontFamily = Libron,
-                fontWeight = FontWeight.Bold,
-                fontSize = 14.sp,
-                color = Cream,
-            )
-            Text(
-                subtitle,
-                fontFamily = Libron,
-                fontWeight = FontWeight.Normal,
-                fontSize = 10.5.sp,
-                lineHeight = 14.sp,
-                color = CreamMuted,
-                modifier = Modifier.padding(top = 2.dp),
-            )
-        }
+        Icon(Icons.Default.Favorite, contentDescription = null, tint = Ink, modifier = Modifier.size(18.dp))
+        Spacer(Modifier.size(10.dp))
         Text(
-            if (checked) "ON" else "OFF",
-            fontFamily = Libron,
-            fontWeight = FontWeight.Bold,
-            color = Cream,
-            modifier = Modifier.border(1.dp, Cream).padding(8.dp),
+            label,
+            fontFamily = Libron, fontWeight = FontWeight.Bold,
+            fontSize = 15.sp, letterSpacing = 0.5.sp, color = Ink,
         )
     }
 }

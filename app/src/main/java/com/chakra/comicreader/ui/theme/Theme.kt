@@ -47,14 +47,11 @@ private val ChikaColorScheme = lightColorScheme(
     scrim = Color.Black,
 )
 
-// Preserve the saved AMOLED preference as an optional black reader canvas.
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ComicReaderTheme(amoled: Boolean = false, content: @Composable () -> Unit) {
+fun ComicReaderTheme(content: @Composable () -> Unit) {
     MaterialTheme(
-        colorScheme = if (amoled) ChikaColorScheme.copy(
-            background = Color.Black, onBackground = Color.White,
-        ) else ChikaColorScheme,
+        colorScheme = ChikaColorScheme,
         typography = ChikaTypography,
     ) {
         CompositionLocalProvider(
