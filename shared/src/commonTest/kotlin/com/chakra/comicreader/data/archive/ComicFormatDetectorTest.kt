@@ -4,9 +4,8 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 /**
- * The shared format-detection logic both platforms route imports through (Android's
- * ComicArchiveFactory and iOS's LibraryStore). Magic bytes win over the extension so a mislabeled
- * file opens the same way on both — the parity-critical case.
+ * The core format-detection logic used by Android's ComicArchiveFactory.
+ * Magic bytes win over the extension so a mislabeled file uses the correct backend.
  */
 class ComicFormatDetectorTest {
 

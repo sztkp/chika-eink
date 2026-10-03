@@ -31,8 +31,8 @@ class MlPanelDetector private constructor(
     private val outputTensor = interpreter.getOutputTensor(0)
     private val inputSize = inputTensor.shape().let { if (it.size == 4) it[1] else 640 } // NHWC
 
-    // YOLO output decoding (filter + NMS + letterbox-undo) is shared with iOS so both platforms
-    // detect identically; only input building and inference are platform-specific here.
+    // YOLO output decoding (filter + NMS + letterbox-undo) lives in the core module;
+    // Android input building and inference remain here.
     private val decoder = YoloPanelDecoder(inputSize = inputSize)
 
     init {
@@ -53,7 +53,7 @@ class MlPanelDetector private constructor(
             Log.e(TAG, "Inference failed; falling back to full page", t)
             DetectResult(emptyList(), emptyList(), page.width, page.height)
         }
-        // Single shared post-processing path (gap-fill → order → merge/divide), same as iOS.
+        // Single core post-processing path (gap-fill → order → merge/divide).
         val planned = PanelPipeline.zoomRegions(
             result.panels, result.bubbles, result.pageW, result.pageH, rightToLeft,
         )

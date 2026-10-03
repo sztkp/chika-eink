@@ -2,7 +2,7 @@
 """Export a trained .pt model to the .tflite the Chika app loads.
 
 Target: input [1,640,640,3] float32, output [1,N,6] end-to-end (x1,y1,x2,y2,score,cls) — produced
-by exporting with embedded NMS. This drops into iosApp/Sources (or app/src/main/assets) with no
+by exporting with embedded NMS. The Android asset location is app/src/main/assets; no
 pipeline change since the shared YoloPanelDecoder already handles the [1,N,6] layout.
 
 Primary path: Ultralytics `export(format='tflite', nms=True)`. If the onnx2tf→tflite step stalls

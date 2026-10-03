@@ -9,7 +9,7 @@ a comic reader that runs entirely on your device.
 
 **None.** Chika collects, stores, transmits, and shares **no personal data whatsoever**.
 
-- Chika has **no network access**. The Android app declares no `INTERNET` permission; the iOS app makes no network requests. The app itself does not transmit reading data.
+- Chika has **no network access**. The Android app declares no `INTERNET` permission. The app itself does not transmit reading data.
 - Comics you import are copied into the app's private storage on your device and are readable only by Chika.
 - Reading progress, library metadata, and settings are stored locally, subject to Android system backup settings.
 - Panel detection runs entirely on-device using a bundled machine-learning model. No page images or derived data are ever uploaded anywhere.

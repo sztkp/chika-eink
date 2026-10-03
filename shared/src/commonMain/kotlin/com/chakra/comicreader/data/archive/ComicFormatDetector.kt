@@ -5,8 +5,8 @@ enum class ComicFormat { CBZ, CBR, UNKNOWN }
 
 /**
  * Detects a comic's container format from its leading bytes, falling back to the file extension.
- * Shared by Android and iOS so both route a file the same way — a mislabeled ".cbz" that is really
- * a RAR (common in the wild) is opened as CBR on both platforms, not just one.
+ * Used by the Android archive factory for consistent file routing — a mislabeled ".cbz" that is really
+ * a RAR (common in the wild) is opened as CBR.
  */
 object ComicFormatDetector {
     private val ZIP_MAGIC = byteArrayOf(0x50, 0x4B, 0x03, 0x04)             // "PK\x03\x04"

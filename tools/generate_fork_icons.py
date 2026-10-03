@@ -23,8 +23,6 @@ for name, size in {
     "app/src/main/res/mipmap-xxxhdpi/ic_launcher.png": 192,
     "app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png": 192,
     "fastlane/metadata/android/en-US/images/icon.png": 512,
-    "iosApp/Sources/Assets.xcassets/AppIcon.appiconset/icon-1024.png": 1024,
-    "iosApp/Sources/Assets.xcassets/ChikaMark.imageset/icon-maroon.png": 256,
 }.items():
     target = Path(name)
     target.parent.mkdir(parents=True, exist_ok=True)

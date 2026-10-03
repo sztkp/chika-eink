@@ -92,8 +92,6 @@ upstream branding is claimed.
 
 ## Distribution notes
 
-- **Google Play / Apple App Store:** MPL-2.0 is compatible with both stores. (A strong-copyleft
-  license such as GPL would not be App-Store compatible — one reason MPL-2.0 was chosen.)
 - **F-Droid:** Chika bundles **prebuilt** native libraries (7-Zip-JBinding, TensorFlow Lite) and a
   **prebuilt model** asset, pulled from trusted Maven repos (JitPack / Google Maven). These are
   free-licensed and permitted, though F-Droid may flag the prebuilt model blob.

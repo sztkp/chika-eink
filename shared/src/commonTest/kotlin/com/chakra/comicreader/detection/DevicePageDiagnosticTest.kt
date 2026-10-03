@@ -7,11 +7,11 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 /**
- * Regression pin from the July 2026 iOS framing investigation: the raw detections for Vinland
+ * Regression pin from the upstream July 2026 framing investigation: the raw detections for Vinland
  * Saga v01 p159 (a 7-panel RTL page whose first panel is the tall top-right "woman behind the
  * curtain") must plan into 7 regions whose first camera nearly fills a phone screen. The on-device
  * render was observed diverging from this exact math, so this test pins what the shared pipeline
- * *should* hand every platform for that page.
+ * should hand the reader for that page.
  */
 class DevicePageDiagnosticTest {
     @Test
@@ -46,7 +46,7 @@ class DevicePageDiagnosticTest {
         assertTrue(abs(first.right - 0.9022f) < 0.01f, "region 1 right drifted: ${first.right}")
         assertTrue(abs(first.bottom - 0.4382f) < 0.01f, "region 1 bottom drifted: ${first.bottom}")
 
-        // Framed on an iPhone 12/13 Pro Max screen the panel nearly fills it: the page draws with
+        // Framed in a 428 × 926 viewport the panel nearly fills it: the page draws with
         // its top just below the screen top, not floating a third of the way down.
         val draw = computePageDraw(first, pageW, pageH, 428f, 926f, 0.98f)
         assertTrue(draw.top in 0f..20f, "page top should sit near the screen top, was ${draw.top}")

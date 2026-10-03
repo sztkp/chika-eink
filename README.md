@@ -69,9 +69,9 @@ CI builds the debug APK on every push/PR — see [`.github/workflows/ci.yml`](.g
 
 ## Architecture
 
-The platform-independent core lives in `:shared`, a Kotlin Multiplatform module (JVM + iOS
-targets) that `:app` consumes. The inherited iOS app remains in the repository; e-ink
-behavior changes currently target Android. Core reading, detection, archive handling, and
+The platform-independent core lives in `:shared`, a Kotlin module targeting JVM only
+that `:app` consumes. Its existing `commonMain` / `commonTest` layout is retained.
+This fork targets Android only. Core reading, detection, archive handling, and
 persistence remain unchanged.
 
 ```

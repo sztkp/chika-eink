@@ -53,12 +53,12 @@ python scripts/export_tflite.py --weights runs/detect/chika_panels/weights/best.
   --out manga_panel_detector_int8.tflite
 ```
 
-## Step 5 — drop into the app (iOS; Android intentionally left as-is)
-```bash
-cp manga_panel_detector_int8.tflite ../iosApp/Sources/manga_panel_detector_int8.tflite
-# rebuild the iOS app; the shared decoder consumes [1,N,6] unchanged.
-```
-Then sanity-check in the simulator with the debug overlay (see `chika-ios-test-loop` memory).
+## Step 5 — validate before replacing the Android model
+
+The Android model is intentionally unchanged in this fork. Test any experimental
+export's decoder compatibility and detection quality separately before replacing
+`app/src/main/assets/manga_panel_detector_int8.tflite`. Rebuild with
+`./gradlew :app:assembleDebug` and verify representative comics on an Android device.
 
 ## Honest expectations
 - **Will improve a lot:** color/Western comics (Batman), clean manga grids.

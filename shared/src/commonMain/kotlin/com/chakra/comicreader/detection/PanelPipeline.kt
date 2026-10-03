@@ -2,8 +2,8 @@ package com.chakra.comicreader.detection
 
 /**
  * The full shared post-detection pipeline in one call: raw detected boxes go in, final zoom
- * regions in reading order come out. Platform readers (Android ViewModel, iOS app) should call
- * this rather than composing [PanelOrdering] and [PanelPlanner] themselves so both stay in sync.
+ * regions in reading order come out. The Android reader ViewModel should call
+ * this rather than composing [PanelOrdering] and [PanelPlanner] themselves to keep the processing sequence consistent.
  */
 object PanelPipeline {
     /**

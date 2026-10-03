@@ -87,7 +87,7 @@ class PageLoader(
 
         fun defaultCacheBytes(): Int {
             val maxMemKb = (Runtime.getRuntime().maxMemory() / 1024L).toInt()
-            // A quarter of the heap, in bytes, capped — same formula iOS applies to physical RAM.
+            // A quarter of the heap, in bytes, capped by the core page-cache budget.
             val quarter = (maxMemKb / PageConstants.cacheMemoryDivisor) * 1024
             return minOf(quarter, PageConstants.cacheMaxBytes)
         }

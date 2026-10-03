@@ -7,7 +7,7 @@ class UnsupportedComicException(message: String) : Exception(message)
 
 /**
  * Opens a local comic [File] as a [ComicArchive]. Format detection (magic bytes, extension
- * fallback) lives in the shared [ComicFormatDetector] so Android and iOS route files identically.
+ * fallback) lives in the shared [ComicFormatDetector] to keep format routing consistent.
  */
 object ComicArchiveFactory {
 

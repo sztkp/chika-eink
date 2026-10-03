@@ -33,7 +33,7 @@ data class DetectResult(
 
 /**
  * Decodes a YOLO panel/text detector's raw output tensor into [Panel]s in normalized page
- * coordinates. Platform-independent so Android (TFLite) and iOS (Core ML) produce identical
+ * coordinates. Platform-independent so inference adapters can produce consistent
  * results from the same Manga109-trained model — only input building and inference differ per
  * platform. Class 0 = Panel, class 1 = Text/speech-balloon.
  *
@@ -170,9 +170,7 @@ class YoloPanelDecoder(
         const val PANEL_CLASS = 0
         const val TEXT_CLASS = 1
 
-        // The single source of truth for decoder tuning. Both platforms detect with these exact
-        // values — Android via the constructor defaults, iOS via [default]. (Kotlin default args
-        // don't surface to Swift, so iOS would otherwise repeat the literals and could drift.)
+        // The single source of truth for decoder tuning and constructor defaults.
         const val DEFAULT_INPUT_SIZE = 640
         const val DEFAULT_CONFIDENCE = 0.25f
         const val DEFAULT_NMS_IOU = 0.45f
