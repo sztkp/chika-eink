@@ -16,9 +16,6 @@ this notice does not purport to relicense their source or the training dataset.
 See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The detector was trained on
 Manga109-s. Dataset images and annotations are not redistributed.
 
-Matching application source, editable detector checkpoint, and pinned detector
-framework source are supplied with the GitHub release. The repository includes
-build instructions and experimental training/export tools. Exact reproduction of
-the upstream INT8 export and corresponding-source completeness remain unverified;
-this notice establishes the distribution license choice, not a claim that every
-source obligation has been independently verified. See [docs/LICENSING.md](docs/LICENSING.md).
+See [docs/LICENSING.md](docs/LICENSING.md) for source materials and unresolved
+corresponding-source obligations. This notice states the distribution license
+choice; it does not establish that every source obligation has been verified.

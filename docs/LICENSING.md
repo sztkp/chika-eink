@@ -1,88 +1,96 @@
-# Licensing audit — 3 October 2026
+# Licensing review
 
-**Status: the unRAR compatibility conflict is removed from new builds; model distribution review remains open.**
-Application source retains MPL-2.0. The combined model-bearing release is distributed under AGPL-3.0, with MPL-covered
-source additionally available under AGPL through MPL section 3.3; see
-[the distribution license notice](../DISTRIBUTION_LICENSE.md). Detection code and
-weights are unchanged.
+The combined app is distributed under AGPL-3.0, with MPL-covered application source
+additionally available under AGPL through MPL 2.0 section 3.3. The model's
+corresponding-source review remains open; a published release is not evidence that
+all distribution obligations are satisfied.
 
-## Findings corrected
+## Combined-work license
 
-- README and notices now identify Libron v0.25, OFL-1.1, and its Readerly/Newsreader origins.
-  All four font files were checked byte-for-byte against the official desktop release.
-- Added Apache Commons Compress/Codec/IO/Lang artifact LICENSE and NOTICE files.
-- Replaced the stale TensorFlow Lite coordinate with the actual LiteRT 1.4.2 dependencies;
-  retained the AARs' license texts, including Caffe's BSD attribution.
-- Removed 7-Zip-JBinding, its archive backend and bundled notices, and the library
-  replacement build option. CBR/RAR is recognized for an unsupported-format message;
-  only CBZ/ZIP is readable.
-- Corrected the bundled model's license from Apache-2.0 to AGPL-3.0, following the
-  author's September 2026 correction. Removed the blanket compatibility/clearance claim.
-- Checked runtime dependency metadata and local artifacts, not just direct Gradle entries.
-  Native transitive source/license completeness is still a release-review item.
-- Build configuration packages the notices and license texts in `assets/legal/`, without
-  requiring duplicated manually maintained asset copies.
+**Finding.** The distribution route is the AGPL Larger Work described in
+[DISTRIBUTION_LICENSE.md](../DISTRIBUTION_LICENSE.md). The original
+[MPL-2.0 text](../LICENSE) and recipients' MPL rights are preserved; third-party
+components retain their own terms.
 
-## Model identity and remaining decision
+**Evidence.** [MPL 2.0 sections 1.12 and 3.3](https://www.mozilla.org/en-US/MPL/2.0/)
+allow eligible MPL-covered code to be additionally distributed under a secondary
+license when combined with a work under that license. AGPL-3.0 is a secondary
+license. The detector's upstream declaration supplies the AGPL component.
 
-- File: `app/src/main/assets/manga_panel_detector_int8.tflite`.
-- SHA-256: `b1a7d8d4492e04a777ae0d3efd9dc1fbd6e8f361971eadb813279ce3dfd1b464`.
-- Matches the model repository's LFS hash at observed revision
-  `40a2854663d537563cfb95c370288a84c6505b9a`.
-- [Pinned upstream model card](https://huggingface.co/leoxs22/manga-panel-detector-yolo26n/blob/40a2854663d537563cfb95c370288a84c6505b9a/README.md).
-- [Dataset owner's Manga109-s terms](https://huggingface.co/datasets/hal-utokyo/Manga109-s).
+**Review and consequence.** This route depends on the covered code being eligible
+for secondary licensing and on satisfying the AGPL source obligations. Preserve
+applicable notices and check inherited/new contributions for incompatible terms.
+The root MPL license alone does not describe the combined APK's distribution terms.
 
-Before treating a model-bearing distribution as cleared, select and validate a route:
-retain the model with a suitable copyleft/source-compliance approach, obtain sufficient
-alternative permission, or replace it with a model whose rights fit the intended
-licensing. An old Apache label is not evidence of permission: the author explicitly
-says that grant was mistaken. Merely adding the AGPL text does not resolve the issue.
+## Bundled detector and source materials
 
-## Archive-library conflict resolved for new builds
+**Finding.** The bundled detector is declared AGPL-3.0 upstream, not Apache-2.0.
 
-The previous 7-Zip-JBinding dependency included LGPL code plus the unRAR restriction,
-which conflicted with the proposed AGPL/GPL combined-work distribution route.
-It has now been removed entirely, including its RAR reader, Gradle dependency,
-replacement-AAR option, shrinker rules, and packaged license materials. New builds
-read CBZ/ZIP with Apache Commons Compress and reject CBR/RAR with conversion guidance.
-Merely renaming a RAR file to CBZ does not make it readable.
+**Evidence.** The [pinned model card](https://huggingface.co/leoxs22/manga-panel-detector-yolo26n/blob/40a2854663d537563cfb95c370288a84c6505b9a/README.md)
+identifies Ultralytics YOLO26 base weights and explains that the author's previous
+Apache grant was mistaken. That label cannot establish alternative permission.
 
-Existing RAR library records and files are left intact. Users must convert and
-reimport them; reading progress is not automatically transferred. ZIP containers
-remain readable even with a misleading extension.
+| Material | Identity |
+| --- | --- |
+| Bundled file | `app/src/main/assets/manga_panel_detector_int8.tflite` |
+| TFLite SHA-256 | `b1a7d8d4492e04a777ae0d3efd9dc1fbd6e8f361971eadb813279ce3dfd1b464` |
+| Matching upstream revision | `40a2854663d537563cfb95c370288a84c6505b9a` |
+| Editable FP32 checkpoint SHA-256 | `73e0fb587ea3afe0d17aa9f0c3b1f5a8001b3ecbc3c77091e0730654b0da9146` |
+| Framework identified by checkpoint metadata | Ultralytics 8.4.31, commit [`65b736045f7e8d54bbf3fd27709f4b1321b3b532`](https://github.com/ultralytics/ultralytics/tree/65b736045f7e8d54bbf3fd27709f4b1321b3b532) |
 
-The detector is unchanged. Removing the archive library resolves this specific
-compatibility conflict; it does not itself complete the model's corresponding-source
-obligations. The combined-work license choice is documented separately. LiteRT native components
-still require their applicable notices and build/channel checks.
+The published [v0.3.0 release](https://github.com/sztkp/chika-eink/releases/tag/v0.3.0)
+includes matching app source and a dependency source bundle containing the editable
+checkpoint, pinned Ultralytics source, model card, and notices.
+[Experimental training/export scripts](../training/README.md) are not a verified
+reproduction of the bundled model.
 
-## Release source materials
+**Unresolved issue.** Exact INT8 export reproduction and complete corresponding-source
+coverage remain unverified. Collecting a checkpoint and framework source does not
+establish that all required build/export materials are present.
 
-The private v0.3.0 candidate includes the detector's editable FP32 checkpoint from
-the pinned model revision above, SHA-256
-`73e0fb587ea3afe0d17aa9f0c3b1f5a8001b3ecbc3c77091e0730654b0da9146`.
-Checkpoint metadata identifies Ultralytics 8.4.31, source commit
-[`65b736045f7e8d54bbf3fd27709f4b1321b3b532`](https://github.com/ultralytics/ultralytics/tree/65b736045f7e8d54bbf3fd27709f4b1321b3b532).
-These source archives, the model card and retained licenses are collected with the
-older candidate. Its archive-library source bundle and binaries are historical;
-new release assets must be rebuilt from the updated source. The Manga109-s
-training/calibration dataset is not redistributed.
-Exact INT8 export reproducibility and complete corresponding-source obligations
-remain review items; collecting these materials is not a clearance claim.
+**Distribution consequence.** Verify source completeness and the applicable AGPL
+obligations before claiming clearance. If that cannot be established, obtain
+sufficient alternative permission or use a model with a validated licensing route.
+Including the AGPL text alone does not establish compliance.
 
-The root MPL text is preserved, including its secondary-license provisions. The
-model-bearing Larger Work is distributed under AGPL-3.0 with the MPL-covered
-application source additionally available under AGPL through section 3.3.
+## Training data
 
-## Rechecking after changes
+**Finding and evidence.** The model was trained on Manga109-s. The
+[dataset owner's terms](https://huggingface.co/datasets/hal-utokyo/Manga109-s)
+permit commercial use of experimental results, require clear dataset attribution
+for published models, and prohibit dataset redistribution. They also restrict
+publication or sale of dataset images.
 
-1. Resolve runtime graphs with `./gradlew :app:dependencies --configuration debugRuntimeClasspath`
-   and `releaseRuntimeClasspath` when preparing a release; build-time tools are separate.
-2. Check new artifacts' POMs, embedded LICENSE/NOTICE files, and native subcomponents.
-3. Update retained texts, [the notice inventory](../THIRD_PARTY_NOTICES.md), and
-   [text provenance](../THIRD_PARTY_LICENSES/README.md).
-4. Build the APK and verify `assets/legal/` contains the source notice, font attribution,
-   component notices, and applicable license texts.
-5. Resolve the model licensing and corresponding-source items before making a distribution-clearance claim.
+**Distribution consequence.** Keep the training disclosure in
+[THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md); do not include dataset images
+or annotations in releases. These permissions do not replace the model's AGPL
+obligations. Any source-reproduction route requiring dataset access must respect
+the dataset's separate terms.
 
-Previous binaries and Git history are not retroactively altered by these corrections.
+## Runtime libraries and fonts
+
+**Finding and evidence.** Archives use Apache Commons Compress for CBZ/ZIP only.
+The source and Gradle catalog contain no 7-Zip-JBinding backend or dependency, so
+the unRAR restriction is not part of the current archive implementation.
+LiteRT (`com.google.ai.edge.litert:litert` and `litert-api`, 1.4.2) supplies inference;
+its AAR license texts include Caffe's BSD attribution. The Commons Compress,
+Codec, IO, and Lang artifact LICENSE/NOTICE files are retained.
+
+Libron v0.25 is OFL-1.1, derived from Readerly and Newsreader. The four bundled TTFs
+were checked against the official desktop release. Historical Anton/Archivo
+license texts are retained, but those fonts are not bundled. Exact text sources
+are recorded in [license provenance](../THIRD_PARTY_LICENSES/README.md).
+
+**Review and consequence.** The [component inventory](../THIRD_PARTY_NOTICES.md)
+is not an exhaustive native-code SBOM. Check resolved transitive dependencies and
+native subcomponent terms when preparing a release; top-level dependency metadata
+and included license texts alone do not establish all source/notice obligations.
+
+## Recheck when components change
+
+1. Resolve `debugRuntimeClasspath` and `releaseRuntimeClasspath` with
+   `./gradlew :app:dependencies --configuration <configuration>`.
+2. Inspect artifact POMs, embedded LICENSE/NOTICE files, and native subcomponents.
+3. Update the component inventory and license provenance; verify their inclusion
+   under `assets/legal/` in the APK.
+4. Reassess combined-work compatibility and corresponding-source coverage.

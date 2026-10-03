@@ -17,9 +17,9 @@ Features:
   progress with confirmation. Standard volume/page buttons navigate in the reader.
 * No accounts, no ads, no trackers, no network access.
 
-Application source is MPL-2.0; bundled Libron fonts are OFL-1.1 and the detector
-weights are declared AGPL-3.0 upstream. Distribution licensing review remains open;
-see the repository's THIRD_PARTY_NOTICES.md and docs/LICENSING.md.
+The combined app is distributed under AGPL-3.0; application source also retains
+MPL-2.0. Bundled components have separate terms. Model source compliance remains
+under review; see the repository's DISTRIBUTION_LICENSE.md and docs/LICENSING.md.
 
 Upstream: https://github.com/batunii/chika
 Fork: https://github.com/sztkp/chika-eink

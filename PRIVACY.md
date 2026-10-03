@@ -15,7 +15,7 @@ reading progress, library metadata, and settings are stored locally on your devi
 - Reading progress, library metadata, and settings are stored locally. The database
   may be backed up by Android; imported files, covers, and preferences are excluded
   by the current backup rules.
-- Panel detection runs entirely on-device using a bundled machine-learning model. No page images or derived data are ever uploaded anywhere.
+- Panel detection runs entirely on-device using a bundled machine-learning model. The app does not transmit page images or detector output.
 - Chika-eInk contains no analytics, no crash reporting, no advertising, and no third-party tracking SDKs.
 
 ## Data sharing
@@ -24,7 +24,7 @@ We share no data with anyone, because we have none.
 
 ## Data deletion
 
-Uninstalling the app deletes everything Chika-eInk stores: imported comic copies, covers, reading progress, and settings.
+Uninstalling the app deletes its local data: imported comic copies, covers, reading progress, and settings.
 
 ## Android backups
 

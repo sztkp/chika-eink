@@ -1,9 +1,7 @@
 # Experimental panel-detector training tools
 
-These inherited scripts are retained for research reference. They are not part
-of the Android build and have not been used to retrain Chika-eInk's bundled model.
-No datasets or trained checkpoints are included. Historical run logs have been
-removed; previous Git commits retain them.
+These experimental scripts are separate from the Android build and do not reproduce
+the bundled model. No datasets or trained checkpoints are included in this directory.
 
 ## Scripts
 

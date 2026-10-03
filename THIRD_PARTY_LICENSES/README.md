@@ -17,6 +17,4 @@ other files or by itself establish all binary-distribution obligations. See
 | `litert-1.4.2-LICENSE`, `litert-api-1.4.2-LICENSE` | Root `LICENSE` from the respective resolved Google Maven AARs |
 
 Runtime artifact texts were extracted from the Gradle-resolved versions listed here,
-without modifying their copyright notices or license wording. Historical font notices
-are deliberately preserved rather than silently deleted. All these files are copied
-into APK assets by the build.
+without modifying their copyright notices or license wording. All these files are copied into APK assets by the build.

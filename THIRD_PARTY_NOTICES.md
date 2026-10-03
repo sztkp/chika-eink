@@ -1,21 +1,15 @@
 # Third-Party Notices — Chika-eInk
 
-Reviewed 3 October 2026. Chika-eInk is an independent fork of
-[Chika](https://github.com/batunii/chika) by Chakra (Chalchitra Krida).
-The combined model-bearing release is distributed under [AGPL-3.0](DISTRIBUTION_LICENSE.md).
-Application source retains MPL-2.0 and is additionally distributed under AGPL-3.0
-for this Larger Work through MPL section 3.3; bundled components retain their own licenses. Source: <https://github.com/sztkp/chika-eink>.
-
-**Distribution review is incomplete.** The bundled model is AGPL-3.0, not Apache-2.0,
-and its combined-work licensing and corresponding-source obligations need verification. See
-[the audit and remaining decisions](docs/LICENSING.md). Keeping notices does not by
-itself establish compliance with every dependency's distribution terms.
+Chika-eInk is an independent fork of [Chika](https://github.com/batunii/chika)
+by Chakra (Chalchitra Krida). Source: <https://github.com/sztkp/chika-eink>.
+[Combined-work distribution terms](DISTRIBUTION_LICENSE.md) and
+[licensing review](docs/LICENSING.md) apply alongside the component notices below.
 
 ## Component inventory
 
 | Component | Version / scope | License / notice |
 |---|---|---|
-| Chika-eInk application source | including inherited Chika code | [MPL-2.0](LICENSE) |
+| Chika-eInk application source | including inherited Chika code | [MPL-2.0](LICENSE); additionally AGPL-3.0 for the [Larger Work](DISTRIBUTION_LICENSE.md) |
 | Kotlin standard library | 2.2.10 | Apache-2.0 |
 | Kotlin coroutines | 1.9.0 | Apache-2.0 |
 | Kotlin serialization | resolved 1.6.3 | Apache-2.0 |
@@ -46,10 +40,9 @@ Apache Commons Compress, Codec, IO, and Lang are Apache Software Foundation proj
 Their artifact-specific LICENSE and NOTICE files are retained in
 [THIRD_PARTY_LICENSES](THIRD_PARTY_LICENSES/README.md).
 
-The runtime is **LiteRT**, `com.google.ai.edge.litert:litert:1.4.2` and `litert-api:1.4.2`,
-not the formerly documented `org.tensorflow:tensorflow-lite:2.16.1`. The `org.tensorflow.lite`
-Java package remains in use. Both AAR license files, including their Caffe attribution
-and BSD conditions, are retained unmodified.
+LiteRT uses `com.google.ai.edge.litert:litert:1.4.2` and `litert-api:1.4.2`.
+Both AAR license files, including their Caffe attribution and BSD conditions,
+are retained unmodified.
 
 ## Libron fonts
 
@@ -59,17 +52,15 @@ Unmodified desktop TTFs from [the official v0.25 release](https://github.com/nic
 
 [OFL-1.1 license and copyright notices](THIRD_PARTY_LICENSES/OFL-1.1-Libron.txt) and
 [upstream COPYRIGHT](THIRD_PARTY_LICENSES/Libron-COPYRIGHT.txt) are retained and packaged
-with the app. Font files are not relicensed under MPL. Anton and Archivo are no longer
-bundled; their original license texts remain for historical attribution.
+with the app. Font files remain under OFL-1.1.
 
 ## Panel detector and training data
 
 Author: Leandro Narosky (`leoxs22`).
-[Model card and licensing correction](https://huggingface.co/leoxs22/manga-panel-detector-yolo26n#license).
-The author corrected an erroneous Apache-2.0 label to **AGPL-3.0** in September 2026,
-citing the Ultralytics YOLO26 base weights. The bundled TFLite bytes match the upstream
-file; revision and SHA-256 are recorded in [docs/LICENSING.md](docs/LICENSING.md).
-[AGPL-3.0 text](THIRD_PARTY_LICENSES/AGPL-3.0.txt) is retained.
+[Model card](https://huggingface.co/leoxs22/manga-panel-detector-yolo26n#license).
+The weights are declared **AGPL-3.0** and derive from Ultralytics YOLO26 base weights.
+The [AGPL-3.0 text](THIRD_PARTY_LICENSES/AGPL-3.0.txt) is included; model identity
+and source evidence are recorded in [docs/LICENSING.md](docs/LICENSING.md).
 
 The model was trained on **Manga109-s**, maintained by the Manga109 project at the
 University of Tokyo. This notice discloses that training-data usage. The
@@ -79,18 +70,11 @@ dataset attribution for published models, and forbid dataset redistribution.
 Dataset permissions do not replace the model's AGPL obligations. Dataset images are
 not bundled in the app.
 
-The model author describes copyleft requirements for projects distributing the model.
-The combined-work distribution license is AGPL-3.0, with the MPL application source
-additionally distributed under AGPL through MPL section 3.3. Corresponding-source
-completeness remains under review. The weights and detection behavior are unchanged.
-Do not describe the current model-bearing APK as Apache-only or MPL-only.
-
 ## Branding and artwork
 
 Upstream notices reserve rights in the Chika / Chitra Katha logo and wordmark outside
 its code license. The fork identifies its upstream origin without claiming ownership
-or endorsement. Original promotional images and graphical branding were removed or
-replaced. The fork's monochrome book icon is original artwork under MPL-2.0.
+or endorsement. The fork's monochrome book icon is original artwork under MPL-2.0.
 
 The three README screenshots are emulator captures showing original manga artwork
 generated with Codex, without external comic references. The fork contributes the
@@ -104,5 +88,5 @@ Builds include this file, `LICENSE`, `DISTRIBUTION_LICENSE.md`, the licensing au
 `THIRD_PARTY_LICENSES/` under **`assets/legal/`**. The app's menu also links to this
 repository's notices. Corresponding application source is available at
 <https://github.com/sztkp/chika-eink>; distributors should identify the exact commit
-used for their binary. Model corresponding-source obligations remain subject to the
-release review above. No store or repository acceptance is claimed.
+used for their binary. Model corresponding-source completeness remains subject to
+[licensing review](docs/LICENSING.md).
