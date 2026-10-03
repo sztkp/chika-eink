@@ -14,6 +14,11 @@ Panel selection draws the existing `currentCamera` directly with the unchanged
 `computePageDraw` math. The existing 220 ms double-tap recognition window remains.
 Pinch, pan, double-tap, tap zones and page flicks remain available. The reader shows
 plain page/panel counts; its progress slider and redundant title subtitle were removed.
+The reader uses a compact 48dp control row with Android's standard back arrow and
+a narrow page/panel count row. Artwork is framed in the space between these rows,
+so controls do not cover it. Hiding controls expands the artwork viewport immediately.
+System bars stay hidden during reading, remain available by edge swipe, and return
+when leaving the reader.
 No dependencies, detection/ML, panel planning/order, archives, persistence,
 page decoding or caches are changed. The fork targets Android only; the core module
 retains its existing source layout with a JVM target.

@@ -2,15 +2,14 @@ package com.chakra.comicreader.ui.reader
 
 import android.app.Activity
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.border
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.calculatePan
@@ -22,7 +21,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.ZoomOutMap
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -52,7 +51,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
@@ -78,16 +77,15 @@ fun ReaderScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     var chromeVisible by remember { mutableStateOf(true) }
 
-    // Go fully immersive (hide the status/nav bars, incl. the battery/clock icons) while reading;
-    // bring the bars back with the chrome, and restore them when leaving the reader.
+    // Keep the reader immersive, including when its compact controls are visible.
+    // System bars remain available by edge swipe and are restored on leaving the reader.
     val view = LocalView.current
     val window = (view.context as? Activity)?.window
-    LaunchedEffect(chromeVisible, window) {
+    LaunchedEffect(window) {
         window ?: return@LaunchedEffect
         val controller = WindowCompat.getInsetsController(window, view)
         controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        if (chromeVisible) controller.show(WindowInsetsCompat.Type.systemBars())
-        else controller.hide(WindowInsetsCompat.Type.systemBars())
+        controller.hide(WindowInsetsCompat.Type.systemBars())
     }
     DisposableEffect(window) {
         onDispose {
@@ -96,67 +94,54 @@ fun ReaderScreen(
         }
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+    Column(
+        modifier = Modifier.fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .statusBarsPadding().navigationBarsPadding(),
     ) {
-        when {
-            state.error != null -> ErrorView(state.error!!)
-            state.page == null -> LoadingView()
-            else -> PageViewer(
-                state = state,
-                onNext = viewModel::next,
-                onPrev = viewModel::previous,
-                onNextPage = viewModel::nextPage,
-                onPrevPage = viewModel::previousPage,
-                onToggleChrome = { chromeVisible = !chromeVisible },
-                onShowFullPage = viewModel::showFullPage,
-            )
-        }
-
         if (chromeVisible) {
-            Box(Modifier.align(Alignment.TopCenter)) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Ink)
-                        .statusBarsPadding()
-                        .padding(start = 12.dp, end = 6.dp, top = 8.dp, bottom = 18.dp),
-                ) {
-                    Box(
-                        Modifier.size(38.dp).clip(CircleShape).background(Ink)
-                            .clickable(onClick = onBack),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.KeyboardArrowLeft, "Back",
-                            tint = Cream, modifier = Modifier.size(24.dp),
-                        )
-                    }
-                    Spacer(Modifier.size(12.dp))
-                    Text(
-                        state.title, fontFamily = Libron, fontWeight = FontWeight.Bold,
-                        fontSize = 14.sp, color = Cream, maxLines = 1, overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.weight(1f),
-                    )
-                    IconButton(onClick = viewModel::showFullPage) {
-                        Icon(Icons.Default.ZoomOutMap, contentDescription = "Show whole page", tint = Cream)
-                    }
-                    DirectionChip(rightToLeft = state.rightToLeft, onClick = viewModel::toggleReadingDirection)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth().background(Ink)
+                    .padding(horizontal = 4.dp),
+            ) {
+                IconButton(onClick = onBack) {
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back", tint = Cream)
                 }
+                Text(
+                    state.title, fontFamily = Libron, fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp, color = Cream, maxLines = 1, overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f),
+                )
+                IconButton(onClick = viewModel::showFullPage) {
+                    Icon(Icons.Default.ZoomOutMap, contentDescription = "Show whole page", tint = Cream)
+                }
+                DirectionChip(rightToLeft = state.rightToLeft, onClick = viewModel::toggleReadingDirection)
+            }
+        }
+        // Frame into the available artwork area rather than drawing under either bar.
+        Box(Modifier.weight(1f).fillMaxWidth().clipToBounds()) {
+            when {
+                state.error != null -> ErrorView(state.error!!)
+                state.page == null -> LoadingView()
+                else -> PageViewer(
+                    state = state,
+                    onNext = viewModel::next,
+                    onPrev = viewModel::previous,
+                    onNextPage = viewModel::nextPage,
+                    onPrevPage = viewModel::previousPage,
+                    onToggleChrome = { chromeVisible = !chromeVisible },
+                    onShowFullPage = viewModel::showFullPage,
+                )
             }
         }
         if (chromeVisible && state.pageCount > 0) {
-            Box(Modifier.align(Alignment.BottomCenter)) {
-                ReaderCounts(
-                    pageIndex = state.pageIndex,
-                    pageCount = state.pageCount,
-                    panelNumber = state.panelLabel,
-                    panelCount = state.panels.size,
-                )
-            }
+            ReaderCounts(
+                pageIndex = state.pageIndex,
+                pageCount = state.pageCount,
+                panelNumber = state.panelLabel,
+                panelCount = state.panels.size,
+            )
         }
     }
 }
@@ -172,8 +157,7 @@ private fun ReaderCounts(
         modifier = Modifier
             .fillMaxWidth()
             .background(Ink)
-            .navigationBarsPadding()
-            .padding(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 12.dp),
+            .padding(horizontal = 12.dp, vertical = 2.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -396,11 +380,9 @@ private const val SWIPE_HORIZONTAL_BIAS = 1.2f
 private fun DirectionChip(rightToLeft: Boolean, onClick: () -> Unit) {
     Row(
         modifier = Modifier
-            .clip(CircleShape)
-            .background(Ink)
-            .border(1.dp, Cream, CircleShape)
+            .heightIn(min = 48.dp)
             .clickable(onClick = onClick)
-            .padding(horizontal = 10.dp, vertical = 6.dp),
+            .padding(horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(5.dp),
     ) {
