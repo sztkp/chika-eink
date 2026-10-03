@@ -27,8 +27,11 @@ Run `python3 tools/generate_fork_icons.py` from the repository root to regenerat
 
 ## Fork screenshots
 
-The current `docs/screens/{library,reader,panel,menu}.png` are unedited captures of
-this fork running on an Android API 37 emulator at 1080 × 2400. They show Libron
+The current `docs/screens/{library,reader,panel,menu,sorting,actions,progress}.png`
+are unedited captures of the revised UI (source commit `613233b`), refreshed on
+2026-10-03. They run on an Android API 37 emulator configured at 824 × 1648,
+300dpi, and font scale 0.85, matching the connected Palma 2's reported UI settings.
+The emulator's Android version differs from that device's Android 13. They show Libron
 typography and the original “Quiet Library Demo” comic, made from simple geometric
 drawings for this fork. These replace the removed upstream screenshots; they are
 not photographs of a BOOX device and do not demonstrate physical e-ink refresh.
