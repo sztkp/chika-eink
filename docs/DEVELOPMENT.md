@@ -37,8 +37,10 @@ Changes to those pinned versions need separate compatibility testing.
   and screens, Room storage, preferences, archive implementations, bitmap loading,
   and LiteRT inference.
 
-The app remains Android-only. Package ID `com.chakra.comicreader` is retained;
-changing it would affect installation and data compatibility.
+The app remains Android-only. Its installed application ID is
+`io.github.sztkp.chikaeink`; the namespace and Kotlin/Java source packages remain
+`com.chakra.comicreader`. The fork installs separately from upstream Chika and
+old-ID fork builds, with independent app data and Android backups.
 
 ## Panel reading
 

@@ -14,8 +14,10 @@ Use debug builds for development and device testing. The [release workflow](RELE
 builds signed candidates from explicitly selected version tags; it does not publish
 them automatically. Resolve the documented review before public distribution.
 
-The package ID remains `com.chakra.comicreader`. A fork signed with a different key
-cannot update an upstream installation. Plan any identity/signing change separately.
+The Android application ID is `io.github.sztkp.chikaeink`, so the fork installs
+alongside upstream Chika. It has its own library, settings, progress and backups;
+existing upstream/old-ID fork data is not automatically migrated. The immediate
+distribution target is a signed APK attached to GitHub Releases.
 
 - [Source](https://github.com/sztkp/chika-eink)
 - [Issues](https://github.com/sztkp/chika-eink/issues)

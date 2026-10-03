@@ -22,14 +22,13 @@ android {
     buildToolsVersion = "36.1.0"
 
     defaultConfig {
-        applicationId = "com.chakra.comicreader"
+        applicationId = "io.github.sztkp.chikaeink"
         minSdk = 26
         targetSdk = 36
         // versionName comes from the git tag in CI (VERSION_NAME), else this default.
         // versionCode is derived deterministically from MAJOR*10000 + MINOR*100 + PATCH so it is
-        // reproducible and monotonically increasing across all channels (Play, F-Droid, sideload)
-        // — F-Droid builds from source and requires a stable, increasing versionCode. A pre-release
-        // suffix is ignored per component (e.g. "0.2.1-beta" → 0.2.1 → 20100... → 201).
+        // reproducible for release tags and sideloaded APKs. A prerelease suffix is ignored per
+        // component (e.g. "0.2.1-beta" → 0.2.1 → 201).
         val appVersionName = System.getenv("VERSION_NAME") ?: "0.2.1"
         versionName = appVersionName
         versionCode = appVersionName.split('.').map { part ->
