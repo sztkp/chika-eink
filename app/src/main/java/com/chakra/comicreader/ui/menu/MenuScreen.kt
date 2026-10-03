@@ -38,8 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chakra.comicreader.ui.brand.ChikaWordmark
 import com.chakra.comicreader.ui.brand.OchreBadge
-import com.chakra.comicreader.ui.theme.Anton
-import com.chakra.comicreader.ui.theme.Archivo
+import com.chakra.comicreader.ui.theme.Libron
 import com.chakra.comicreader.ui.theme.Cream
 import com.chakra.comicreader.ui.theme.CreamMuted
 import com.chakra.comicreader.ui.theme.Crimson
@@ -120,8 +119,8 @@ fun MenuScreen(
             Spacer(Modifier.size(14.dp))
             Text(
                 "Independent fork of Chika by Chakra",
-                fontFamily = Archivo,
-                fontWeight = FontWeight.SemiBold,
+                fontFamily = Libron,
+                fontWeight = FontWeight.Bold,
                 fontSize = 14.sp,
                 color = Cream,
             )
@@ -129,8 +128,8 @@ fun MenuScreen(
             Text(
                 "Chika-eInk is a fork of a comic reader that detects panels on-device and guides you through each " +
                     "page, panel by panel.",
-                fontFamily = Archivo,
-                fontWeight = FontWeight.Medium,
+                fontFamily = Libron,
+                fontWeight = FontWeight.Normal,
                 fontSize = 13.sp,
                 lineHeight = 19.sp,
                 color = Cream,
@@ -150,8 +149,8 @@ fun MenuScreen(
             // ---- Support -------------------------------------------------------------
             Text(
                 "Chika is free and made with care. If it brings you joy, you can support its making.",
-                fontFamily = Archivo,
-                fontWeight = FontWeight.Medium,
+                fontFamily = Libron,
+                fontWeight = FontWeight.Normal,
                 fontSize = 12.sp,
                 lineHeight = 17.sp,
                 color = CreamMuted,
@@ -171,7 +170,7 @@ fun MenuScreen(
                 Spacer(Modifier.size(10.dp))
                 Text(
                     "SUPPORT UPSTREAM",
-                    fontFamily = Anton,
+                    fontFamily = Libron, fontWeight = FontWeight.Bold,
                     fontSize = 15.sp,
                     letterSpacing = 0.5.sp,
                     color = Ink,
@@ -180,8 +179,8 @@ fun MenuScreen(
             Spacer(Modifier.size(6.dp))
             Text(
                 "github.com/batunii/chika",
-                fontFamily = Archivo,
-                fontWeight = FontWeight.SemiBold,
+                fontFamily = Libron,
+                fontWeight = FontWeight.Bold,
                 fontSize = 11.sp,
                 color = Ochre,
                 modifier = Modifier.clickable(onClick = openDonation).padding(top = 2.dp),
@@ -194,8 +193,8 @@ fun MenuScreen(
 private fun LinkRow(text: String, onClick: () -> Unit) {
     Text(
         text,
-        fontFamily = Archivo,
-        fontWeight = FontWeight.SemiBold,
+        fontFamily = Libron,
+        fontWeight = FontWeight.Bold,
         fontSize = 12.sp,
         color = Ochre,
         modifier = Modifier.clickable(onClick = onClick).padding(vertical = 2.dp),
@@ -206,8 +205,8 @@ private fun LinkRow(text: String, onClick: () -> Unit) {
 private fun SectionLabel(text: String) {
     Text(
         text,
-        fontFamily = Archivo,
-        fontWeight = FontWeight.ExtraBold,
+        fontFamily = Libron,
+        fontWeight = FontWeight.Bold,
         fontSize = 9.sp,
         letterSpacing = 2.5.sp,
         color = Ochre,
@@ -234,15 +233,15 @@ private fun ToggleRow(
         Column(Modifier.weight(1f).padding(end = 12.dp)) {
             Text(
                 title,
-                fontFamily = Archivo,
+                fontFamily = Libron,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp,
                 color = Cream,
             )
             Text(
                 subtitle,
-                fontFamily = Archivo,
-                fontWeight = FontWeight.Medium,
+                fontFamily = Libron,
+                fontWeight = FontWeight.Normal,
                 fontSize = 10.5.sp,
                 lineHeight = 14.sp,
                 color = CreamMuted,
@@ -251,7 +250,7 @@ private fun ToggleRow(
         }
         Text(
             if (checked) "ON" else "OFF",
-            fontFamily = Archivo,
+            fontFamily = Libron,
             fontWeight = FontWeight.Bold,
             color = Cream,
             modifier = Modifier.border(1.dp, Cream).padding(8.dp),

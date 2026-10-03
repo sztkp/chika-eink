@@ -62,8 +62,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chakra.comicreader.ui.brand.PageCoin
-import com.chakra.comicreader.ui.theme.Anton
-import com.chakra.comicreader.ui.theme.Archivo
+import com.chakra.comicreader.ui.theme.Libron
 import com.chakra.comicreader.ui.theme.Cream
 import com.chakra.comicreader.ui.theme.CreamMuted
 import com.chakra.comicreader.ui.theme.Ink
@@ -143,11 +142,11 @@ fun ReaderScreen(
                     Spacer(Modifier.size(12.dp))
                     Column(Modifier.weight(1f)) {
                         Text(
-                            state.title, fontFamily = Archivo, fontWeight = FontWeight.ExtraBold,
+                            state.title, fontFamily = Libron, fontWeight = FontWeight.Bold,
                             fontSize = 14.sp, color = Cream, maxLines = 1, overflow = TextOverflow.Ellipsis,
                         )
                         Text(
-                            pageStatus(state), fontFamily = Archivo, fontWeight = FontWeight.SemiBold,
+                            pageStatus(state), fontFamily = Libron, fontWeight = FontWeight.Bold,
                             fontSize = 9.sp, letterSpacing = 1.4.sp, color = CreamMuted,
                             modifier = Modifier.padding(top = 2.dp),
                         )
@@ -196,7 +195,7 @@ private fun PageScrubber(
         ) {
             Text(
                 "TAP TO ADVANCE",
-                fontFamily = Anton,
+                fontFamily = Libron, fontWeight = FontWeight.Bold,
                 fontSize = 12.sp,
                 letterSpacing = 2.sp,
                 color = CreamMuted,
@@ -432,7 +431,7 @@ private fun DirectionChip(rightToLeft: Boolean, onClick: () -> Unit) {
         Icon(Icons.Default.SwapHoriz, contentDescription = null, tint = Cream, modifier = Modifier.size(15.dp))
         Text(
             if (rightToLeft) "RTL" else "LTR",
-            fontFamily = Archivo,
+            fontFamily = Libron,
             fontWeight = FontWeight.Bold,
             fontSize = 11.sp,
             letterSpacing = 1.sp,

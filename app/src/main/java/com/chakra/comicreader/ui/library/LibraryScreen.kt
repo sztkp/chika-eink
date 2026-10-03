@@ -66,8 +66,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chakra.comicreader.data.db.ComicEntity
 import com.chakra.comicreader.ui.brand.ChikaWordmark
 import com.chakra.comicreader.ui.brand.OchreBadge
-import com.chakra.comicreader.ui.theme.Anton
-import com.chakra.comicreader.ui.theme.Archivo
+import com.chakra.comicreader.ui.theme.Libron
 import com.chakra.comicreader.ui.theme.Cream
 import com.chakra.comicreader.ui.theme.CreamMuted
 import com.chakra.comicreader.ui.theme.Crimson
@@ -147,14 +146,14 @@ fun LibraryScreen(
                     Column(horizontalAlignment = Alignment.End) {
                         Text(
                             "NEW COMICS OPEN",
-                            fontFamily = Archivo,
-                            fontWeight = FontWeight.SemiBold,
+                            fontFamily = Libron,
+                            fontWeight = FontWeight.Bold,
                             fontSize = 7.sp,
                             color = CreamMuted,
                         )
                         Text(
                             if (defaultRtl) "RTL" else "LTR",
-                            fontFamily = Archivo,
+                            fontFamily = Libron,
                             fontWeight = FontWeight.Bold,
                             fontSize = 12.sp,
                             color = Ink,
@@ -172,7 +171,7 @@ fun LibraryScreen(
                 item(span = { GridItemSpan(maxLineSpan) }) {
                     Text(
                         "No comics yet. Tap LOAD COMIC to add a CBZ or CBR.",
-                        fontFamily = Archivo,
+                        fontFamily = Libron,
                         fontSize = 13.sp,
                         color = CreamMuted,
                         modifier = Modifier.padding(vertical = 12.dp),
@@ -221,7 +220,7 @@ fun LibraryScreen(
     pendingDelete?.let { comic ->
         AlertDialog(
             onDismissRequest = { pendingDelete = null },
-            title = { Text("Remove comic?", fontFamily = Anton) },
+            title = { Text("Remove comic?", fontFamily = Libron, fontWeight = FontWeight.Bold) },
             text = { Text("This removes the imported copy. The original file is untouched.") },
             confirmButton = {
                 TextButton(onClick = { viewModel.deleteComic(comic.id); pendingDelete = null }) {
@@ -260,8 +259,8 @@ private fun ComicCard(comic: ComicEntity, onClick: () -> Unit, onLongClick: () -
         }
         Text(
             comic.title.uppercase(),
-            fontFamily = Archivo,
-            fontWeight = FontWeight.ExtraBold,
+            fontFamily = Libron,
+            fontWeight = FontWeight.Bold,
             fontSize = 12.sp,
             color = Cream,
             maxLines = 2,
@@ -271,8 +270,8 @@ private fun ComicCard(comic: ComicEntity, onClick: () -> Unit, onLongClick: () -
         Text(
             if (started) "${(pct * 100).toInt()}% · pg ${comic.lastPage + 1}/${comic.pageCount}"
             else "${comic.pageCount} pages",
-            fontFamily = Archivo,
-            fontWeight = FontWeight.SemiBold,
+            fontFamily = Libron,
+            fontWeight = FontWeight.Bold,
             fontSize = 9.5.sp,
             color = CreamMuted,
             modifier = Modifier.padding(top = 2.dp),
@@ -285,7 +284,7 @@ private fun GeneratedCover(title: String) {
     Box(Modifier.fillMaxSize().background(InkSoft)) {
         Text(
             title.uppercase(),
-            fontFamily = Anton,
+            fontFamily = Libron, fontWeight = FontWeight.Bold,
             fontSize = 22.sp,
             color = Cream,
             modifier = Modifier.align(Alignment.BottomStart).padding(12.dp),
@@ -322,7 +321,7 @@ private fun AddTile(importing: Boolean, onClick: () -> Unit) {
                 if (importing) Text("…", color = Ink)
                 else Icon(Icons.Default.Add, contentDescription = "Load comic", tint = Ink)
             }
-            Text(if (importing) "IMPORTING…" else "LOAD COMIC", fontFamily = Anton, fontSize = 14.sp, color = Cream)
+            Text(if (importing) "IMPORTING…" else "LOAD COMIC", fontFamily = Libron, fontWeight = FontWeight.Bold, fontSize = 14.sp, color = Cream)
         }
     }
 }

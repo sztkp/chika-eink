@@ -22,8 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.chakra.comicreader.ui.theme.Anton
-import com.chakra.comicreader.ui.theme.Archivo
+import com.chakra.comicreader.ui.theme.Libron
 import com.chakra.comicreader.ui.theme.Cream
 import com.chakra.comicreader.ui.theme.CreamMuted
 import com.chakra.comicreader.ui.theme.Ink
@@ -114,7 +113,7 @@ fun Reticle(
 fun ChikaWordmark(modifier: Modifier = Modifier) {
     Text(
         text = "Chika-eInk",
-        fontFamily = Archivo,
+        fontFamily = Libron,
         fontWeight = FontWeight.Bold,
         fontSize = 28.sp,
         color = Cream,
@@ -127,7 +126,7 @@ fun ChikaWordmark(modifier: Modifier = Modifier) {
 fun OchreBadge(text: String, modifier: Modifier = Modifier) {
     Text(
         text = text,
-        fontFamily = Anton,
+        fontFamily = Libron, fontWeight = FontWeight.Bold,
         fontSize = 15.sp,
         letterSpacing = 0.6.sp,
         color = Ink,
@@ -158,14 +157,14 @@ fun PageCoin(page: Int, total: Int, modifier: Modifier = Modifier, size: Dp = 58
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 "$page",
-                fontFamily = Anton,
+                fontFamily = Libron, fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
                 lineHeight = 16.sp,
                 color = Ink,
             )
             Text(
                 "$total",
-                fontFamily = Anton,
+                fontFamily = Libron, fontWeight = FontWeight.Bold,
                 fontSize = 9.sp,
                 lineHeight = 9.sp,
                 color = Ink,

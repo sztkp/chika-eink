@@ -18,8 +18,7 @@ Chika depends on or bundles, along with the obligations each imposes. Full licen
 | TensorFlow Lite (`org.tensorflow:tensorflow-lite`) | Apache-2.0 | yes (native `.so`) | Keep license |
 | **7-Zip-JBinding-4Android** | **LGPL-2.1** (+ unRAR, BSD parts) | yes (native `.so`) | See LGPL note below |
 | Panel-detection model (`manga_panel_detector_int8.tflite`) | Apache-2.0 | yes (asset) | Disclose Manga109-s training data |
-| Anton font | OFL-1.1 | yes (asset) | Keep OFL text; don't sell font alone |
-| Archivo font | OFL-1.1 | yes (asset) | Keep OFL text; don't sell font alone |
+| Libron font family | OFL-1.1 | yes (asset) | Keep OFL text and copyright attribution; don't sell font alone |
 
 MPL-2.0 (Chika) is compatible with all of the above, including the LGPL component (MPL-2.0 §3.3).
 
@@ -53,12 +52,17 @@ files under BSD.
   build, keep this notice and the library replaceable.
 
 ### SIL Open Font License 1.1 — Fonts
-Full texts: [`THIRD_PARTY_LICENSES/OFL-1.1-Anton.txt`](THIRD_PARTY_LICENSES/OFL-1.1-Anton.txt),
-[`THIRD_PARTY_LICENSES/OFL-1.1-Archivo.txt`](THIRD_PARTY_LICENSES/OFL-1.1-Archivo.txt)
+Full text: [`THIRD_PARTY_LICENSES/OFL-1.1-Libron.txt`](THIRD_PARTY_LICENSES/OFL-1.1-Libron.txt).
+Copyright attribution: [`THIRD_PARTY_LICENSES/Libron-COPYRIGHT.txt`](THIRD_PARTY_LICENSES/Libron-COPYRIGHT.txt).
 
-- **Anton** (display) and **Archivo** (UI), bundled in `app/src/main/res/font/`. The OFL permits
-  bundling and redistribution within software; the fonts may not be sold on their own, and the
-  copyright/Reserved Font Name notices are retained in the OFL texts above.
+- **Libron v0.25**, by Nico Verbruggen, derived from Readerly and Newsreader.
+  Source: <https://github.com/nicoverbruggen/libron>.
+  Unmodified desktop TTFs from the [v0.25 release](https://github.com/nicoverbruggen/libron/releases/tag/v0.25)
+  (`Libron.zip`) are bundled in `app/src/main/res/font/`: regular, bold, italic, and bold italic.
+  The release tag's license and copyright texts are retained above.
+- Libron replaces the previously bundled Anton and Archivo fonts. Their existing license
+  texts remain in `THIRD_PARTY_LICENSES/` for historical attribution; those fonts are no
+  longer included in the APK.
 
 ## Bundled model & training data
 

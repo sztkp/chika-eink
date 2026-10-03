@@ -20,7 +20,7 @@ Run `python3 tools/generate_fork_icons.py` from the repository root to regenerat
 
 ## Retained
 
-- Anton and Archivo fonts, with their existing SIL Open Font License notices.
+- Libron v0.25 desktop fonts, with their SIL Open Font License and upstream copyright notices.
 - The model and its inherited licensing/training-data disclosures, unchanged.
 - Upstream author attribution and all existing license texts.
 

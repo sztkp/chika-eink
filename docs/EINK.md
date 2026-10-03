@@ -1,6 +1,6 @@
 # Chika-eInk first pass
 
-The Android presentation uses opaque monochrome UI colors. The existing library,
+The Android presentation uses opaque monochrome UI colors and the bundled Libron font family. The existing library,
 menu and reader layouts remain. Navigation, panel framing, page changes, chrome
 visibility and double-tap zoom reset no longer animate. Loading/import status is
 static; click ripples, snackbar transitions, halftone washes, decorative shadows
