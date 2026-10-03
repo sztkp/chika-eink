@@ -20,4 +20,4 @@ cannot update an upstream installation. Plan any identity/signing change separat
 - [Source](https://github.com/sztkp/chika-eink)
 - [Issues](https://github.com/sztkp/chika-eink/issues)
 - [Third-party notices](THIRD_PARTY_NOTICES.md)
-- [Artwork provenance](docs/ARTWORK.md)
+- [Artwork credits](THIRD_PARTY_NOTICES.md#branding-and-artwork)

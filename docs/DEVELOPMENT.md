@@ -56,7 +56,7 @@ of the Android build. They do not reproduce the bundled model automatically.
 
 ## Assets and notices
 
-- [Screenshot artwork](ARTWORK.md): source page, CBZ packaging, and capture instructions.
+- [Artwork credits](../THIRD_PARTY_NOTICES.md#branding-and-artwork): fork icon and screenshots.
 - [Licensing audit](LICENSING.md): unresolved model/native-library distribution review.
 - [E-ink notes](EINK.md): implemented adaptations and device-testing limits.
 

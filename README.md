@@ -39,7 +39,6 @@ over the last onigiri at a Roppongi 7-Eleven, with kanji/katakana lettering and 
 | <img src="docs/screens/library.png" alt="Library with sort action and bottom-right add button" width="220"> | <img src="docs/screens/reader.png" alt="Full page view with compact controls" width="220"> | <img src="docs/screens/panel.png" alt="Panel view with dotted media outline" width="220"> |
 
 These captures do not simulate physical e-ink refresh.
-[Artwork provenance and reproduction](docs/ARTWORK.md).
 
 ## Build
 

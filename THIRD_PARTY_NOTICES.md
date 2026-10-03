@@ -27,7 +27,7 @@ itself establish compliance with every dependency's distribution terms.
 | 7-Zip-JBinding-4Android | `Release-16.02-2.03` | LGPL-2.1-or-later, unRAR restriction, bundled subcomponent notices |
 | Libron desktop font family | v0.25, unmodified regular/bold/italic/bold-italic | OFL-1.1 |
 | Panel detector weights | `manga_panel_detector_int8.tflite` | upstream declares AGPL-3.0; Manga109-s training disclosure below |
-| Fork book icon | original vector and generated PNGs | MPL-2.0; [provenance](docs/ARTWORK.md) |
+| Fork book icon | original adaptive vectors and store PNG | MPL-2.0 |
 
 Build tools (Gradle, Android/Kotlin plugins, KSP) and experimental training tools are
 not app runtime dependencies. Training tools and data still have their own terms.
@@ -114,11 +114,17 @@ Do not describe the current model-bearing APK as Apache-only or MPL-only.
 Upstream notices reserve rights in the Chika / Chitra Katha logo and wordmark outside
 its code license. The fork identifies its upstream origin without claiming ownership
 or endorsement. Original promotional images and graphical branding were removed or
-replaced; [docs/ARTWORK.md](docs/ARTWORK.md) records the current assets and retained history.
+replaced. The fork's monochrome book icon is original artwork under MPL-2.0.
+
+The three README screenshots are emulator captures showing original manga artwork
+generated with Codex, without external comic references. The fork contributes the
+captures and artwork under MPL-2.0 to the extent it holds rights. The fictional
+7-Eleven scene implies no affiliation or endorsement; third-party trademarks retain
+their owners' rights.
 
 ## Binary notices and source availability
 
-Builds include this file, `LICENSE`, the audit/provenance documents, and
+Builds include this file, `LICENSE`, the licensing audit, and
 `THIRD_PARTY_LICENSES/` under **`assets/legal/`**. The app's menu also links to this
 repository's notices. Corresponding application source is available at
 <https://github.com/sztkp/chika-eink>; distributors should identify the exact commit
