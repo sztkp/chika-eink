@@ -2,8 +2,9 @@
 
 Reviewed 3 October 2026. Chika-eInk is an independent fork of
 [Chika](https://github.com/batunii/chika) by Chakra (Chalchitra Krida).
-Application source remains under [MPL-2.0](LICENSE); bundled components retain their
-own licenses. Source: <https://github.com/sztkp/chika-eink>.
+The combined model-bearing release is distributed under [AGPL-3.0](DISTRIBUTION_LICENSE.md).
+Application source retains MPL-2.0 and is additionally distributed under AGPL-3.0
+for this Larger Work through MPL section 3.3; bundled components retain their own licenses. Source: <https://github.com/sztkp/chika-eink>.
 
 **Distribution review is incomplete.** The bundled model is AGPL-3.0, not Apache-2.0,
 and its combined-work licensing and corresponding-source obligations need verification. See
@@ -79,8 +80,9 @@ Dataset permissions do not replace the model's AGPL obligations. Dataset images 
 not bundled in the app.
 
 The model author describes copyleft requirements for projects distributing the model.
-A combined-work licensing and corresponding-source decision remains open. We have not
-relicensed the application, removed/replaced the weights, or changed detection behavior.
+The combined-work distribution license is AGPL-3.0, with the MPL application source
+additionally distributed under AGPL through MPL section 3.3. Corresponding-source
+completeness remains under review. The weights and detection behavior are unchanged.
 Do not describe the current model-bearing APK as Apache-only or MPL-only.
 
 ## Branding and artwork
@@ -98,7 +100,7 @@ their owners' rights.
 
 ## Binary notices and source availability
 
-Builds include this file, `LICENSE`, the licensing audit, and
+Builds include this file, `LICENSE`, `DISTRIBUTION_LICENSE.md`, the licensing audit, and
 `THIRD_PARTY_LICENSES/` under **`assets/legal/`**. The app's menu also links to this
 repository's notices. Corresponding application source is available at
 <https://github.com/sztkp/chika-eink>; distributors should identify the exact commit

@@ -1,8 +1,10 @@
 # Licensing audit — 3 October 2026
 
 **Status: the unRAR compatibility conflict is removed from new builds; model distribution review remains open.**
-Application source retains MPL-2.0. This audit does not apply a new license to the
-combined app/model or replace any detection code or weights.
+Application source retains MPL-2.0. The combined model-bearing release is distributed under AGPL-3.0, with MPL-covered
+source additionally available under AGPL through MPL section 3.3; see
+[the distribution license notice](../DISTRIBUTION_LICENSE.md). Detection code and
+weights are unchanged.
 
 ## Findings corrected
 
@@ -50,8 +52,8 @@ reimport them; reading progress is not automatically transferred. ZIP containers
 remain readable even with a misleading extension.
 
 The detector is unchanged. Removing the archive library resolves this specific
-compatibility conflict; it does not itself select the combined-work license or
-complete the model's corresponding-source obligations. LiteRT native components
+compatibility conflict; it does not itself complete the model's corresponding-source
+obligations. The combined-work license choice is documented separately. LiteRT native components
 still require their applicable notices and build/channel checks.
 
 ## Release source materials
@@ -68,8 +70,9 @@ training/calibration dataset is not redistributed.
 Exact INT8 export reproducibility and complete corresponding-source obligations
 remain review items; collecting these materials is not a clearance claim.
 
-The root MPL text is preserved, including its secondary-license provisions. No
-combined-work license choice is made by the archive-library removal.
+The root MPL text is preserved, including its secondary-license provisions. The
+model-bearing Larger Work is distributed under AGPL-3.0 with the MPL-covered
+application source additionally available under AGPL through section 3.3.
 
 ## Rechecking after changes
 

@@ -55,7 +55,8 @@ APK: `app/build/outputs/apk/debug/app-debug.apk`.
 
 ## License
 
-Application source retains [MPL-2.0](LICENSE). Bundled components have separate
+The combined model-bearing app is distributed under [AGPL-3.0](DISTRIBUTION_LICENSE.md).
+Application source also retains [MPL-2.0](LICENSE). Bundled components have separate
 terms: Libron is OFL-1.1 and the detector weights are declared AGPL-3.0 upstream.
 Notices and license texts are included in APKs under `assets/legal/`.
 

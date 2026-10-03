@@ -9,7 +9,7 @@ plugins {
 val legalAssets = layout.buildDirectory.dir("generated/legalAssets")
 val syncLegalAssets by tasks.registering(Sync::class) {
     from(rootProject.projectDir) {
-        include("LICENSE", "THIRD_PARTY_NOTICES.md", "THIRD_PARTY_LICENSES/**")
+        include("LICENSE", "DISTRIBUTION_LICENSE.md", "THIRD_PARTY_NOTICES.md", "THIRD_PARTY_LICENSES/**")
         include("docs/LICENSING.md")
         into("legal")
     }
