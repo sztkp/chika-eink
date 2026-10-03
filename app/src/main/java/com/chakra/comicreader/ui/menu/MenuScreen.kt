@@ -71,16 +71,6 @@ fun MenuScreen(onBack: () -> Unit) {
             AboutLink("Licenses and notices", "Open-source dependencies and artwork") {
                 openUrl("$FORK_URL/blob/main/THIRD_PARTY_NOTICES.md")
             }
-            HorizontalDivider()
-            Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("Support", style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.semantics { heading() })
-                Button(
-                    onClick = { Toast.makeText(context, "Coming soon", Toast.LENGTH_SHORT).show() },
-                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
-                ) { Text("Support fork") }
-
-            }
         }
     }
 }

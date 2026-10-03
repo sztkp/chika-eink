@@ -1,91 +1,46 @@
-# Releasing Chika-eInk
+# Building Chika-eInk release candidates
 
-**Release review pending:** the bundled detector is AGPL-3.0 and native-library
-source/replacement obligations need verification. Read [docs/LICENSING.md](docs/LICENSING.md)
-before distributing a build. These instructions are build mechanics, not licensing clearance.
+Distribution review remains open; see [the licensing audit](docs/LICENSING.md).
+The manual [Release candidate workflow](.github/workflows/release.yml) builds
+signed APK/AAB candidates and uploads them as Actions artifacts. It does not
+publish a GitHub Release or run automatically when a tag is pushed.
 
-Pushing a version tag (`v*`) triggers [`.github/workflows/release.yml`](.github/workflows/release.yml),
-which builds a **signed release AAB + APK** and publishes them on a GitHub Release. The AAB is what
-you upload to the Google Play Console; the APK is for direct/sideload distribution.
+## Signing setup
 
-These instructions are inherited from upstream and apply to this fork's repository.
-Configure this fork's own signing secrets before tagging a release; upstream secrets
-and signing credentials are not available here. Release names and notes should identify
-Chika-eInk as an independent fork. No store listing for this fork is implied.
-
-The application ID remains `com.chakra.comicreader` for compatibility. A separately
-signed fork cannot update an upstream installation signed with a different key.
-Plan any package-ID or signing change separately because it affects installation and data.
-
-## One-time setup
-
-### 1. Create an upload keystore
-
-> ⚠️ Keep this file and its passwords safe and backed up. If you lose the key you use for Play, you
-> can't push updates to that listing (unless enrolled in Play App Signing key reset).
+Create and safely back up a signing keystore. Never commit it or its passwords.
 
 ```bash
-keytool -genkeypair -v \
-  -keystore chika-release.jks \
-  -alias chika \
+keytool -genkeypair -v -keystore chika-eink-release.jks -alias chika-eink \
   -keyalg RSA -keysize 2048 -validity 10000
+# macOS/Linux: encode without platform-specific base64 flags.
+base64 < chika-eink-release.jks > keystore.b64
 ```
 
-### 2. Base64-encode the keystore
-
-```bash
-# macOS / Linux
-base64 -w0 chika-release.jks > keystore.b64
-```
-
-```powershell
-# Windows PowerShell
-[Convert]::ToBase64String([IO.File]::ReadAllBytes("chika-release.jks")) | Set-Content -NoNewline keystore.b64
-```
-
-### 3. Add the GitHub repo secrets
-
-Repo → **Settings → Secrets and variables → Actions → New repository secret**:
+Configure repository Actions secrets:
 
 | Secret | Value |
-|---|---|
-| `KEYSTORE_BASE64` | contents of `keystore.b64` |
-| `KEYSTORE_PASSWORD` | the keystore password |
-| `KEY_ALIAS` | `chika` (the alias above) |
-| `KEY_PASSWORD` | the key password |
+| --- | --- |
+| `KEYSTORE_BASE64` | Contents of `keystore.b64` |
+| `KEYSTORE_PASSWORD` | Keystore password |
+| `KEY_ALIAS` | Your signing alias |
+| `KEY_PASSWORD` | Key password |
 
-Do **not** commit the keystore or `keystore.b64` to the repo.
+## Build a candidate
 
-## Cutting a release
+Create and push a tag on the intended commit, using `vMAJOR.MINOR.PATCH` with an
+optional prerelease suffix, such as `v0.2.1-eink.1`. In Actions, run **Release
+candidate**, entering that tag. The workflow validates the tag, checks out its
+commit, runs both unit-test suites and lint, then builds the signed APK and AAB.
+Branch names are not accepted as versions.
 
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
+The artifact also includes the R8 mapping. Keep it with the matching candidate
+for interpreting obfuscated crash reports. Version code retains the existing
+`MAJOR*10000 + MINOR*100 + PATCH` calculation.
 
-The workflow then:
-- derives `versionName` from the tag (`v1.0.0` → `1.0.0`) and `versionCode` deterministically from
-  it (`MAJOR*10000 + MINOR*100 + PATCH`),
-- builds and **signs** `app-release.aab` and `app-release.apk`,
-- creates a GitHub Release for the tag with auto-generated notes, both files, and the R8
-  `mapping-<version>.txt` attached (upload the mapping to Play alongside the AAB for readable
-  crash stacks).
+Local `./gradlew :app:assembleRelease` without signing environment variables
+produces an unsigned release APK. Debug builds use the standard debug key.
 
-`workflow_dispatch` is also enabled, so you can run it manually from the Actions tab.
-
-## Notes
-
-- Local `./gradlew assembleRelease` without the signing env vars still works but produces an
-  **unsigned** APK (debug builds are unaffected). Signing only kicks in when `KEYSTORE_FILE` etc.
-  are present (i.e. in CI).
-- For Google Play, prefer the **AAB** and enroll in **Play App Signing**.
-- `isMinifyEnabled` and `isShrinkResources` are **enabled**: release builds go through R8 with the
-  keep rules in `app/proguard-rules.pro` (JNI natives, 7-Zip-JBinding, TFLite/LiteRT). Smoke-test a
-  release build on a device after touching dependencies or the rules.
-- Google Play requires a hosted **privacy policy** URL for every app: use
-  `https://github.com/sztkp/chika-eink/blob/main/PRIVACY.md`. The Data Safety form is "no data
-  collected" — the app has no INTERNET permission.
-- Play's 16 KB page-size requirement (targetSdk 35+) is satisfied by 7-Zip-JBinding ≥ 16.02-2.03
-  and LiteRT 1.4.x — both ship 16 KB-aligned `.so`s. Keep that in mind on any dependency change:
-  check with `unzip -p app.apk 'lib/arm64-v8a/*.so' | readelf -lW - | grep LOAD` (align must be
-  0x4000).
+Before public distribution, complete the model/native-library review, smoke-test
+the minified release on a device, verify native-library alignment against the
+chosen distribution channel's requirements, and publish matching source and
+notices. This workflow does not establish licensing or store eligibility.

@@ -1,117 +1,73 @@
-# Chika-eInk first pass
+# Chika-eInk adaptations
 
-The Android presentation uses opaque monochrome UI colors and the bundled Libron font family. The existing library,
-reader layouts remain; the library info button opens an About section. Navigation, panel framing, page changes, chrome
-visibility and double-tap zoom reset no longer animate. Loading/import status is
-static; click ripples, snackbar transitions, halftone washes, decorative shadows
-and reader gradients/reticles are removed from the displayed UI.
+## Presentation and reader
 
-The theme toggle and its runtime setting have been removed. The reader canvas,
-library and About section stay white with black controls and text.
-Original comic images and covers remain unprocessed.
+The library, reader controls, and About screen use white backgrounds, black text
+and icons, clear borders, and Libron typography. The theme toggle is removed.
+Loading/import indicators are static. Decorative gradients, shadows, reticles,
+ripples, and navigation transitions are removed from the displayed UI.
 
-Panel selection draws the existing `currentCamera` directly with the unchanged
-`computePageDraw` math. The existing 220 ms double-tap recognition window remains.
-Pinch, pan, double-tap, tap zones and page flicks remain available. The reader shows
-plain page/panel counts; its progress slider and redundant title subtitle were removed.
-The reader uses a compact 48dp control row with Android's standard back arrow and
-a narrow page/panel count row. Artwork is framed in the space between these rows,
-so controls do not cover it. Hiding controls expands the artwork viewport immediately.
-System bars stay hidden during reading, remain available by edge swipe, and return
-when leaving the reader.
-A Progress action in the count row opens a compact outlined bottom panel with a
-discrete Material page slider and previous/next-page buttons. The artwork viewport
-resizes above the panel immediately, without overlays, dimming or animations.
-Slider release loads the selected whole page; dragging only updates the preview
-count, avoiding repeated decoding during scrubbing. Done or system Back closes
-the panel. Hardware navigation steps whole pages while the panel is open and
-returns to panel navigation when it closes. The permanent reader bar still has no
-progress track.
-Panel view has a static dotted black outline around the entire displayed comic image,
-with white backing for contrast over dark artwork. It follows the image through pan/zoom and is
-hidden in full-page view; detection and framing calculations are unchanged.
-No dependencies, detection/ML, panel planning/order, archives, persistence,
-page decoding or caches are changed. The fork targets Android only; the core module
-retains its existing source layout with a JVM target.
+Panel framing, page changes, chrome visibility, and double-tap reset apply
+immediately. The reader draws the existing `currentCamera` through unchanged
+`computePageDraw` math. The 220 ms double-tap recognition window, tap zones, pinch,
+pan, and page flicks remain available.
 
-## Validation
+Compact top and bottom rows frame artwork in the space between them. Hiding the
+controls expands the viewport. Android system bars stay hidden in the reader,
+can be revealed by edge swipe, and return when leaving it. Panel view draws a
+static dotted outline around the entire transformed image, rather than its
+selected panel; offscreen edges stay offscreen.
 
-Run `./gradlew :shared:jvmTest :app:testDebugUnitTest :app:lintDebug`, then
-`./gradlew :app:assembleDebug`. The APK is at
-`app/build/outputs/apk/debug/app-debug.apk`.
+Progress opens an outlined bottom panel with a discrete page slider and
+previous/next-page buttons. Artwork fits above it. Dragging updates the preview
+count; releasing the slider loads the selected page. Done or Back closes it.
 
-Android lint currently reports the upstream base-theme
-`windowLayoutInDisplayCutoutMode` attribute as requiring API 27 while minSdk is 26.
-This first pass leaves that compatibility issue and dependency/deprecation
-warnings unchanged.
+Original images and covers are unprocessed. Dependency versions, detector/model,
+panel geometry/order/planning, framing calculations, archives, and page decoding
+are retained. Sorting preferences and progress-reset operations use the existing
+persistence without a schema change.
 
-## Physical Palma 2 checks and deferred work
+## Hardware buttons
 
-- Import CBZ/CBR, reopen at saved progress, and verify library deletion.
-- Read in LTR/RTL through full-page intro/outro slots and page boundaries.
-- Check tap response, double-tap reset, pinch/pan, flicks and page/panel counts.
-- Check text, borders, image detail and system bars.
-- Observe ghosting after repeated panel changes and chrome toggles; measure refresh
-  latency using the device's existing modes before deciding whether vendor APIs help.
-- Compare full versus partial refresh and refresh-after-navigation strategies on
-  the physical device. None are implemented here.
-- Compare representative line art, screentones and grayscale/color scans before
-  considering dithering or grayscale processing. Keep processing separate from the
-  unchanged ML input and detection pipeline if device evidence warrants a later change.
+Volume/Page Down advances and Volume/Page Up goes back through the existing
+reader sequence in either LTR or RTL. Each press acts once; repeat and release
+events are consumed. While Progress is open, these buttons navigate whole pages.
+Outside the reader, Android handles them normally. Back, power, and mute are not
+intercepted. No BOOX SDK or firmware-setting changes are involved.
 
-No BOOX APIs, forced refresh calls, dithering or grayscale preprocessing are added.
+The connected Palma 2 reports Android 13 and firmware 4.2. The user confirmed
+physical volume-button navigation; injected Volume Down/Up events also advanced
+and restored a panel. Unit tests cover both key families, repeats, and unrelated
+keys. Physical Page Down/Up mapping remains unverified.
 
-## Palma 2 hardware buttons
+## Android UI conventions
 
-The reader handles standard Android Volume Down/Page Down as next panel and
-Volume Up/Page Up as previous panel, through the existing reader state machine.
-Buttons follow reading sequence in both LTR and RTL; they do not simulate swipes
-or skip panels. Each press advances once; release and repeat events are consumed.
-Outside the reader, Android handles these keys normally. Back, power and mute
-are not intercepted. No BOOX SDK is needed.
+Library and About use Material 3 Scaffold, TopAppBar, content insets, accessible
+button targets, and heading/action semantics. Import uses a bottom-end + FAB;
+static status text prevents duplicate imports. Sorting uses an anchored, focusable
+Popup with Material menu items and selected-order semantics, avoiding the
+standard dropdown's transition.
 
-If BOOX remaps a button to a simulated scroll gesture, configure that app's side
-buttons to send volume/page key events instead. Actual availability depends on
-firmware. No firmware settings are changed by this app.
+Comic long-press actions use a standard Material DropdownMenu with haptic feedback
+and confirmation dialogs for removal/reset. This component retains its brief
+built-in menu transition. Zero elevation and disabled ripples are intentional
+e-ink adaptations. TalkBack and enlarged-font testing remain outstanding.
 
-The connected Palma 2 reports Android 13 and firmware 4.2, with Volume Up/Down
-input capabilities. Automated regression tests cover both key families, held-key
-behavior and unrelated keys. Physical-button mapping and ghosting still need
-device testing; refresh/dithering behavior is unchanged.
-ADB-injected Volume Down/Up events were verified in the reader on the device:
-Down changed panel 0 to 1, and Up restored panel 0. The later Page Down/Up
-check encountered the library instead of the reader, so device verification of
-those events remains pending; their mapping is covered by unit tests.
+## Validation and deferred device testing
 
-## Android menu conventions
+Both unit-test suites, Android lint, and the debug build pass. Lint's remaining
+warnings suggest dependency/toolchain or SDK upgrades; pinned versions are kept.
+The cutout attribute is API-qualified. See [development instructions](DEVELOPMENT.md).
 
-The library and About screens use Material 3 `Scaffold` and `TopAppBar`, with
-content insets consumed below the app bar. About uses standard `ListItem`,
-`Button` and `OutlinedButton` controls. Actions have button semantics and at
-least 48dp layout height; headings and library actions have accessibility labels.
-The library grid adapts to available width and uses Material typography for titles
-and progress text. Monochrome colors, Libron and disabled ripple/navigation
-animations remain intentional e-ink adaptations.
+Before adding refresh or image-processing behavior, test on the physical device:
 
-Library sorting is an app-bar action with an anchored menu of Material
-`DropdownMenuItem` controls. The chosen order has a checkmark and selected semantics.
-A focusable Android `Popup` preserves dismissal by Back/outside tap without the
-scale/fade animation built into this version of `DropdownMenu`.
+- Reopen saved progress; read LTR/RTL through panel and page boundaries.
+- Check gestures, whole-page jumps, physical key mapping, and system bars.
+- Check text, borders, image detail, accessibility, and enlarged fonts.
+- Measure ghosting and refresh latency across the device's existing refresh modes.
+- Compare full/partial refresh and refresh-after-navigation strategies.
+- Compare line art, screentones, grayscale, and color scans before considering
+  dithering or grayscale processing; keep any processing separate from ML input.
 
-Import uses a standard Material 3 + floating action button in Scaffold's bottom-end
-slot, above the system navigation inset. Grid padding and snackbar placement keep
-content reachable around it. Elevation remains zero for e-ink, and importing uses
-static status text while preventing duplicate picker launches.
-
-Comic long-press actions use Material 3 `DropdownMenu` with `DropdownMenuItem`,
-standard anchor positioning/dismissal and long-press haptic feedback. Remove and
-reset still require separate confirmation dialogs. Unlike the static toolbar
-sort popup, this standard component retains its built-in short menu transition;
-monochrome colors, zero elevation and disabled ripples remain e-ink adaptations.
-
-References: [app bars](https://developer.android.com/develop/ui/compose/components/app-bars),
-[Scaffold](https://developer.android.com/develop/ui/compose/components/scaffold),
-and [accessibility defaults](https://developer.android.com/develop/ui/compose/accessibility/api-defaults).
-Build and shared tests passed, and both screens were visually checked on the
-connected Palma 2. TalkBack and enlarged-font testing remain necessary before
-claiming comprehensive accessibility compliance.
+No vendor refresh APIs, forced refresh calls, dithering, or grayscale preprocessing
+are implemented. These require evidence from device testing.

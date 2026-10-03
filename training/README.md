@@ -1,69 +1,44 @@
-# Chika panel-detector training (inherited by Chika-eInk)
+# Experimental panel-detector training tools
 
-These are upstream experimental training notes, retained for reference. The data-ready
-and machine-specific statements below describe upstream work, not this fork's checkout.
-Chika-eInk has not changed or retrained the bundled detector.
+These inherited scripts are retained for research reference. They are not part
+of the Android build and have not been used to retrain Chika-eInk's bundled model.
+No datasets or trained checkpoints are included. Historical run logs have been
+removed; previous Git commits retain them.
 
-Train a replacement for the bundled `manga_panel_detector_int8.tflite` on **diverse** data so it
-works on color/Western comics *and* manga — fixing the root cause (the current model is trained
-only on B&W Manga109) instead of patching its output. Runs locally on Apple Silicon (**MPS**).
+## Scripts
 
-Output model matches the app's decoder with **zero pipeline changes**: input `[1,640,640,3]`
-float32, output `[1,N,6]` (`x1,y1,x2,y2,score,cls`), classes **panel=0, text=1**.
+- `scripts/comics_to_yolo.py`: converts an extracted COMICS panel annotation set
+  containing `Images/` and `Annotations/` into YOLO labels (panel class 0).
+- `scripts/manga109_to_yolo.py`: converts Manga109 page images and XML annotations
+  into panel class 0 and text class 1 labels.
+- `scripts/train.py`: experimental Ultralytics training, currently configured for
+  Apple Silicon's MPS backend.
+- `scripts/export_tflite.py`: experimental TFLite export with an embedded-NMS path
+  and a SavedModel conversion fallback.
 
-> ⚠️ **Disk:** this machine had ~21 GB free. The full COMICS page set (129 GB) is **not** needed —
-> the panel-annotation zip already bundles its images. Manga109 (~20 GB) may need you to free space
-> or extract it to an external drive and point `--root` at it.
+The Python environment is separate from Gradle. Conversion uses Pillow; training
+uses Ultralytics; export also depends on the selected conversion backend. These
+scripts do not supply a pinned, verified training environment.
 
-> **Licensing:** the bundled model is now declared AGPL-3.0 by its author, who corrected
-> an earlier Apache label. Experimental Ultralytics training tools, pretrained weights,
-> and datasets each have separate terms. Retraining does not automatically make an
-> export permissively licensed. See [the audit](../docs/LICENSING.md).
+## Example workflow
 
-## What's already done
-- **Western data ready:** `data/panels_annotations.zip` (COMICS, UMIACS) downloaded + converted to
-  YOLO into `dataset/` (443 public-domain pages, panel boxes). See `scripts/comics_to_yolo.py`.
-- All scripts written + the full chain sanity-checked on MPS.
+Obtain datasets under their applicable terms and use your own local paths:
 
-## Step 1 — get the manga data (the gated part)
-Manga109 panel boxes are the only real manga source and need a one-time form (no academic email
-required — just describe the use case; approval ~2–3 days):
-- Request **Manga109-s** (the redistributable subset) here: http://www.manga109.org/en/download_s.html
-- Unzip the approved download somewhere with space; you want this layout:
-  `<root>/annotations/<Title>.xml` and `<root>/images/<Title>/<index>.jpg`
-
-## Step 2 — convert + merge into the YOLO dataset
 ```bash
 cd training
-# (COMICS already converted into dataset/. If starting fresh:)
-python scripts/comics_to_yolo.py   --src data/peek/panels --out dataset
-# Add manga once you have it:
+python scripts/comics_to_yolo.py --src /path/to/comics-panels --out dataset
 python scripts/manga109_to_yolo.py --root /path/to/manga109 --out dataset
-```
-Both write into `dataset/images/{train,val}` + `dataset/labels/{train,val}` (panel=0, text=1).
-
-## Step 3 — train on MPS
-```bash
 python scripts/train.py --dataset dataset --model yolo11n.pt --epochs 100 --batch 16
-# best weights → runs/detect/chika_panels/weights/best.pt
-```
-Heavy color augmentation (HSV/mosaic/mixup) is on by default — it's what bridges B&W↔color.
-
-## Step 4 — export the tflite
-```bash
 python scripts/export_tflite.py --weights runs/detect/chika_panels/weights/best.pt \
-  --out manga_panel_detector_int8.tflite
+  --out candidate.tflite
 ```
 
-## Step 5 — validate before replacing the Android model
+The scripts target panel/text classes and a decoder-supported tensor layout, but
+export compatibility and detection quality must be checked on the actual output.
+Do not automatically replace `app/src/main/assets/manga_panel_detector_int8.tflite`.
+Validate input/output types and shapes, representative pages, LTR/RTL ordering,
+and failure handling before considering a model change.
 
-The Android model is intentionally unchanged in this fork. Test any experimental
-export's decoder compatibility and detection quality separately before replacing
-`app/src/main/assets/manga_panel_detector_int8.tflite`. Rebuild with
-`./gradlew :app:assembleDebug` and verify representative comics on an Android device.
-
-## Honest expectations
-- **Will improve a lot:** color/Western comics (Batman), clean manga grids.
-- **Won't fully fix:** truly *borderless* dynamic manga spreads (Dandadan) — there's no panel edge
-  to learn; those keep using the reliability whole-page fallback. That's a fundamental limit, not a
-  data gap you can close with Manga109 (which is mostly traditional layouts).
+Datasets, pretrained weights, and training tools have separate terms. Retraining
+does not automatically make an export permissively licensed. See the
+[licensing audit](../docs/LICENSING.md) and retained notices.

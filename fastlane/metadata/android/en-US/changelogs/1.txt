@@ -1,2 +1,0 @@
-First release of Chika: panel-by-panel CBZ/CBR reader with on-device panel detection, smart panel
-merge/divide, gesture controls, and a library with resume.

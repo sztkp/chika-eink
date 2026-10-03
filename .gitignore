@@ -25,3 +25,6 @@ training/*.npy
 # Sample comic archives used for local testing (never tracked)
 *.cbr
 *.cbz
+
+# Experimental local training logs
+training/*.log
