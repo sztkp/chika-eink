@@ -5,8 +5,8 @@ panel-by-panel comic reader by Chakra (Chalchitra Krida), adapted for e-ink.
 Initially targeting **BOOX Palma 2**, with a high-contrast monochrome interface,
 static indicators, and immediate panel transitions.
 
-[CI](https://github.com/sztkp/kuro/actions/workflows/ci.yml) ·
-[Issues](https://github.com/sztkp/kuro/issues) · Android 8.0+
+[CI](https://github.com/sztkp/chika-eink/actions/workflows/ci.yml) ·
+[Issues](https://github.com/sztkp/chika-eink/issues) · Android 8.0+
 
 ## Features
 
@@ -29,7 +29,7 @@ See [e-ink notes](docs/EINK.md) for button behaviour and display limitations.
 
 ## Install and build
 
-Download the signed APK from [GitHub Releases](https://github.com/sztkp/kuro/releases)
+Download the signed APK from [GitHub Releases](https://github.com/sztkp/chika-eink/releases)
 and install it on your device. The fork installs alongside upstream Chika;
 upstream app data is not migrated. Debug and release builds use different signing
 keys, so a release cannot update a debug installation directly.

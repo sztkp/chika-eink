@@ -1,7 +1,7 @@
 # Third-Party Notices — Kuro
 
 Kuro is an independent fork of [Chika](https://github.com/batunii/chika)
-by Chakra (Chalchitra Krida). Source: <https://github.com/sztkp/kuro>.
+by Chakra (Chalchitra Krida). Source: <https://github.com/sztkp/chika-eink>.
 [Combined-work distribution terms](DISTRIBUTION_LICENSE.md) and
 [licensing review](docs/LICENSING.md) apply alongside the component notices below.
 
@@ -87,6 +87,6 @@ their owners' rights.
 Builds include this file, `LICENSE`, `DISTRIBUTION_LICENSE.md`, the licensing audit, and
 `THIRD_PARTY_LICENSES/` under **`assets/legal/`**. The app's menu also links to this
 repository's notices. Corresponding application source is available at
-<https://github.com/sztkp/kuro>; distributors should identify the exact commit
+<https://github.com/sztkp/chika-eink>; distributors should identify the exact commit
 used for their binary. Model corresponding-source completeness remains subject to
 [licensing review](docs/LICENSING.md).

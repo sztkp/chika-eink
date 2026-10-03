@@ -38,7 +38,7 @@ Apache grant was mistaken. That label cannot establish alternative permission.
 | Editable FP32 checkpoint SHA-256 | `73e0fb587ea3afe0d17aa9f0c3b1f5a8001b3ecbc3c77091e0730654b0da9146` |
 | Framework identified by checkpoint metadata | Ultralytics 8.4.31, commit [`65b736045f7e8d54bbf3fd27709f4b1321b3b532`](https://github.com/ultralytics/ultralytics/tree/65b736045f7e8d54bbf3fd27709f4b1321b3b532) |
 
-The published [v0.3.0 release](https://github.com/sztkp/kuro/releases/tag/v0.3.0)
+The published [v0.3.0 release](https://github.com/sztkp/chika-eink/releases/tag/v0.3.0)
 includes matching app source and a dependency source bundle containing the editable
 checkpoint, pinned Ultralytics source, model card, and notices.
 [Experimental training/export scripts](../training/README.md) are not a verified

@@ -49,4 +49,4 @@ Any change to this policy will be published at this URL alongside the app's sour
 
 ## Contact
 
-Questions? Open an issue at <https://github.com/sztkp/kuro/issues>.
+Questions? Open an issue at <https://github.com/sztkp/chika-eink/issues>.
