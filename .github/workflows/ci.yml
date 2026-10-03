@@ -31,6 +31,9 @@ jobs:
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          # The action's default includes the obsolete SDK "tools" package.
+          packages: platform-tools
 
       # compileSdk 36 / buildToolsVersion 36.1.0 are pinned in app/build.gradle.kts.
       # AGP will auto-download them (licenses are accepted by setup-android); this makes it explicit
