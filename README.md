@@ -110,7 +110,7 @@ geometry distributed under MPL-2.0; see [artwork provenance](docs/ARTWORK.md).
 ## Acknowledgements
 
 - Original application: [Chika](https://github.com/batunii/chika), by Chakra (Chalchitra Krida).
-
+- **OpenAI Codex** — Chika-eInk is an AI-assisted project, with Codex used to help implement changes, update documentation, and validate builds.
 - Panel-detection model: [`leoxs22/manga-panel-detector-yolo26n`](https://huggingface.co/leoxs22/manga-panel-detector-yolo26n) (Apache-2.0), trained on Manga109-s.
 - Fonts: **Anton** and **Archivo** (SIL Open Font License 1.1).
 - **TensorFlow Lite**, **Apache Commons Compress**, **7-Zip-JBinding-4Android**.
