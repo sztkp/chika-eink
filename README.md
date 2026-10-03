@@ -44,13 +44,9 @@ swipe to turn whole pages and flip reading direction (LTR/RTL).
 Captured from the revised UI on an Android emulator with original demo artwork,
 using the connected Palma 2's reported resolution, density, and font scale.
 
-| Library | Full-page reader | Panel reading | About |
-| --- | --- | --- | --- |
-| <img src="docs/screens/library.png" alt="Library with sort action and bottom-right add button" width="220"> | <img src="docs/screens/reader.png" alt="Full-page reader with compact controls" width="220"> | <img src="docs/screens/panel.png" alt="Panel reading with dotted media outline" width="220"> | <img src="docs/screens/menu.png" alt="About with repository links and fork support" width="220"> |
-
-| Sorting | Comic actions | Reading progress |
+| Library | Full page view | Panel view |
 | --- | --- | --- |
-| <img src="docs/screens/sorting.png" alt="Library sorting menu" width="220"> | <img src="docs/screens/actions.png" alt="Long-press menu for removal and progress reset" width="220"> | <img src="docs/screens/progress.png" alt="Compact bottom progress panel with whole-page navigation" width="220"> |
+| <img src="docs/screens/library.png" alt="Library with sort action and bottom-right add button" width="220"> | <img src="docs/screens/reader.png" alt="Full page view with compact controls" width="220"> | <img src="docs/screens/panel.png" alt="Panel view with dotted media outline" width="220"> |
 
 See [artwork provenance](docs/ARTWORK.md) for licensing and reproduction instructions.
 These captures do not simulate a physical e-ink display.
