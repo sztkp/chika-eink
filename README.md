@@ -30,15 +30,9 @@ validation and refresh work that still needs physical testing.
 
 ## Screenshots
 
-Actual emulator captures at the connected Palma 2's reported resolution, density,
-and font scale. The original demo manga **六本木深夜決戦** stages a midnight showdown
-over the last onigiri at a Roppongi 7-Eleven, with kanji/katakana lettering and RTL reading.
-
 | Library | Full page view | Panel view |
 | --- | --- | --- |
 | <img src="docs/screens/library.png" alt="Library with sort action and bottom-right add button" width="220"> | <img src="docs/screens/reader.png" alt="Full page view with compact controls" width="220"> | <img src="docs/screens/panel.png" alt="Panel view with dotted media outline" width="220"> |
-
-These captures do not simulate physical e-ink refresh.
 
 ## Build
 
