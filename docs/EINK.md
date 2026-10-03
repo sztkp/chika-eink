@@ -67,8 +67,10 @@ The connected Palma 2 reports Android 13 and firmware 4.2, with Volume Up/Down
 input capabilities. Automated regression tests cover both key families, held-key
 behavior and unrelated keys. Physical-button mapping and ghosting still need
 device testing; refresh/dithering behavior is unchanged.
-ADB-injected Volume Down/Up and Page Down/Up events were verified on the device:
-each next event changed panel 0 to 1, and each previous event restored panel 0.
+ADB-injected Volume Down/Up events were verified in the reader on the device:
+Down changed panel 0 to 1, and Up restored panel 0. The later Page Down/Up
+check encountered the library instead of the reader, so device verification of
+those events remains pending; their mapping is covered by unit tests.
 
 ## Android menu conventions
 
