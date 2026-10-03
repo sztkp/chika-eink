@@ -42,6 +42,11 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChanged
@@ -328,6 +333,32 @@ private fun PageViewer(
                 dstOffset = IntOffset(left.roundToInt(), top.roundToInt()),
                 dstSize = IntSize(w.roundToInt(), h.roundToInt()),
             )
+            if (!isFullPage) {
+                // Project the existing selected panel through the same image transform.
+                // This is only an overlay; detection, camera framing and gestures stay intact.
+                val outlineWidth = 2.dp.toPx()
+                val inset = outlineWidth
+                val outlineSize = Size(
+                    (camera.width * w - inset * 2f).coerceAtLeast(0f),
+                    (camera.height * h - inset * 2f).coerceAtLeast(0f),
+                )
+                val outlineOrigin = Offset(
+                    left + camera.left * w + inset,
+                    top + camera.top * h + inset,
+                )
+                drawRect(
+                    Color.White, topLeft = outlineOrigin, size = outlineSize,
+                    style = Stroke(width = outlineWidth * 2f),
+                )
+                drawRect(
+                    Color.Black, topLeft = outlineOrigin, size = outlineSize,
+                    style = Stroke(
+                        width = outlineWidth,
+                        cap = StrokeCap.Round,
+                        pathEffect = PathEffect.dashPathEffect(floatArrayOf(0.1f, 6.dp.toPx())),
+                    ),
+                )
+            }
         }
     }
 }
