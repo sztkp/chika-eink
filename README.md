@@ -9,11 +9,11 @@ The initial target is the **BOOX Palma 2**. Maintained at
 
 ## Reading on e-ink
 
-Open a CBZ or CBR archive and tap through its detected panels in reading order.
+Open a CBZ archive and tap through its detected panels in reading order.
 Panel framing and page changes are immediate. The interface uses opaque black and
 white, clear borders, static status indicators, and Libron typography.
 
-- **Comic support:** CBZ, CBR, and RAR5; offline, on-device panel detection.
+- **Comic support:** CBZ/ZIP; offline, on-device panel detection.
 - **Reader:** LTR/RTL, tap navigation, pinch zoom, pan, whole-page view, and a
   compact Progress panel for jumping between pages.
 - **Hardware buttons:** Volume/Page Down advances; Volume/Page Up goes back.
@@ -27,6 +27,11 @@ white, clear borders, static status indicators, and Libron typography.
 Original comic images are preserved. No BOOX-specific refresh APIs, dithering, or
 image preprocessing are implemented. See [e-ink notes](docs/EINK.md) for device
 validation and refresh work that still needs physical testing.
+
+CBR/RAR support has been removed. To read an existing CBR, extract its images and
+ZIP them into a CBZ without recompressing the images. Renaming the extension alone
+does not convert the archive. Existing RAR library entries must be converted and
+reimported; their reading progress is not migrated.
 
 ## Screenshots
 
@@ -54,8 +59,8 @@ Application source retains [MPL-2.0](LICENSE). Bundled components have separate
 terms: Libron is OFL-1.1 and the detector weights are declared AGPL-3.0 upstream.
 Notices and license texts are included in APKs under `assets/legal/`.
 
-**Distribution review remains open** for the model and native-library source and
-replacement obligations. See [the licensing audit](docs/LICENSING.md) and
+**Distribution review remains open** for the model and corresponding-source
+obligations. See [the licensing audit](docs/LICENSING.md) and
 [third-party notices](THIRD_PARTY_NOTICES.md). The MPL source license does not
 clear the combined APK for distribution.
 
@@ -65,4 +70,4 @@ clear the combined APK for distribution.
 - **OpenAI Codex** — Chika-eInk is an AI-assisted project, with Codex used to help implement changes, update documentation, and validate builds.
 - Panel-detection model: [`leoxs22/manga-panel-detector-yolo26n`](https://huggingface.co/leoxs22/manga-panel-detector-yolo26n) (upstream AGPL-3.0 declaration), trained on Manga109-s.
 - UI font: [**Libron**](https://github.com/nicoverbruggen/libron) by Nico Verbruggen, derived from Readerly and Newsreader (SIL Open Font License 1.1).
-- **LiteRT**, **Apache Commons Compress**, **7-Zip-JBinding-4Android**, and the AndroidX/Kotlin contributors.
+- **LiteRT**, **Apache Commons Compress**, and the AndroidX/Kotlin contributors.

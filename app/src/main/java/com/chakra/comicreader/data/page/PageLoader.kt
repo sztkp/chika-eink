@@ -34,7 +34,7 @@ class PageLoader(
     /** Returns the (possibly cached) decoded bitmap for [index], downsampled to [maxDimensionPx]. */
     suspend fun loadPage(index: Int): Bitmap = withContext(Dispatchers.IO) {
         cache.get(index)?.let { return@withContext it }
-        // Serialize archive reads: junrar's Archive is not thread-safe, and serializing decode
+        // Serialize archive reads and bitmap decoding
         // also prevents two prefetches from decoding the same page twice.
         decodeMutex.withLock {
             cache.get(index)?.let { return@withLock it }

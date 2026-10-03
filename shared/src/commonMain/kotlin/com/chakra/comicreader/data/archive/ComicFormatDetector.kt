@@ -1,12 +1,12 @@
 package com.chakra.comicreader.data.archive
 
-/** A comic archive container format. */
+/** A detected container format. CBR is recognized only to report that it is unsupported. */
 enum class ComicFormat { CBZ, CBR, UNKNOWN }
 
 /**
  * Detects a comic's container format from its leading bytes, falling back to the file extension.
- * Used by the Android archive factory for consistent file routing — a mislabeled ".cbz" that is really
- * a RAR (common in the wild) is opened as CBR.
+ * ZIP bytes remain readable regardless of extension; RAR bytes are recognized so the Android
+ * archive factory can reject them with conversion guidance, even when mislabeled as CBZ.
  */
 object ComicFormatDetector {
     private val ZIP_MAGIC = byteArrayOf(0x50, 0x4B, 0x03, 0x04)             // "PK\x03\x04"

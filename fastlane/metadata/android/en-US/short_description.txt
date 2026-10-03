@@ -1,1 +1,1 @@
-E-ink-focused Chika fork: offline CBZ/CBR reading, panel by panel.
+E-ink-focused Chika fork: offline CBZ reading, panel by panel.

@@ -5,7 +5,7 @@ and immediate panel transitions. No BOOX-specific refresh APIs are used.
 
 Features:
 
-* Reads CBZ and CBR archives, including RAR5.
+* Reads CBZ/ZIP archives.
 * On-device panel detection — a small neural model finds panels and speech balloons. Fully offline;
   nothing is uploaded.
 * Smart grouping — tiny adjacent panels are merged into one comfortable zoom, and oversized panels

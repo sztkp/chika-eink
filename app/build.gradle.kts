@@ -29,7 +29,7 @@ android {
         // versionCode is derived deterministically from MAJOR*10000 + MINOR*100 + PATCH so it is
         // reproducible for release tags and sideloaded APKs. A prerelease suffix is ignored per
         // component (e.g. "0.2.1-beta" → 0.2.1 → 201).
-        val appVersionName = System.getenv("VERSION_NAME") ?: "0.2.1"
+        val appVersionName = System.getenv("VERSION_NAME") ?: "0.3.0"
         versionName = appVersionName
         versionCode = appVersionName.split('.').map { part ->
             part.takeWhile { it.isDigit() }.toIntOrNull() ?: 0
@@ -133,15 +133,5 @@ dependencies {
     ksp(libs.androidx.room.compiler)
 
     implementation(libs.commons.compress)
-    // Allow rebuilding the app with a modified archive library (LGPL replacement route).
-    val replacementSevenZip = providers.gradleProperty("sevenZipAar").orNull
-    if (replacementSevenZip != null) {
-        val replacement = rootProject.file(replacementSevenZip)
-        require(replacement.isFile) { "sevenZipAar must point to an existing AAR file" }
-        implementation(files(replacement))
-    } else {
-        implementation(libs.sevenzip)
-    }
-
     implementation(libs.tensorflow.lite)
 }

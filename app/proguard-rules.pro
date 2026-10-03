@@ -1,11 +1,7 @@
-# Keep all JNI native method signatures (TFLite, 7-Zip-JBinding).
+# Keep all JNI native method signatures (TFLite / LiteRT).
 -keepclasseswithmembernames class * {
     native <methods>;
 }
-
-# 7-Zip-JBinding (JNI callbacks must be kept)
--keep class net.sf.sevenzipjbinding.** { *; }
--dontwarn net.sf.sevenzipjbinding.**
 
 # commons-compress
 -dontwarn org.apache.commons.compress.**

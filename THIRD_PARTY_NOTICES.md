@@ -6,7 +6,7 @@ Application source remains under [MPL-2.0](LICENSE); bundled components retain t
 own licenses. Source: <https://github.com/sztkp/chika-eink>.
 
 **Distribution review is incomplete.** The bundled model is AGPL-3.0, not Apache-2.0,
-and native-library source/replacement obligations need verification. See
+and its combined-work licensing and corresponding-source obligations need verification. See
 [the audit and remaining decisions](docs/LICENSING.md). Keeping notices does not by
 itself establish compliance with every dependency's distribution terms.
 
@@ -24,7 +24,6 @@ itself establish compliance with every dependency's distribution terms.
 | Apache Commons Compress | 1.27.1 | Apache-2.0; retained LICENSE and NOTICE |
 | Apache Commons Codec / IO / Lang | resolved 1.17.1 / 2.16.1 / 3.16.0 | Apache-2.0; retained LICENSE and NOTICE |
 | LiteRT and LiteRT API | `com.google.ai.edge.litert`, 1.4.2 | Apache-2.0 plus bundled Caffe BSD notice |
-| 7-Zip-JBinding-4Android | `Release-16.02-2.03` | LGPL-2.1-or-later, unRAR restriction, bundled subcomponent notices |
 | Libron desktop font family | v0.25, unmodified regular/bold/italic/bold-italic | OFL-1.1 |
 | Panel detector weights | `manga_panel_detector_int8.tflite` | upstream declares AGPL-3.0; Manga109-s training disclosure below |
 | Fork book icon | original adaptive vectors and store PNG | MPL-2.0 |
@@ -50,31 +49,6 @@ The runtime is **LiteRT**, `com.google.ai.edge.litert:litert:1.4.2` and `litert-
 not the formerly documented `org.tensorflow:tensorflow-lite:2.16.1`. The `org.tensorflow.lite`
 Java package remains in use. Both AAR license files, including their Caffe attribution
 and BSD conditions, are retained unmodified.
-
-## Native archive library
-
-Source at the bundled version:
-<https://github.com/omicronapps/7-Zip-JBinding-4Android/tree/Release-16.02-2.03>.
-Original 7-Zip-JBinding was implemented by Boris Brodski; 7-Zip is by Igor Pavlov.
-
-Retained materials:
-
-- [LGPL-2.1 text](THIRD_PARTY_LICENSES/LGPL-2.1.txt).
-- [7-Zip notice](THIRD_PARTY_LICENSES/SevenZip-NOTICE.txt) and
-  [p7zip notice](THIRD_PARTY_LICENSES/p7zip-NOTICE.txt).
-- [JBinding license notice](THIRD_PARTY_LICENSES/SevenZip-JBinding-License.txt) and
-  [authors](THIRD_PARTY_LICENSES/SevenZip-JBinding-AUTHORS.txt).
-- [unRAR license restriction](THIRD_PARTY_LICENSES/unRAR-License.txt).
-- [LZHAM MIT license](THIRD_PARTY_LICENSES/LZHAM-License.txt), retained from the native source tree.
-
-The unRAR code may not be used to recreate the proprietary RAR compression algorithm.
-Chika-eInk uses this dependency to read archives.
-
-The APK includes native shared libraries. **This fact alone does not prove LGPL §6
-compliance.** A distributor must establish the applicable source-supply and user
-replacement/relinking route, including relevant build materials and allowance for
-debugging modifications. This audit records the upstream source location but does
-not certify that the current APK satisfies those requirements.
 
 ## Libron fonts
 
@@ -128,5 +102,5 @@ Builds include this file, `LICENSE`, the licensing audit, and
 `THIRD_PARTY_LICENSES/` under **`assets/legal/`**. The app's menu also links to this
 repository's notices. Corresponding application source is available at
 <https://github.com/sztkp/chika-eink>; distributors should identify the exact commit
-used for their binary. Native and model source obligations remain subject to the
+used for their binary. Model corresponding-source obligations remain subject to the
 release review above. No store or repository acceptance is claimed.

@@ -1,6 +1,6 @@
 # Licensing audit — 3 October 2026
 
-**Status: documentation corrected; distribution clearance remains open.**
+**Status: the unRAR compatibility conflict is removed from new builds; model distribution review remains open.**
 Application source retains MPL-2.0. This audit does not apply a new license to the
 combined app/model or replace any detection code or weights.
 
@@ -11,8 +11,9 @@ combined app/model or replace any detection code or weights.
 - Added Apache Commons Compress/Codec/IO/Lang artifact LICENSE and NOTICE files.
 - Replaced the stale TensorFlow Lite coordinate with the actual LiteRT 1.4.2 dependencies;
   retained the AARs' license texts, including Caffe's BSD attribution.
-- Added pinned 7-Zip/p7zip, unRAR, LZHAM, and JBinding notices/attribution. Removed the
-  unsupported claim that dynamic loading alone establishes LGPL compliance.
+- Removed 7-Zip-JBinding, its archive backend and bundled notices, and the library
+  replacement build option. CBR/RAR is recognized for an unsupported-format message;
+  only CBZ/ZIP is readable.
 - Corrected the bundled model's license from Apache-2.0 to AGPL-3.0, following the
   author's September 2026 correction. Removed the blanket compatibility/clearance claim.
 - Checked runtime dependency metadata and local artifacts, not just direct Gradle entries.
@@ -35,28 +36,23 @@ alternative permission, or replace it with a model whose rights fit the intended
 licensing. An old Apache label is not evidence of permission: the author explicitly
 says that grant was mistaken. Merely adding the AGPL text does not resolve the issue.
 
-## Native-library release review
+## Archive-library conflict resolved for new builds
 
-The bundled archive library version is `Release-16.02-2.03`, from commit
-[`875f38aac441f41e6eb693177e020e97971dca97`](https://github.com/omicronapps/7-Zip-JBinding-4Android/tree/875f38aac441f41e6eb693177e020e97971dca97).
-Its source tree includes the Java binding, native sources and build scripts. The
-app accepts `-PsevenZipAar=/absolute/path/to/replacement.aar` to rebuild with a
-compatible modified library; the default dependency remains unchanged. See
-[release instructions](../RELEASING.md#rebuilding-with-a-modified-archive-library).
+The previous 7-Zip-JBinding dependency included LGPL code plus the unRAR restriction,
+which conflicted with the proposed AGPL/GPL combined-work distribution route.
+It has now been removed entirely, including its RAR reader, Gradle dependency,
+replacement-AAR option, shrinker rules, and packaged license materials. New builds
+read CBZ/ZIP with Apache Commons Compress and reject CBR/RAR with conversion guidance.
+Merely renaming a RAR file to CBZ does not make it readable.
 
-### Copyleft compatibility blocker
+Existing RAR library records and files are left intact. Users must convert and
+reimport them; reading progress is not automatically transferred. ZIP containers
+remain readable even with a misleading extension.
 
-The archive library includes RAR decompression code under LGPL **plus the unRAR
-restriction**, which prohibits recreating the RAR compression algorithm. This
-additional restriction needs resolution before relying on an AGPL/GPL combined-work
-distribution route for the app and bundled detector. Providing source and license
-texts does not remove it. The [7-Zip notice](../THIRD_PARTY_LICENSES/SevenZip-NOTICE.txt)
-records the restriction; the [GNU compatibility guidance](https://www.gnu.org/licenses/gpl-faq.html#GPLIncompatibleLibs)
-explains that exceptions require permission from the relevant copyright holders.
-
-The release candidate stays private pending sufficient permission or another
-validated licensing route. RAR support and the detector have not been removed or
-replaced to work around this issue.
+The detector is unchanged. Removing the archive library resolves this specific
+compatibility conflict; it does not itself select the combined-work license or
+complete the model's corresponding-source obligations. LiteRT native components
+still require their applicable notices and build/channel checks.
 
 ## Release source materials
 
@@ -66,12 +62,14 @@ the pinned model revision above, SHA-256
 Checkpoint metadata identifies Ultralytics 8.4.31, source commit
 [`65b736045f7e8d54bbf3fd27709f4b1321b3b532`](https://github.com/ultralytics/ultralytics/tree/65b736045f7e8d54bbf3fd27709f4b1321b3b532).
 These source archives, the model card and retained licenses are collected with the
-candidate. The Manga109-s training/calibration dataset is not redistributed.
+older candidate. Its archive-library source bundle and binaries are historical;
+new release assets must be rebuilt from the updated source. The Manga109-s
+training/calibration dataset is not redistributed.
 Exact INT8 export reproducibility and complete corresponding-source obligations
 remain review items; collecting these materials is not a clearance claim.
 
 The root MPL text is preserved, including its secondary-license provisions. No
-combined-work license choice is made by this documentation update.
+combined-work license choice is made by the archive-library removal.
 
 ## Rechecking after changes
 
@@ -82,6 +80,6 @@ combined-work license choice is made by this documentation update.
    [text provenance](../THIRD_PARTY_LICENSES/README.md).
 4. Build the APK and verify `assets/legal/` contains the source notice, font attribution,
    component notices, and applicable license texts.
-5. Resolve the model and native-library items before making a distribution-clearance claim.
+5. Resolve the model licensing and corresponding-source items before making a distribution-clearance claim.
 
 Previous binaries and Git history are not retroactively altered by these corrections.

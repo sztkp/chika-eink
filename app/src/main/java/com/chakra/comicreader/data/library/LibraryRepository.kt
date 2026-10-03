@@ -8,7 +8,6 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import android.util.Log
 import com.chakra.comicreader.data.archive.ComicArchiveFactory
-import com.chakra.comicreader.data.archive.ComicFormat
 import com.chakra.comicreader.data.archive.UnsupportedComicException
 import com.chakra.comicreader.data.db.ComicDao
 import com.chakra.comicreader.data.db.ComicEntity
@@ -64,13 +63,6 @@ class LibraryRepository(
             )
 
             val format = ComicArchiveFactory.detectFormat(dest)
-            if (format == ComicFormat.UNKNOWN) {
-                dest.delete()
-                return@withContext Result.failure(
-                    UnsupportedComicException("Not a CBZ or CBR file."),
-                )
-            }
-
             val (pageCount, coverPath) = ComicArchiveFactory.open(dest).use { archive ->
                 val count = archive.pageCount
                 if (count == 0) return@use 0 to null

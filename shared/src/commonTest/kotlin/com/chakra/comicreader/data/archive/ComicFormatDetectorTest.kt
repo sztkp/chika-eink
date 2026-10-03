@@ -24,7 +24,7 @@ class ComicFormatDetectorTest {
 
     @Test
     fun rarBytesUnderCbzExtensionStillCbr() {
-        // The case that matters: a .cbz that is really a RAR must convert, not copy in broken.
+        // A renamed RAR must be recognized so the factory rejects it with conversion guidance.
         assertEquals(ComicFormat.CBR, ComicFormatDetector.detect(rarMagic, "cbz"))
     }
 

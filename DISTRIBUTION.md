@@ -6,9 +6,11 @@ F-Droid listing. The obsolete inherited F-Droid recipe and upstream release
 changelog have been removed. Create version-specific listing metadata only when
 preparing an actual fork release.
 
-**Distribution review remains open.** The bundled model and native-library
+**Distribution review remains open.** The bundled model licensing and corresponding-source
 obligations are documented in [the licensing audit](docs/LICENSING.md).
-License texts alone do not complete that review.
+License texts alone do not complete that review. 7-Zip-JBinding and CBR/RAR
+support have been removed from new builds, resolving the documented unRAR conflict.
+Existing draft release assets still contain the older library until rebuilt.
 
 Use debug builds for development and device testing. The [release workflow](RELEASING.md)
 builds signed candidates from explicitly selected version tags; it does not publish

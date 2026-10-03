@@ -2,7 +2,7 @@ package com.chakra.comicreader.data.archive
 
 import java.io.File
 
-/** Thrown when a file is neither a readable ZIP nor RAR comic archive. */
+/** Thrown when a file is not a supported ZIP comic archive. */
 class UnsupportedComicException(message: String) : Exception(message)
 
 /**
@@ -20,8 +20,10 @@ object ComicArchiveFactory {
 
     fun open(file: File): ComicArchive = when (detectFormat(file)) {
         ComicFormat.CBZ -> ZipComicArchive(file)
-        ComicFormat.CBR -> RarComicArchive(file)
+        ComicFormat.CBR -> throw UnsupportedComicException(
+            "CBR/RAR is no longer supported. Extract the images and ZIP them into a CBZ, then import it.",
+        )
         ComicFormat.UNKNOWN ->
-            throw UnsupportedComicException("Not a CBZ or CBR archive: ${file.name}")
+            throw UnsupportedComicException("Not a CBZ/ZIP archive: ${file.name}")
     }
 }
