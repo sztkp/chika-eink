@@ -3,22 +3,7 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Chika mark, ochre scheme: dark (ink) cells with maroon frames + crimson spine, on the
-         ochre launcher background. -->
-
-    <!-- top cell: maroon frame + ink fill -->
-    <path android:fillColor="#7C1620" android:pathData="M22,22 h64 v16 h-64 z" />
-    <path android:fillColor="#17100E" android:pathData="M25,25 h58 v10 h-58 z" />
-
-    <!-- spine cell: ink frame + crimson fill -->
-    <path android:fillColor="#17100E" android:pathData="M22,41 h25 v26 h-25 z" />
-    <path android:fillColor="#D11F2D" android:pathData="M25,44 h19 v20 h-19 z" />
-
-    <!-- bottom cell: maroon frame + ink fill -->
-    <path android:fillColor="#7C1620" android:pathData="M22,70 h64 v16 h-64 z" />
-    <path android:fillColor="#17100E" android:pathData="M25,73 h58 v10 h-58 z" />
-
-    <!-- reticle corner brackets inside the spine -->
-    <path android:strokeColor="#F3E9D6" android:strokeWidth="1.6" android:strokeLineCap="square"
-        android:pathData="M28,50 L28,47 L31,47 M38,47 L41,47 L41,50 M28,58 L28,61 L31,61 M41,58 L41,61 L38,61" />
+    <!-- Original Chika-eInk open-book icon. MPL-2.0; see LICENSE. -->
+    <path android:fillColor="#000000"
+        android:pathData="M28,32 L50,36 L50,78 L28,74 Z M58,36 L80,32 L80,74 L58,78 Z" />
 </vector>

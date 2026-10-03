@@ -1,4 +1,4 @@
-# F-Droid main-repo recipe TEMPLATE.
+# Fork F-Droid recipe TEMPLATE; inherited versions/tags require review before submission.
 # This file is NOT used by Chika's build. To submit Chika to the F-Droid main repo, copy this to
 # metadata/com.chakra.comicreader.yml in a fork of https://gitlab.com/fdroid/fdroiddata and open a
 # merge request. F-Droid maintainers will refine it. F-Droid builds assembleRelease (unsigned, since
@@ -7,13 +7,14 @@
 Categories:
   - Reading
 License: MPL-2.0
-AuthorName: Chakra (Chalchitra Krida)
-WebSite: https://github.com/batunii/chika
-SourceCode: https://github.com/batunii/chika
-IssueTracker: https://github.com/batunii/chika/issues
+AuthorName: Chika-eInk contributors
+Name: Chika-eInk
+WebSite: https://github.com/sztkp/chika-eink
+SourceCode: https://github.com/sztkp/chika-eink
+IssueTracker: https://github.com/sztkp/chika-eink/issues
 
 RepoType: git
-Repo: https://github.com/batunii/chika.git
+Repo: https://github.com/sztkp/chika-eink.git
 
 Builds:
   - versionName: 0.1.1

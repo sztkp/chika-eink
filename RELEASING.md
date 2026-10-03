@@ -1,8 +1,17 @@
-# Releasing Chika
+# Releasing Chika-eInk
 
 Pushing a version tag (`v*`) triggers [`.github/workflows/release.yml`](.github/workflows/release.yml),
 which builds a **signed release AAB + APK** and publishes them on a GitHub Release. The AAB is what
 you upload to the Google Play Console; the APK is for direct/sideload distribution.
+
+These instructions are inherited from upstream and apply to this fork's repository.
+Configure this fork's own signing secrets before tagging a release; upstream secrets
+and signing credentials are not available here. Release names and notes should identify
+Chika-eInk as an independent fork. No store listing for this fork is implied.
+
+The application ID remains `com.chakra.comicreader` for compatibility. A separately
+signed fork cannot update an upstream installation signed with a different key.
+Plan any package-ID or signing change separately because it affects installation and data.
 
 ## One-time setup
 
@@ -70,7 +79,7 @@ The workflow then:
   keep rules in `app/proguard-rules.pro` (JNI natives, 7-Zip-JBinding, TFLite/LiteRT). Smoke-test a
   release build on a device after touching dependencies or the rules.
 - Google Play requires a hosted **privacy policy** URL for every app: use
-  `https://github.com/batunii/chika/blob/main/PRIVACY.md`. The Data Safety form is "no data
+  `https://github.com/sztkp/chika-eink/blob/main/PRIVACY.md`. The Data Safety form is "no data
   collected" — the app has no INTERNET permission.
 - Play's 16 KB page-size requirement (targetSdk 35+) is satisfied by 7-Zip-JBinding ≥ 16.02-2.03
   and LiteRT 1.4.x — both ship 16 KB-aligned `.so`s. Keep that in mind on any dependency change:

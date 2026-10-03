@@ -1,4 +1,8 @@
-# Chika panel-detector training
+# Chika panel-detector training (inherited by Chika-eInk)
+
+These are upstream experimental training notes, retained for reference. The data-ready
+and machine-specific statements below describe upstream work, not this fork's checkout.
+Chika-eInk has not changed or retrained the bundled detector.
 
 Train a replacement for the bundled `manga_panel_detector_int8.tflite` on **diverse** data so it
 works on color/Western comics *and* manga — fixing the root cause (the current model is trained

@@ -58,7 +58,7 @@ struct MenuView: View {
                     Spacer().frame(height: 12)
                     OchreBadge(text: "Version \(version)")
                     Spacer().frame(height: 14)
-                    Text("Made with ❤️ by Chakra")
+                    Text("Independent fork of Chika by Chakra")
                         .font(.archivo(14)).foregroundColor(Chika.cream)
                     Spacer().frame(height: 18)
                     Text("Chika is a comic reader that detects panels on-device and guides you "
@@ -76,7 +76,7 @@ struct MenuView: View {
                         HStack(spacing: 10) {
                             Image(systemName: "heart.fill")
                                 .font(.system(size: 18)).foregroundColor(Chika.cream)
-                            Text("SUPPORT / DONATE")
+                            Text("SUPPORT UPSTREAM")
                                 .font(.anton(15)).tracking(0.5).foregroundColor(Chika.cream)
                         }
                         .frame(maxWidth: .infinity)

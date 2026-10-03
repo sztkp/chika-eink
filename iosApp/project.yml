@@ -45,7 +45,7 @@ targets:
     info:
       path: Sources/Info.plist
       properties:
-        CFBundleDisplayName: Chika
+        CFBundleDisplayName: Chika-eInk
         CFBundleShortVersionString: "$(MARKETING_VERSION)"
         CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         # The app uses no encryption beyond what the OS provides — declares export compliance so

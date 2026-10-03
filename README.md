@@ -1,26 +1,16 @@
-<p align="center">
-  <img src="docs/logo-lockup.png" width="420" alt="Chika · Chitra Katha">
-</p>
+# Chika-eInk
 
-<p align="center">
-  <strong>Chika</strong> — a panel-by-panel comic reader for Android.<br>
-  Open a CBZ/CBR, and Chika finds the panels with an on-device ML model and guides you through them
-  one tap at a time.
-</p>
+An independent, e-ink-focused Android fork of [Chika](https://github.com/batunii/chika),
+the panel-by-panel comic reader by Chakra (Chalchitra Krida). This fork is maintained
+at [sztkp/chika-eink](https://github.com/sztkp/chika-eink) and is not an official upstream release.
 
-<p align="center">
-  <a href="https://github.com/batunii/chika/actions/workflows/ci.yml"><img src="https://github.com/batunii/chika/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg" alt="License: MPL 2.0"></a>
-  <img src="https://img.shields.io/badge/platform-Android%208.0%2B-3DDC84.svg" alt="Android 8.0+">
-</p>
+The initial target is the **BOOX Palma 2**. Changes focus on presentation and interaction:
+opaque black-and-white UI, high contrast, static loading indicators, and immediate panel,
+page, and navigation transitions. No BOOX-specific APIs or image preprocessing are used.
+Physical-device refresh and ghosting testing is still needed; see [the e-ink notes](docs/EINK.md).
 
-<p align="center">
-  <img src="docs/screens/library.png" width="280" alt="Library">
-  &nbsp;&nbsp;
-  <img src="docs/screens/reader.png" width="280" alt="Reader">
-</p>
-
----
+[CI](https://github.com/sztkp/chika-eink/actions/workflows/ci.yml) ·
+[MPL-2.0](LICENSE) · Android 8.0+
 
 ## What it does
 
@@ -40,14 +30,16 @@ swipe to turn whole pages, scrub pages, and flip reading direction (LTR/RTL).
   (clamped to the artwork), a page scrubber, a "show whole page" button, and an LTR/RTL toggle.
 - **Library** — import via the system file picker (copied into app storage), cover thumbnails,
   per-comic resume (page **and** panel), long-press to remove.
-- **Chika brand UI** — pulp-comic identity (Anton + Archivo type, ink/crimson/cream/ochre palette).
+- **E-ink UI** — monochrome controls, clear borders, immediate panel framing, and static status indicators.
 
 ## Build & run
 
 Requires **Android Studio** (bundles JDK + SDK). Developed against JDK 21 and Android **API 36**;
-`minSdk 26` (Android 8.0).
+`minSdk 26` (Android 8.0). Build tools **36.1.0** are pinned in the project.
 
 ```bash
+# run the shared core tests
+./gradlew :shared:jvmTest
 # build a debug APK
 ./gradlew :app:assembleDebug
 # build and install on a connected device/emulator
@@ -60,6 +52,8 @@ On Windows without `java` on PATH, point Gradle at Android Studio's bundled JDK 
 $env:JAVA_HOME = "C:\Program Files\Android\Android Studio\jbr"
 .\gradlew.bat :app:installDebug
 ```
+
+The debug APK is written to `app/build/outputs/apk/debug/app-debug.apk`.
 
 CI builds the debug APK on every push/PR — see [`.github/workflows/ci.yml`](.github/workflows/ci.yml).
 
@@ -76,7 +70,9 @@ CI builds the debug APK on every push/PR — see [`.github/workflows/ci.yml`](.g
 ## Architecture
 
 The platform-independent core lives in `:shared`, a Kotlin Multiplatform module (JVM + iOS
-targets) that `:app` consumes; it is the foundation for a future iOS app.
+targets) that `:app` consumes. The inherited iOS app remains in the repository; e-ink
+behavior changes currently target Android. Core reading, detection, archive handling, and
+persistence remain unchanged.
 
 ```
 :shared (commonMain — pure Kotlin, unit-tested)
@@ -92,7 +88,7 @@ targets) that `:app` consumes; it is the foundation for a future iOS app.
   detection      MlPanelDetector (TFLite) · whole-page fallback
   ui/reader      ReaderViewModel (page→panel state machine) + ReaderScreen (camera, gestures, chrome)
   ui/library     LibraryViewModel + LibraryScreen
-  ui/brand       Chika component kit (mark, reticle, halftone, starburst, page coin, wordmark)
+  ui/brand       existing components with simplified fork title, badges, and page indicator
   ui/theme       palette + Anton/Archivo typography
 ```
 
@@ -101,15 +97,19 @@ Apache Commons Compress · 7-Zip-JBinding.
 
 ## License
 
-Chika's source is licensed under the **Mozilla Public License 2.0** — see [`LICENSE`](LICENSE).
+Chika-eInk's source, including the inherited Chika source, is licensed under the **Mozilla Public License 2.0** — see [`LICENSE`](LICENSE).
 
-Third-party libraries, the bundled model, fonts, and brand assets keep their own licenses; the full
+Third-party libraries, the bundled model, and fonts keep their own licenses; the inherited
 audit and obligations (including the **LGPL** 7-Zip component and **Manga109-s** model-data
 disclosure) are in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md). The **Chika / Chitra Katha**
 name, logo, and brand assets are owned by Chakra (Chalchitra Krida) and are not covered by the code
-license.
+license. This fork uses the name to identify its upstream origin; it replaces the original
+logo/wordmark and removes the inherited promotional screenshots. Its new book icon is original
+geometry distributed under MPL-2.0; see [artwork provenance](docs/ARTWORK.md).
 
 ## Acknowledgements
+
+- Original application: [Chika](https://github.com/batunii/chika), by Chakra (Chalchitra Krida).
 
 - Panel-detection model: [`leoxs22/manga-panel-detector-yolo26n`](https://huggingface.co/leoxs22/manga-panel-detector-yolo26n) (Apache-2.0), trained on Manga109-s.
 - Fonts: **Anton** and **Archivo** (SIL Open Font License 1.1).

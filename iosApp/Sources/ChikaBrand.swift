@@ -89,7 +89,7 @@ struct Reticle: View {
 
 // MARK: - Logo system
 
-/// The Chika three-panel "C" mark on its maroon ground, with a hard drop shadow.
+/// Original fork book icon; asset name retained for compatibility.
 struct ChikaMark: View {
     var size: CGFloat
     var body: some View {
@@ -101,15 +101,11 @@ struct ChikaMark: View {
     }
 }
 
-/// "CHI·KA / CHITRA KATHA" lockup (cream + crimson Anton over an Archivo kicker).
+/// Plain fork title, replacing the upstream graphical wordmark.
 struct ChikaWordmark: View {
     var body: some View {
-        VStack(alignment: .leading, spacing: 3) {
-            (Text("CHI").foregroundColor(Chika.cream) + Text("KA").foregroundColor(Chika.crimson))
-                .font(.anton(28))
-            KickerText("Chitra Katha", size: 8.5)
-                .tracking(2.6)
-        }
+        Text("Chika-eInk")
+            .font(.archivo(28)).foregroundColor(Chika.cream)
     }
 }
 

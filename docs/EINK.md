@@ -14,7 +14,7 @@ Panel selection draws the existing `currentCamera` directly with the unchanged
 `computePageDraw` math. The existing 220 ms double-tap recognition window remains.
 Pinch, pan, double-tap, tap zones, page flicks and the scrubber remain available.
 No modules, dependencies, detection/ML, panel planning/order, archives, persistence,
-page decoding or caches are changed. The iOS UI is untouched.
+page decoding or caches are changed. The iOS reader behavior is untouched; fork attribution and artwork are updated separately.
 
 ## Validation
 

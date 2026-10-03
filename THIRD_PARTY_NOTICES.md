@@ -1,4 +1,8 @@
-# Third-Party Notices
+# Third-Party Notices — Chika-eInk
+
+Chika-eInk is an independent fork of [Chika](https://github.com/batunii/chika) by
+Chakra (Chalchitra Krida). The inherited dependency/model notices below are retained;
+this artwork cleanup does not change or re-audit their licenses.
 
 Chika (the application source) is licensed under the **Mozilla Public License 2.0** — see
 [`LICENSE`](LICENSE). This file documents the third-party software, models, fonts, and data that
@@ -79,6 +83,12 @@ Full texts: [`THIRD_PARTY_LICENSES/OFL-1.1-Anton.txt`](THIRD_PARTY_LICENSES/OFL-
 The **Chika / Chitra Katha** name, logo, and wordmark are brand assets owned by the project owner
 (Chakra / Chalchitra Krida) and are **not** covered by the MPL-2.0 code license. Trademark/brand
 rights are reserved even where the surrounding source is open.
+
+This fork replaces the upstream graphical logo/wordmark and bundled icons and removes
+the inherited promotional screenshots, whose separate artwork permissions are not documented
+in the repository. The replacement book icon and plain fork title are described in
+[`docs/ARTWORK.md`](docs/ARTWORK.md). Upstream attribution is retained; no ownership of
+upstream branding is claimed.
 
 ## Distribution notes
 

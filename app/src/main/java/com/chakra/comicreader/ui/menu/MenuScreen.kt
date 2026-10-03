@@ -48,8 +48,8 @@ import com.chakra.comicreader.ui.theme.InkSoft
 import com.chakra.comicreader.ui.theme.Ochre
 
 private const val DONATION_URL = "https://github.com/batunii/chika"
-private const val PRIVACY_URL = "https://github.com/batunii/chika/blob/main/PRIVACY.md"
-private const val LICENSES_URL = "https://github.com/batunii/chika/blob/main/THIRD_PARTY_NOTICES.md"
+private const val PRIVACY_URL = "https://github.com/sztkp/chika-eink/blob/main/PRIVACY.md"
+private const val LICENSES_URL = "https://github.com/sztkp/chika-eink/blob/main/THIRD_PARTY_NOTICES.md"
 
 @Composable
 fun MenuScreen(
@@ -119,7 +119,7 @@ fun MenuScreen(
             OchreBadge("VERSION $version")
             Spacer(Modifier.size(14.dp))
             Text(
-                "Made with ❤️ by Chakra",
+                "Independent fork of Chika by Chakra",
                 fontFamily = Archivo,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 14.sp,
@@ -127,7 +127,7 @@ fun MenuScreen(
             )
             Spacer(Modifier.size(18.dp))
             Text(
-                "Chika is a comic reader that detects panels on-device and guides you through each " +
+                "Chika-eInk is a fork of a comic reader that detects panels on-device and guides you through each " +
                     "page, panel by panel.",
                 fontFamily = Archivo,
                 fontWeight = FontWeight.Medium,
@@ -170,7 +170,7 @@ fun MenuScreen(
                 Icon(Icons.Default.Favorite, contentDescription = null, tint = Ink, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.size(10.dp))
                 Text(
-                    "SUPPORT / DONATE",
+                    "SUPPORT UPSTREAM",
                     fontFamily = Anton,
                     fontSize = 15.sp,
                     letterSpacing = 0.5.sp,

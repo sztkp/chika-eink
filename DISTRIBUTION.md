@@ -1,80 +1,35 @@
-# Distributing Chika (free / FOSS channels)
+# Distributing Chika-eInk
 
-Chika is built to be distributable through FOSS app repositories without a paid developer account.
-It already meets the core requirements:
+Chika-eInk is an independent fork of [Chika](https://github.com/batunii/chika) by
+Chakra (Chalchitra Krida). Use this fork's identity, source repository, and notices
+when distributing its builds. This document does not claim an existing store or
+F-Droid listing, or acceptance by any distribution service.
 
-- **License:** Mozilla Public License 2.0 (FOSS) — see [`LICENSE`](LICENSE).
-- **All dependencies are free-licensed and from trusted Maven repos** (Maven Central, Google Maven,
-  JitPack) — OpenCV, TensorFlow Lite, 7-Zip-JBinding, Commons Compress, AndroidX. F-Droid permits
-  free binaries from these repos.
-- **No trackers, no ads, no Google Play Services, no network access** — no anti-features.
-- Store listing metadata lives in `fastlane/metadata/android/en-US/` (title, descriptions,
-  changelog, icon, screenshots) and is read by both F-Droid and IzzyOnDroid.
+- Source: <https://github.com/sztkp/chika-eink>
+- Issues: <https://github.com/sztkp/chika-eink/issues>
+- Releases: <https://github.com/sztkp/chika-eink/releases>
+- Source license: [MPL-2.0](LICENSE).
+- Retained dependency/model/font notices: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+- Fork icon provenance and removed artwork: [docs/ARTWORK.md](docs/ARTWORK.md).
+- Signing and release workflow: [RELEASING.md](RELEASING.md).
 
-The 16 KB-page-size requirement is a **Google Play** rule and does **not** apply to these channels.
+## Direct APK distribution
 
-## Route A — IzzyOnDroid (recommended first; easiest)
+Build with `./gradlew :app:assembleDebug` for local testing. The APK is at
+`app/build/outputs/apk/debug/app-debug.apk`. For signed releases, configure this
+repository's signing secrets before using the inherited tag-triggered release workflow.
+Make the corresponding source and notices available alongside distributed builds.
 
-IzzyOnDroid is the largest third-party F-Droid repo. It does **not** build from source — it ingests
-the **APK from your GitHub Releases** — so it's the fastest path and accepts apps that are FOSS with
-at most minor non-free components (flagged). Steps:
+## Listing metadata
 
-1. Cut a release so an APK is attached to a GitHub Release (the `release` workflow does this on a
-   `v*` tag — see [`RELEASING.md`](RELEASING.md)).
-2. Open an inclusion request issue at **https://codeberg.org/IzzyOnDroid/repodata/issues** (use the
-   inclusion template). They check the license, scan for anti-features, and pull the APK + the
-   fastlane metadata.
-3. Users add the IzzyOnDroid repo to the F-Droid client and install Chika.
+`fastlane/metadata/android/en-US/` contains fork-specific title/descriptions and the
+original fork icon. Inherited screenshots were removed; add new screenshots only using
+comics with documented permission for redistribution or original synthetic artwork.
 
-## Route B — F-Droid main repo (more rigorous)
+`fdroid/com.chakra.comicreader.yml` is an inherited template pointing to this fork.
+Its example versions/tags require review before submission. Review each service's current
+requirements and the inherited model/dependency notices before submitting.
 
-F-Droid builds the app **from source** on their servers and publishes the result. Everything lives
-on **GitLab** (the `github.com/f-droid/fdroiddata` repo is an **archived read-only mirror — don't
-use it**). Two ways in:
-
-- **Merge request (preferred):** fork **https://gitlab.com/fdroid/fdroiddata/-/merge_requests** and
-  add the metadata recipe.
-- **Request for Packaging (RFP):** if you'd rather the F-Droid team package it, open an issue at
-  **https://gitlab.com/fdroid/rfp/issues**.
-
-Things to handle for the main repo:
-
-- **Versioning:** ✅ handled — `versionCode` is now derived deterministically from `versionName`
-  (`MAJOR*10000 + MINOR*100 + PATCH`, e.g. `0.1.1` → `101`) in `app/build.gradle.kts`, so it's stable
-  and increasing whether built by CI or by F-Droid from source. Just bump `versionName` per release.
-- **Unsigned release build:** ✅ handled — release signing only activates when the keystore env vars
-  are present (CI), so F-Droid's `assembleRelease` produces an unsigned APK that F-Droid then signs
-  with its own key.
-- **Bundled model blob:** `app/src/main/assets/manga_panel_detector_int8.tflite` is a prebuilt
-  binary committed to the repo. It is Apache-2.0 (free) **data**, not executable code, so it is
-  generally acceptable, but F-Droid reviewers may ask that it be fetched at build time or flagged.
-- Dependencies from JitPack (7-Zip-JBinding) and Maven are allowed as free binaries.
-
-A ready-to-submit recipe is in [`fdroid/com.chakra.comicreader.yml`](fdroid/com.chakra.comicreader.yml)
-— copy it to `metadata/com.chakra.comicreader.yml` in your `fdroiddata` fork and open the MR.
-
-## Submission materials
-
-**IzzyOnDroid request** — open an issue at https://codeberg.org/IzzyOnDroid/repodata/issues with:
-
-> **App:** Chika — Chitra Katha
-> **Package:** `com.chakra.comicreader`
-> **Source:** https://github.com/batunii/chika
-> **License:** MPL-2.0 (FOSS)
-> **Releases:** signed APKs attached to GitHub Releases (`v*` tags); fastlane metadata in
-> `fastlane/metadata/android/en-US`.
-> **Anti-features:** none — no trackers, no ads, no Google Play Services, no network access.
-> All dependencies are free-licensed (Apache-2.0 / LGPL-2.1 / OFL-1.1) from Maven Central, Google
-> Maven, and JitPack. Please track GitHub releases for updates.
-
-## Also free: direct distribution
-
-The `release` workflow already publishes a signed APK on every `v*` tag's GitHub Release, so users
-can sideload directly, and tools like **Obtainium** can auto-update from the GitHub Releases page —
-no repo submission needed.
-
-## Donations
-
-All of the above are compatible with seeking donations via an **external link** (e.g. Ko-fi, GitHub
-Sponsors, Liberapay) from the listing/README. (In-app donations on Google Play are restricted to
-registered nonprofits; external links avoid that entirely.)
+The package ID remains `com.chakra.comicreader`. Separate signing keys affect whether
+an APK can replace an installed upstream build. Changing the package ID is outside this
+cleanup and should be planned with installation and data compatibility in mind.

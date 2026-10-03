@@ -18,10 +18,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -112,28 +109,17 @@ fun Reticle(
 
 /* ---- Logo system --------------------------------------------------------------- */
 
-/** "CHI·KA / CHITRA KATHA" lockup (cream + crimson Anton over an Archivo kicker). */
+/** Plain fork title; the upstream graphical wordmark is not redistributed. */
 @Composable
 fun ChikaWordmark(modifier: Modifier = Modifier) {
-    Column(modifier) {
-        Text(
-            text = buildAnnotatedString {
-                withStyle(SpanStyle(color = Cream)) { append("CHI") }
-                withStyle(SpanStyle(color = Cream)) { append("KA") }
-            },
-            fontFamily = Anton,
-            fontSize = 28.sp,
-        )
-        Text(
-            text = "CHITRA KATHA",
-            fontFamily = Archivo,
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = 8.5.sp,
-            letterSpacing = 2.6.sp,
-            color = CreamMuted,
-            modifier = Modifier.padding(top = 3.dp),
-        )
-    }
+    Text(
+        text = "Chika-eInk",
+        fontFamily = Archivo,
+        fontWeight = FontWeight.Bold,
+        fontSize = 28.sp,
+        color = Cream,
+        modifier = modifier,
+    )
 }
 
 /** The rotated ochre "kicker" banner (e.g. YOUR LIBRARY) with ink frame + hard shadow. */
