@@ -56,6 +56,14 @@ class LibraryViewModel(
         viewModelScope.launch { repository.deleteComic(id) }
     }
 
+    fun resetProgress(id: Long) {
+        viewModelScope.launch {
+            runCatching { repository.resetProgress(id) }
+                .onSuccess { _message.value = if (it > 0) "Progress reset." else "Comic no longer available." }
+                .onFailure { _message.value = "Could not reset progress." }
+        }
+    }
+
     fun consumeMessage() {
         _message.value = null
     }

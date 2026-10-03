@@ -39,6 +39,9 @@ class LibraryRepository(
     suspend fun saveProgress(id: Long, page: Int, slot: Int) =
         dao.updateProgress(id, page, slot, System.currentTimeMillis())
 
+    /** Reset the resume point without changing files, reading direction or last-read time. */
+    suspend fun resetProgress(id: Long) = dao.resetProgress(id)
+
     suspend fun setReadingDirection(id: Long, rightToLeft: Boolean) =
         dao.updateReadingDirection(id, rightToLeft)
 

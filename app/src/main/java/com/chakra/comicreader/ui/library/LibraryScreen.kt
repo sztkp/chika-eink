@@ -111,6 +111,7 @@ fun LibraryScreen(
     var showSort by rememberSaveable { mutableStateOf(false) }
     val snackbarHostState = remember { SnackbarHostState() }
     var pendingDelete by remember { mutableStateOf<ComicEntity?>(null) }
+    var pendingReset by remember { mutableStateOf<ComicEntity?>(null) }
 
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri != null) viewModel.importComic(uri)
@@ -232,7 +233,8 @@ fun LibraryScreen(
                 ComicCard(
                     comic = comic,
                     onClick = { onOpenComic(comic.id) },
-                    onLongClick = { pendingDelete = comic },
+                    onRemove = { pendingDelete = comic },
+                    onResetProgress = { pendingReset = comic },
                 )
             }
         }
@@ -272,7 +274,7 @@ fun LibraryScreen(
         AlertDialog(
             onDismissRequest = { pendingDelete = null },
             title = { Text("Remove comic?", fontFamily = Libron, fontWeight = FontWeight.Bold) },
-            text = { Text("This removes the imported copy. The original file is untouched.") },
+            text = { Text("Are you sure you want to remove “${comic.title}”? This removes the imported copy and its reading progress. The original file is untouched.") },
             confirmButton = {
                 TextButton(onClick = { viewModel.deleteComic(comic.id); pendingDelete = null }) {
                     Text("DELETE", color = Crimson, fontWeight = FontWeight.Bold)
@@ -282,19 +284,39 @@ fun LibraryScreen(
             containerColor = InkSoft,
         )
     }
+    pendingReset?.let { comic ->
+        AlertDialog(
+            onDismissRequest = { pendingReset = null },
+            title = { Text("Reset progress?") },
+            text = { Text("Are you sure you want to reset progress for “${comic.title}”? The next time you open it, reading starts at the first page. The comic stays in your library.") },
+            confirmButton = {
+                TextButton(onClick = { viewModel.resetProgress(comic.id); pendingReset = null }) {
+                    Text("Reset progress")
+                }
+            },
+            dismissButton = { TextButton(onClick = { pendingReset = null }) { Text("Cancel") } },
+        )
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun ComicCard(comic: ComicEntity, onClick: () -> Unit, onLongClick: () -> Unit) {
+private fun ComicCard(
+    comic: ComicEntity,
+    onClick: () -> Unit,
+    onRemove: () -> Unit,
+    onResetProgress: () -> Unit,
+) {
+    var showMenu by rememberSaveable(comic.id) { mutableStateOf(false) }
     val pct = if (comic.pageCount > 0) ((comic.lastPage + 1f) / comic.pageCount).coerceIn(0f, 1f) else 0f
     val started = comic.lastPage > 0
+    Box {
     Column(Modifier.combinedClickable(
         role = Role.Button,
         onClickLabel = "Read ${comic.title}",
-        onLongClickLabel = "Remove ${comic.title}",
+        onLongClickLabel = "Show actions for ${comic.title}",
         onClick = onClick,
-        onLongClick = onLongClick,
+        onLongClick = { showMenu = true },
     )) {
         Box(
             Modifier
@@ -329,6 +351,30 @@ private fun ComicCard(comic: ComicEntity, onClick: () -> Unit, onLongClick: () -
             color = CreamMuted,
             modifier = Modifier.padding(top = 2.dp),
         )
+    }
+    if (showMenu) {
+        Popup(
+            alignment = Alignment.TopEnd,
+            onDismissRequest = { showMenu = false },
+            properties = PopupProperties(focusable = true),
+        ) {
+            Surface(
+                shape = MaterialTheme.shapes.extraSmall,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+            ) {
+                Column(Modifier.width(IntrinsicSize.Max).padding(vertical = 8.dp)) {
+                    DropdownMenuItem(
+                        text = { Text("Remove comic") },
+                        onClick = { showMenu = false; onRemove() },
+                    )
+                    DropdownMenuItem(
+                        text = { Text("Reset progress") },
+                        onClick = { showMenu = false; onResetProgress() },
+                    )
+                }
+            }
+        }
+    }
     }
 }
 

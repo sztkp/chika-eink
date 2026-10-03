@@ -20,6 +20,9 @@ interface ComicDao {
     @Query("UPDATE comics SET lastPage = :page, lastSlot = :slot, lastOpened = :openedAt WHERE id = :id")
     suspend fun updateProgress(id: Long, page: Int, slot: Int, openedAt: Long): Int
 
+    @Query("UPDATE comics SET lastPage = 0, lastSlot = 0 WHERE id = :id")
+    suspend fun resetProgress(id: Long): Int
+
     @Query("UPDATE comics SET rightToLeft = :rtl WHERE id = :id")
     suspend fun updateReadingDirection(id: Long, rtl: Boolean): Int
 
