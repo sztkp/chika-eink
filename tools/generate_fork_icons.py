@@ -1,4 +1,4 @@
-"""Generate Kuro's original monochrome book icons (MPL-2.0).
+"""Generate Chika-eInk's original monochrome book icons (MPL-2.0).
 
 Requires Pillow. No upstream artwork or external image inputs are used.
 Run from the repository root: python3 tools/generate_fork_icons.py

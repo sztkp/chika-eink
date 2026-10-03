@@ -1,6 +1,6 @@
-# Kuro combined-work distribution license
+# Chika-eInk combined-work distribution license
 
-Kuro releases containing the bundled AGPL-3.0 panel detector are distributed
+Chika-eInk releases containing the bundled AGPL-3.0 panel detector are distributed
 as a Larger Work under GNU Affero General Public License version 3.0. The full
 license text is in [THIRD_PARTY_LICENSES/AGPL-3.0.txt](THIRD_PARTY_LICENSES/AGPL-3.0.txt).
 

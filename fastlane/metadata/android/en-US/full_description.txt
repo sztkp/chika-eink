@@ -1,4 +1,4 @@
-Kuro is an independent Android fork of Chika by Chakra (Chalchitra Krida),
+Chika-eInk is an independent Android fork of Chika by Chakra (Chalchitra Krida),
 initially targeting the BOOX Palma 2. It preserves Chika's comic reading functionality
 while adapting the UI for e-ink: monochrome controls, high contrast, static indicators,
 and immediate panel transitions. BOOX reader refresh integration falls back safely on unsupported devices.

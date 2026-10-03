@@ -60,7 +60,7 @@ internal class OnyxViewApi private constructor(
             // The identifiers are scoped to its exact build, not assumed across BOOX devices.
             val regal = mode("UI_REGAL_MODE") ?: profile?.regal
             val gu = mode("UI_GU_MODE") ?: profile?.gu
-            if (profile != null) Log.d("Kuro", "Verified Palma 2 firmware profile")
+            if (profile != null) Log.d("ChikaEink", "Verified Palma 2 firmware profile")
             val partial = regal ?: gu ?: error("No REGAL/GU firmware constant")
             val getMode = View::class.java.getMethod("getDefaultUpdateMode")
             val setMode = View::class.java.getMethod("setDefaultUpdateMode", Int::class.javaPrimitiveType)

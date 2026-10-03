@@ -27,7 +27,7 @@ cd training
 python scripts/comics_to_yolo.py --src /path/to/comics-panels --out dataset
 python scripts/manga109_to_yolo.py --root /path/to/manga109 --out dataset
 python scripts/train.py --dataset dataset --model yolo11n.pt --epochs 100 --batch 16
-python scripts/export_tflite.py --weights runs/detect/kuro/weights/best.pt \
+python scripts/export_tflite.py --weights runs/detect/chika_panels/weights/best.pt \
   --out candidate.tflite
 ```
 

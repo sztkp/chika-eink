@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Train the Kuro panel detector on the merged 2-class YOLO dataset, on Apple Silicon (MPS).
+"""Train the Chika panel detector on the merged 2-class YOLO dataset, on Apple Silicon (MPS).
 
 Produces a model whose I/O matches the app's decoder exactly (input [1,640,640,3], 2 classes:
 panel=0, text=1). Heavy COLOR augmentation is the point — it bridges B&W manga ↔ color comics,
@@ -32,11 +32,11 @@ def main():
     ap.add_argument("--epochs", type=int, default=100)
     ap.add_argument("--batch", type=int, default=16)
     ap.add_argument("--imgsz", type=int, default=640)
-    ap.add_argument("--name", default="kuro")
+    ap.add_argument("--name", default="chika_panels")
     # Small-dataset fine-tune knobs: a high lr0 + heavy aug degrades YOLO11n's
     # pretrained COCO features faster than 398 imgs can re-teach them (the v1 run
     # peaked at epoch 1 then declined). Lower lr, freeze the backbone, lighten aug.
-    # v3: even the lr0=0.001 run peaked at epoch 2-3 during warmup
+    # v3: even the lr0=0.001 run (chika_panels_v2-2) peaked at epoch 2-3 during warmup
     # then collapsed as the 3-epoch warmup ramped lr past ~0.0015 — the model converges
     # almost instantly on this easy single-class 398-img set, so a hot lr only erodes it.
     # Flat low lr, ~1-epoch warmup, NO mosaic, short schedule, save every epoch so a

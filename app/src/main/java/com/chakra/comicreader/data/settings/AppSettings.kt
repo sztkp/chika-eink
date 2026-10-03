@@ -11,7 +11,6 @@ import androidx.core.content.edit
  * half of "remembered per comic + a global default".
  */
 class AppSettings(context: Context) {
-    // Retain the legacy storage name so existing installations keep their preferences.
     private val prefs = context.getSharedPreferences("chika.settings", Context.MODE_PRIVATE)
 
     var defaultRightToLeft: Boolean

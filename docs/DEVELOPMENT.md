@@ -1,4 +1,4 @@
-# Developing Kuro
+# Developing Chika-eInk
 
 ## Setup and checks
 
@@ -28,9 +28,7 @@ The lint report is `app/build/reports/lint-results-debug.html`.
   loading, and LiteRT inference. Platform integrations implement the core interfaces.
 
 The installed application ID is `io.github.sztkp.chikaeink`; the Android namespace
-and Kotlin/Java packages are `com.chakra.comicreader`. These and the legacy
-`chika.settings` preference store are retained for install/data compatibility;
-renaming the product does not migrate Android identity.
+and Kotlin/Java packages are `com.chakra.comicreader`.
 
 ## Boundaries and invariants
 

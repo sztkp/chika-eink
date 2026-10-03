@@ -210,4 +210,4 @@ internal fun createEinkController(): EinkController {
     }
 }
 
-private const val TAG = "Kuro"
+private const val TAG = "ChikaEink"

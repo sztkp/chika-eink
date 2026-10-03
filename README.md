@@ -1,6 +1,6 @@
-# Kuro
+# Chika-eInk
 
-Kuro is an independent Android fork of [Chika](https://github.com/batunii/chika), the
+An independent Android fork of [Chika](https://github.com/batunii/chika), the
 panel-by-panel comic reader by Chakra (Chalchitra Krida), adapted for e-ink.
 Initially targeting **BOOX Palma 2**, with a high-contrast monochrome interface,
 static indicators, and immediate panel transitions.
@@ -54,4 +54,4 @@ application source also retains [MPL-2.0](LICENSE). Bundled components have sepa
 
 Chika by Chakra (Chalchitra Krida), [panel detector](https://huggingface.co/leoxs22/manga-panel-detector-yolo26n)
 by Leandro Narosky, and [Libron](https://github.com/nicoverbruggen/libron) by Nico Verbruggen.
-Kuro is an AI-assisted project developed with OpenAI Codex.
+Chika-eInk is an AI-assisted project developed with OpenAI Codex.

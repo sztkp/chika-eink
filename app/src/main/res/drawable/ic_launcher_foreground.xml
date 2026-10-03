@@ -3,7 +3,7 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Original Kuro open-book icon. MPL-2.0; see LICENSE. -->
+    <!-- Original Chika-eInk open-book icon. MPL-2.0; see LICENSE. -->
     <path android:fillColor="#000000"
         android:pathData="M28,32 L50,36 L50,78 L28,74 Z M58,36 L80,32 L80,74 L58,78 Z" />
 </vector>
