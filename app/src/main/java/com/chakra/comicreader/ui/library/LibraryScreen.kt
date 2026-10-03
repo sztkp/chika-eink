@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -40,10 +39,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AlertDialog
@@ -64,6 +64,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
+import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -123,6 +124,21 @@ fun LibraryScreen(
     }
 
     Scaffold(
+        floatingActionButtonPosition = FabPosition.End,
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { if (!importing) picker.launch(arrayOf("*/*")) },
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                elevation = FloatingActionButtonDefaults.elevation(
+                    defaultElevation = 0.dp, pressedElevation = 0.dp,
+                    focusedElevation = 0.dp, hoveredElevation = 0.dp,
+                ),
+                modifier = Modifier.semantics { if (importing) disabled() },
+            ) {
+                Icon(Icons.Default.Add, contentDescription = if (importing) "Importing comic" else "Add comic")
+            }
+        },
         topBar = {
             TopAppBar(
                 title = { Text("Chika-eInk", maxLines = 1, overflow = TextOverflow.Ellipsis) },
@@ -187,7 +203,7 @@ fun LibraryScreen(
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = 150.dp),
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(start = 18.dp, end = 18.dp, top = 8.dp, bottom = 48.dp),
+            contentPadding = PaddingValues(start = 18.dp, end = 18.dp, top = 8.dp, bottom = 96.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(18.dp),
         ) {
@@ -195,20 +211,16 @@ fun LibraryScreen(
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text("Your library", style = MaterialTheme.typography.titleLarge,
                         modifier = Modifier.semantics { heading() })
-                    OutlinedButton(
-                        enabled = !importing,
-                        onClick = { picker.launch(arrayOf("*/*")) },
-                        modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp),
-                    ) {
-                        Icon(Icons.Default.Add, contentDescription = null)
-                        Text(if (importing) "Importing…" else "Add comic", Modifier.padding(start = 8.dp))
+                    if (importing) {
+                        Text("Importing…", style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite })
                     }
                 }
             }
             if (comics.isEmpty()) {
                 item(span = { GridItemSpan(maxLineSpan) }) {
                     Text(
-                        "No comics yet. Choose Add comic to import a CBZ or CBR.",
+                        "No comics yet. Tap + to import a CBZ or CBR.",
                         fontFamily = Libron,
                         fontSize = 13.sp,
                         color = CreamMuted,
@@ -245,7 +257,7 @@ fun LibraryScreen(
                 color = Ink,
                 contentColor = Cream,
                 modifier = Modifier.align(Alignment.BottomCenter)
-                    .navigationBarsPadding().padding(12.dp)
+                    .padding(start = 12.dp, end = 12.dp, bottom = 88.dp)
                     .border(1.dp, Cream)
                     .semantics { liveRegion = LiveRegionMode.Polite },
             ) {

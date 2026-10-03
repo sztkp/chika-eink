@@ -60,6 +60,11 @@ Library sorting is an app-bar action with an anchored menu of Material
 A focusable Android `Popup` preserves dismissal by Back/outside tap without the
 scale/fade animation built into this version of `DropdownMenu`.
 
+Import uses a standard Material 3 + floating action button in Scaffold's bottom-end
+slot, above the system navigation inset. Grid padding and snackbar placement keep
+content reachable around it. Elevation remains zero for e-ink, and importing uses
+static status text while preventing duplicate picker launches.
+
 References: [app bars](https://developer.android.com/develop/ui/compose/components/app-bars),
 [Scaffold](https://developer.android.com/develop/ui/compose/components/scaffold),
 and [accessibility defaults](https://developer.android.com/develop/ui/compose/accessibility/api-defaults).
